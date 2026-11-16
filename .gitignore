@@ -1,0 +1,23 @@
+# SALUS environment and build artifacts
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+db.sqlite3
+backend/staticfiles/
+backend/media/
+demo_data/*.xlsx
+demo_data/*.csv
+demo_data/*.json
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/build/
+frontend/.packages
+.DS_Store
+Thumbs.db

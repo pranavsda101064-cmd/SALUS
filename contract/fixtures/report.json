@@ -1,0 +1,80 @@
+{
+  "provider": "SALUS_TEMPLATE",
+  "model": "",
+  "grounding_refs": [
+    "MT-2001",
+    "RS-3001",
+    "EV-10021",
+    "EV-10027",
+    "EV-11281"
+  ],
+  "summary": "The uploaded file reuses 300 of 1000 records (30 percent) from customer_master_v1. Matched columns include full_name, email, phone, aadhaar, pan, gstin. Canary record CN-007 was issued to vendor.acme@external.test and appears in the copy.",
+  "what_left": [
+    "300 customer records",
+    "8 columns corroborated in the copy",
+    "Columns not present: account_no, city, customer_ref",
+    "Canary values from issuance CN-007"
+  ],
+  "who_moved_it": {
+    "assessment": "Priya Sharma was recorded downloading customer_master_v1 and an external share to external_domain.com followed about 4 minutes later.",
+    "confidence": "HIGH",
+    "basis": [
+      "EV-10021",
+      "EV-10027"
+    ]
+  },
+  "why_flagged": [
+    {
+      "factor": "S",
+      "reason": "8 matched columns, 7 of them identity, contact or financial: AADHAAR, EMAIL, FINANCIAL_AMOUNT, GSTIN, PAN, PHONE, UPI_ID",
+      "points": 32.2
+    },
+    {
+      "factor": "D",
+      "reason": "Recorded EXTERNAL_SHARE to external_domain.com.",
+      "points": 25.5
+    },
+    {
+      "factor": "B",
+      "reason": "Reconstruction error 0.92717 against a baseline of 140 events.",
+      "points": 20.0
+    },
+    {
+      "factor": "E",
+      "reason": "MATCH_FOUND, AFTER_HOURS, DOWNLOAD_THEN_EXTERNAL_SHARE, BULK_VOLUME, CANARY_PRESENT, HIGH_MATCH_CONFIDENCE",
+      "points": 15.0
+    }
+  ],
+  "recommended_actions": [
+    {
+      "priority": 1,
+      "action": "Revoke outside access and confirm whether the recipient still holds the file.",
+      "why": "A recorded share names external_domain.com."
+    },
+    {
+      "priority": 2,
+      "action": "Contact the canary recipient and ask whether the copy was forwarded.",
+      "why": "Canary CN-007 links this copy to one issuance."
+    },
+    {
+      "priority": 3,
+      "action": "Review whether affected customers must be notified.",
+      "why": "Identity, contact or financial columns are present in the corroborated rows."
+    },
+    {
+      "priority": 4,
+      "action": "Restrict downloads on customer_master_v1 and alert on future exports.",
+      "why": "The source dataset has no download control in this demo."
+    }
+  ],
+  "limitations": [
+    "SALUS cannot see USB copies, screenshots, or retyped data.",
+    "A match is a lead, not proof of intent.",
+    "Only events from connected or simulated sources are visible."
+  ],
+  "correlation_basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
+  "generated_at": "2026-11-13T06:41:54Z",
+  "engine_note": "Gemini is not configured in this build. The deterministic composer produced this report.",
+  "report_id": "RP-5001",
+  "incident_id": "INC-4001"
+}

@@ -1,0 +1,8 @@
+{
+  "status": "ok",
+  "service": "SALUS",
+  "version": "1.0-demo",
+  "server_time": "2026-11-13T06:41:58.175027+00:00",
+  "report_provider": "SALUS_TEMPLATE",
+  "gemini_configured": false
+}

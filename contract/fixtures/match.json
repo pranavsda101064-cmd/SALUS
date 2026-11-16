@@ -1,0 +1,109 @@
+{
+  "match_id": "MT-2001",
+  "query_asset_id": "SL-9310",
+  "source_asset_id": "SL-9281",
+  "method": "CELL_HASH_WEIGHTED_V1",
+  "match_score": 0.999,
+  "containment": 1.0,
+  "recall_vs_original": 0.3,
+  "matched_rows": 300,
+  "matched_cells": 2400,
+  "matched_columns": [
+    "full_name",
+    "email",
+    "phone",
+    "aadhaar",
+    "pan",
+    "gstin",
+    "upi_id",
+    "monthly_income"
+  ],
+  "dropped_columns": [
+    "account_no",
+    "city",
+    "customer_ref"
+  ],
+  "canary": {
+    "found": true,
+    "canary_id": "CN-007",
+    "token": "CN-007",
+    "recipient": "vendor.acme@external.test",
+    "issued_at": "2026-11-01T09:00:00Z",
+    "matched_values": 18,
+    "matched_rows": 3
+  },
+  "evidence": {
+    "shared_unique_values": 2316,
+    "rare_shared_values": 2316,
+    "source_unique_values": 9430,
+    "query_unique_values": 2316,
+    "cell_recall": 0.244,
+    "row_recall": 0.3,
+    "source_row_count": 1000,
+    "query_row_count": 300,
+    "column_report": [
+      {
+        "column": "full_name",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "email",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "phone",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "aadhaar",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "pan",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "gstin",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "upi_id",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      },
+      {
+        "column": "monthly_income",
+        "matched": 300,
+        "total": 300,
+        "ratio": 1.0
+      }
+    ],
+    "exact_copy": false,
+    "watermark_on_source": "SALUS-WM-0727",
+    "watermark_on_query": "",
+    "watermark_stripped": true,
+    "canary": {
+      "found": true,
+      "canary_id": "CN-007",
+      "token": "CN-007",
+      "recipient": "vendor.acme@external.test",
+      "issued_at": "2026-11-01T09:00:00Z",
+      "matched_values": 18,
+      "matched_rows": 3
+    }
+  },
+  "created_at": "2026-11-13T06:41:54Z"
+}

@@ -1,0 +1,17 @@
+{
+  "event_id": "EV-10021",
+  "organization_id": "ORG-01",
+  "actor_id": "USER-104",
+  "asset_id": "SL-9281",
+  "action": "FILE_DOWNLOADED",
+  "source": "SIMULATOR",
+  "destination": "local_device",
+  "timestamp": "2026-11-12T17:10:00Z",
+  "evidence": {
+    "rows": 1000,
+    "bytes": 184320,
+    "device": "Windows laptop",
+    "simulated": true
+  },
+  "simulated": true
+}

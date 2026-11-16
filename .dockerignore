@@ -1,0 +1,16 @@
+# Local
+.env
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+db.sqlite3
+backend/staticfiles
+demo_data/*.xlsx
+demo_data/*.csv
+demo_data/manifest.json
+demo_data/ghost_manifest.json
+frontend/build
+frontend/.dart_tool
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies

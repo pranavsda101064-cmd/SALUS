@@ -1,0 +1,133 @@
+{
+  "asset_id": "SL-9281",
+  "organization_id": "ORG-01",
+  "name": "customer_master_v1",
+  "original_filename": "customer_master_v1.xlsx",
+  "kind": "ORIGINAL",
+  "row_count": 1000,
+  "column_count": 11,
+  "columns": [
+    {
+      "name": "customer_ref",
+      "pii_type": "OTHER",
+      "sensitivity": "LOW",
+      "sensitivity_score": 10,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "full_name",
+      "pii_type": "NAME",
+      "sensitivity": "MEDIUM",
+      "sensitivity_score": 55,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "email",
+      "pii_type": "EMAIL",
+      "sensitivity": "HIGH",
+      "sensitivity_score": 80,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "phone",
+      "pii_type": "PHONE",
+      "sensitivity": "HIGH",
+      "sensitivity_score": 78,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "aadhaar",
+      "pii_type": "AADHAAR",
+      "sensitivity": "CRITICAL",
+      "sensitivity_score": 100,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 987,
+      "invalid_count": 13
+    },
+    {
+      "name": "pan",
+      "pii_type": "PAN",
+      "sensitivity": "CRITICAL",
+      "sensitivity_score": 95,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "gstin",
+      "pii_type": "GSTIN",
+      "sensitivity": "HIGH",
+      "sensitivity_score": 85,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "upi_id",
+      "pii_type": "UPI_ID",
+      "sensitivity": "HIGH",
+      "sensitivity_score": 82,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "city",
+      "pii_type": "LOCATION",
+      "sensitivity": "LOW",
+      "sensitivity_score": 35,
+      "non_empty": 1000,
+      "unique_count": 27,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "account_no",
+      "pii_type": "FINANCIAL_ACCOUNT",
+      "sensitivity": "CRITICAL",
+      "sensitivity_score": 92,
+      "non_empty": 1000,
+      "unique_count": 1000,
+      "valid_count": 1000,
+      "invalid_count": 0
+    },
+    {
+      "name": "monthly_income",
+      "pii_type": "FINANCIAL_AMOUNT",
+      "sensitivity": "HIGH",
+      "sensitivity_score": 75,
+      "non_empty": 1000,
+      "unique_count": 403,
+      "valid_count": 1000,
+      "invalid_count": 0
+    }
+  ],
+  "sensitivity_score": 100,
+  "sensitivity_label": "CRITICAL",
+  "exact_sha256": "0af05606a17597149149b9317f08e7ea2d3ed4b329bca9f5801f782f01b42464",
+  "dna": {
+    "version": "dna-v1",
+    "cell_fingerprints": 11000,
+    "unique_cells": 9430,
+    "canary_rows": 5
+  },
+  "watermark": "SALUS-WM-0727",
+  "is_baseline": false,
+  "created_at": "2026-11-13T06:41:30Z"
+}

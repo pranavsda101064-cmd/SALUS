@@ -1,0 +1,96 @@
+{
+  "formula": "R = 0.35*S + 0.30*D + 0.20*B + 0.15*E",
+  "weights": {
+    "S": 0.35,
+    "D": 0.3,
+    "B": 0.2,
+    "E": 0.15
+  },
+  "bands": [
+    {
+      "band": "CRITICAL",
+      "min": 75
+    },
+    {
+      "band": "HIGH",
+      "min": 55
+    },
+    {
+      "band": "MEDIUM",
+      "min": 30
+    },
+    {
+      "band": "LOW",
+      "min": 0
+    }
+  ],
+  "destination_table": [
+    {
+      "destination": "internal_drive",
+      "score": 10,
+      "label": "INTERNAL"
+    },
+    {
+      "destination": "internal_share",
+      "score": 15,
+      "label": "INTERNAL"
+    },
+    {
+      "destination": "local_device",
+      "score": 25,
+      "label": "LOCAL_DEVICE"
+    },
+    {
+      "destination": "known_partner",
+      "score": 35,
+      "label": "KNOWN_PARTNER"
+    },
+    {
+      "destination": "personal_email",
+      "score": 65,
+      "label": "PERSONAL_EMAIL"
+    },
+    {
+      "destination": "external_domain.com",
+      "score": 85,
+      "label": "UNKNOWN_EXTERNAL"
+    },
+    {
+      "destination": "public_url",
+      "score": 95,
+      "label": "PUBLIC"
+    }
+  ],
+  "sequence_table": [
+    {
+      "reason": "Base for any investigated match",
+      "points": 10
+    },
+    {
+      "reason": "AFTER_HOURS",
+      "points": 25
+    },
+    {
+      "reason": "DOWNLOAD_THEN_EXTERNAL_SHARE",
+      "points": 25
+    },
+    {
+      "reason": "CANARY_PRESENT",
+      "points": 20
+    },
+    {
+      "reason": "HIGH_MATCH_CONFIDENCE",
+      "points": 15
+    },
+    {
+      "reason": "BULK_VOLUME",
+      "points": 15
+    },
+    {
+      "reason": "REPEATED_ACCESS",
+      "points": 10
+    }
+  ],
+  "policy_version": "risk-v1-demo",
+  "disclaimer": "These are demo policy values, not validated standards. The engine is deterministic; the LLM only explains."
+}

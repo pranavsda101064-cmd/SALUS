@@ -1,0 +1,91 @@
+{
+  "incident_id": "INC-4001",
+  "nodes": [
+    {
+      "id": "SL-9281",
+      "type": "ASSET",
+      "label": "customer_master_v1",
+      "meta": {
+        "rows": 1000,
+        "sensitivity": "CRITICAL"
+      }
+    },
+    {
+      "id": "SL-9310",
+      "type": "ASSET",
+      "label": "clients_export_final",
+      "meta": {
+        "rows": 300,
+        "suspect": true
+      }
+    },
+    {
+      "id": "USER-104",
+      "type": "USER",
+      "label": "Priya Sharma",
+      "meta": {}
+    },
+    {
+      "id": "external_domain.com",
+      "type": "DESTINATION",
+      "label": "external_domain.com",
+      "meta": {}
+    },
+    {
+      "id": "USER-100",
+      "type": "USER",
+      "label": "Meera Nair",
+      "meta": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "LE-01",
+      "from": "USER-104",
+      "to": "SL-9281",
+      "relation": "FILE_DOWNLOADED",
+      "label": "local_device",
+      "simulated": true,
+      "ref": {
+        "type": "EVENT",
+        "id": "EV-10021"
+      }
+    },
+    {
+      "id": "LE-02",
+      "from": "USER-104",
+      "to": "external_domain.com",
+      "relation": "SHARED_TO",
+      "label": "external share",
+      "simulated": true,
+      "ref": {
+        "type": "EVENT",
+        "id": "EV-10027"
+      }
+    },
+    {
+      "id": "LE-03",
+      "from": "USER-100",
+      "to": "SL-9310",
+      "relation": "UPLOADED_FOR_INVESTIGATION",
+      "label": "intake",
+      "simulated": false,
+      "ref": {
+        "type": "EVENT",
+        "id": "EV-11281"
+      }
+    },
+    {
+      "id": "LE-04",
+      "from": "SL-9310",
+      "to": "SL-9281",
+      "relation": "DERIVED_FROM",
+      "label": "30 percent of rows, 8 matched columns",
+      "simulated": false,
+      "ref": {
+        "type": "MATCH",
+        "id": "MT-2001"
+      }
+    }
+  ]
+}
