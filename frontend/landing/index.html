@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SALUS | Know what left your company</title>
+  <meta name="description" content="SALUS matches partial copies of sensitive spreadsheets, flags India PII, and shows the event trail behind a leak. Synthetic demo for small businesses.">
+  <meta name="theme-color" content="#000000">
+  <meta name="salus-api-base" content="__SALUS_API_BASE__">
+  <link rel="canonical" href="https://salus-web.onrender.com/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/Manrope-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="simulation.css">
+  <script>document.documentElement.classList.add("js");</script>
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://salus-web.onrender.com/">
+  <meta property="og:title" content="SALUS | Know what left your company">
+  <meta property="og:description" content="Find partial copies, check Indian IDs, follow the event trail, and leave with next steps. Synthetic demo for small businesses.">
+  <meta property="og:image" content="https://salus-web.onrender.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SALUS, your data does not disappear, it leaves a trail.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SALUS | Know what left your company">
+  <meta name="twitter:description" content="Find partial copies, check Indian IDs, follow the event trail, and leave with next steps. Synthetic demo for small businesses.">
+  <meta name="twitter:image" content="https://salus-web.onrender.com/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is SALUS a DLP product?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. DLP blocks known patterns at a gateway or endpoint. SALUS investigates a file that is already outside and links it to the source, the actor, and the stored events."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does SALUS store?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fingerprints, labels, counts, and metadata. Raw uploads are parsed in memory and are not kept as file contents."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it see USB copies, screenshots, or retyped data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It can only see events from connected or simulated sources. Those limits are shown in every incident."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you avoid false positives?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rare value weighting, a minimum of one rare matched cell, coverage checks, and an explicit rule that a match is a lead, not proof. The report shows the evidence."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work with Google Workspace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not in this build. The event schema and lineage are ready for a Drive Activity and Admin Reports connector in the next phase."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if Gemini is unavailable?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The deterministic composer produces the same report structure from the evidence. The UI shows which provider wrote the report."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the demo using real data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Every record is synthetic, including the canary rows. Simulated events are labelled."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does it cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The demo is free. Pilot pricing is not set. The goal is a tool small businesses can afford without a security team."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-arrow" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 256 256"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></symbol>
+    <symbol id="i-fingerprint" viewBox="0 0 256 256"><path d="M72,128a134.63,134.63,0,0,1-14.16,60.47,8,8,0,1,1-14.32-7.12A118.8,118.8,0,0,0,56,128,71.73,71.73,0,0,1,83,71.8,8,8,0,1,1,93,84.29,55.76,55.76,0,0,0,72,128Zm56-8a8,8,0,0,0-8,8,184.12,184.12,0,0,1-23,89.1,8,8,0,0,0,14,7.76A200.19,200.19,0,0,0,136,128,8,8,0,0,0,128,120Zm0-32a40,40,0,0,0-40,40,8,8,0,0,0,16,0,24,24,0,0,1,48,0,214.09,214.09,0,0,1-20.51,92A8,8,0,1,0,146,226.83,230,230,0,0,0,168,128,40,40,0,0,0,128,88Zm0-64A104.11,104.11,0,0,0,24,128a87.76,87.76,0,0,1-5,29.33,8,8,0,0,0,15.09,5.33A103.9,103.9,0,0,0,40,128a88,88,0,0,1,176,0,282.24,282.24,0,0,1-5.29,54.45,8,8,0,0,0,6.3,9.4,8.22,8.22,0,0,0,1.55.15,8,8,0,0,0,7.84-6.45A298.37,298.37,0,0,0,232,128,104.12,104.12,0,0,0,128,24ZM94.4,152.17A8,8,0,0,0,85,158.42a151,151,0,0,1-17.21,45.44,8,8,0,0,0,13.86,8,166.67,166.67,0,0,0,19-50.25A8,8,0,0,0,94.4,152.17ZM128,56a72.85,72.85,0,0,0-9,.56,8,8,0,0,0,2,15.87A56.08,56.08,0,0,1,184,128a252.12,252.12,0,0,1-1.92,31A8,8,0,0,0,189,168a8.39,8.39,0,0,0,1,.06,8,8,0,0,0,7.92-7,266.48,266.48,0,0,0,2-33A72.08,72.08,0,0,0,128,56Zm57.93,128.25a8,8,0,0,0-9.75,5.75c-1.46,5.69-3.15,11.4-5,17a8,8,0,0,0,5,10.13,7.88,7.88,0,0,0,2.55.42,8,8,0,0,0,7.58-5.46c2-5.92,3.79-12,5.35-18.05A8,8,0,0,0,185.94,184.26Z"/></symbol>
+    <symbol id="i-file-search" viewBox="0 0 256 256"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-45.54-48.85a36.05,36.05,0,1,0-11.31,11.31l11.19,11.2a8,8,0,0,0,11.32-11.32ZM104,148a20,20,0,1,1,20,20A20,20,0,0,1,104,148Z"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 256 256"><path d="M160,112h48a16,16,0,0,0,16-16V48a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16V64H128a24,24,0,0,0-24,24v32H72v-8A16,16,0,0,0,56,96H24A16,16,0,0,0,8,112v32a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16v-8h32v32a24,24,0,0,0,24,24h16v16a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V160a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16v16H128a8,8,0,0,1-8-8V88a8,8,0,0,1,8-8h16V96A16,16,0,0,0,160,112ZM56,144H24V112H56v32Zm104,16h48v48H160Zm0-112h48V96H160Z"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 256 256"><path d="M207.06,72.67A111.24,111.24,0,0,0,128,40h-.4C66.07,40.21,16,91,16,153.13V176a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V152A111.25,111.25,0,0,0,207.06,72.67ZM224,176H119.71l54.76-75.3a8,8,0,0,0-12.94-9.42L99.92,176H32V153.13c0-3.08.15-6.12.43-9.13H56a8,8,0,0,0,0-16H35.27c10.32-38.86,44-68.24,84.73-71.66V80a8,8,0,0,0,16,0V56.33A96.14,96.14,0,0,1,221,128H200a8,8,0,0,0,0,16h23.67c.21,2.65.33,5.31.33,8Z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 256 256"><path d="M128,112a28,28,0,0,0-8,54.83V184a8,8,0,0,0,16,0V166.83A28,28,0,0,0,128,112Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,128,152Zm80-72H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></symbol>
+    <symbol id="i-house" viewBox="0 0 256 256"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40Z"/></symbol>
+  </svg>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="SALUS home">
+        <svg class="brand-icon" aria-hidden="true"><use href="#i-shield"></use></svg>
+        <span class="brand-word">SALUS</span>
+      </a>
+      <div class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="button button-small nav-cta" href="/app/">
+        Open live demo
+        <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-nav" aria-label="Mobile">
+      <a href="#how-it-works" style="--i:0">How it works</a>
+      <a href="#evidence" style="--i:1">Evidence</a>
+      <a href="#faq" style="--i:2">FAQ</a>
+      <a class="button" href="/app/" style="--i:3">
+        Open the live Ghost Copy
+        <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </nav>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Data investigation for small business</p>
+          <h1>Know what left your company. Then know what to do next.</h1>
+          <p class="lead">SALUS fingerprints sensitive spreadsheets, matches partial copies, and shows the event trail behind a leak. Built for Indian teams of 10 to 100 with no security staff.</p>
+          <div class="hero-actions">
+            <a class="button" href="/app/">
+              Open the live Ghost Copy
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+            </a>
+          </div>
+          <p class="hero-proof">Synthetic demo: 300 of 1,000 customer records recovered from a copy with 3 deleted columns.</p>
+        </div>
+
+        <div class="hero-visual reveal" style="--delay:120ms">
+          <div class="product-panel" role="group" aria-label="Example incident from the SALUS demo">
+            <div class="panel-top">
+              <span class="caption muted">INC-4001</span>
+              <span class="chip">CRITICAL</span>
+            </div>
+            <p class="panel-title">Ghost copy of customer_master_v1</p>
+            <div class="panel-metrics">
+              <div>
+                <span class="metric-value">0.999</span>
+                <span class="metric-label">Match score</span>
+              </div>
+              <div>
+                <span class="metric-value">300</span>
+                <span class="metric-label">of 1,000 rows</span>
+              </div>
+              <div>
+                <span class="metric-value">93</span>
+                <span class="metric-label">Risk score</span>
+              </div>
+            </div>
+            <div class="track" aria-hidden="true"><span class="track-fill"></span></div>
+            <div class="panel-row">
+              <span class="ref">MATCH</span>
+              <span class="panel-row-text">MT-2001, 8 columns corroborated</span>
+            </div>
+            <div class="canary">
+              <svg class="canary-icon" aria-hidden="true"><use href="#i-fingerprint"></use></svg>
+              <div class="canary-text">
+                <strong>Canary CN-007 found</strong>
+                <span>Issued to vendor.acme@external.test</span>
+              </div>
+              <span class="chip chip-small">SIMULATED</span>
+            </div>
+            <div class="panel-list" aria-label="Lineage references">
+              <div class="panel-line">
+                <span class="dot"></span>
+                <span>USER-104 downloaded SL-9281</span>
+                <span class="ref">EV-10021</span>
+              </div>
+              <div class="panel-line">
+                <span class="dot"></span>
+                <span>External share to external_domain.com</span>
+                <span class="ref">EV-10027</span>
+              </div>
+              <div class="panel-line">
+                <span class="dot"></span>
+                <span>USER-100 uploaded SL-9310 for intake</span>
+                <span class="ref">EV-11281</span>
+              </div>
+              <div class="panel-line">
+                <span class="dot dot-match"></span>
+                <span>SL-9310 derived from SL-9281</span>
+                <span class="ref ref-match">MT-2001</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tagline" aria-label="SALUS tagline">
+      <div class="container">
+        <p class="tagline-text" id="tagline">
+          <span class="word">Your</span>
+          <span class="word">data</span>
+          <span class="word">does</span>
+          <span class="word">not</span>
+          <span class="word">disappear.</span>
+          <span class="word">It</span>
+          <span class="word">leaves</span>
+          <span class="word">a</span>
+          <span class="word">trail.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section problem" id="problem">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">The problem</p>
+          <h2>A leaked spreadsheet does not keep its original name.</h2>
+        </div>
+        <div class="reveal" style="--delay:80ms">
+          <p class="body-large">By the time a small business hears about a leak, the file has a new name, fewer columns, and no history. The customer list is already outside, and the owner has no way to answer three simple questions.</p>
+          <ul class="question-list">
+            <li>What left?</li>
+            <li>Who moved it?</li>
+            <li>What do I do now?</li>
+          </ul>
+          <p class="body-muted">Enterprise data tools assume a security team. A team of 10 to 100 people rarely has one.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section benefits" id="benefits">
+      <div class="container benefits-grid">
+        <div class="benefits-intro reveal">
+          <p class="eyebrow">What SALUS does</p>
+          <h2>Investigation first, not another blocklist.</h2>
+          <p class="body-muted">When a sensitive file is already outside, blocking the next download does not answer the question. SALUS starts from the copy and works back to the source.</p>
+        </div>
+        <ol class="benefit-list">
+          <li class="reveal">
+            <span class="number">01</span>
+            <div>
+              <h3>Find partial copies, not just identical files.</h3>
+              <p>Cell level Data DNA survives a rename, an XLSX to CSV conversion, deleted columns, and dropped rows.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="number">02</span>
+            <div>
+              <h3>Check Indian IDs properly.</h3>
+              <p>Aadhaar with the Verhoeff checksum, PAN, GSTIN with its own check digit, UPI IDs, phone numbers, and financial fields.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="number">03</span>
+            <div>
+              <h3>Follow a trail that points to real events.</h3>
+              <p>Every lineage edge references a stored event or a stored match. Similarity never invents a download.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="number">04</span>
+            <div>
+              <h3>Get a risk score you can defend.</h3>
+              <p>Four visible factors, a deterministic formula, and a behaviour model that names its top contributors.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="number">05</span>
+            <div>
+              <h3>Leave with next steps.</h3>
+              <p>A grounded report that says what left, who moved it, and what to do now. The fallback report always works.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section how" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2>From a suspect file to a decision.</h2>
+          <p class="body-large">Walk the Ghost Copy end to end: the download, the altered file, the identification, the match, the event trail, the behaviour model, and the report. The console reads the live demo evidence when the API is awake.</p>
+        </div>
+
+        <div class="sim reveal" data-sim>
+          <div class="sim-top">
+            <div class="sim-status" aria-live="polite">
+              <span class="sim-status-dot" data-sim-status-dot></span>
+              <span data-sim-status>Loading demo evidence</span>
+            </div>
+            <div class="sim-top-actions">
+              <button class="sim-button sim-button-ghost" type="button" data-sim-restart>Restart</button>
+              <button class="sim-button sim-button-primary" type="button" data-sim-play aria-pressed="false">Play investigation</button>
+            </div>
+          </div>
+
+          <div class="sim-layout">
+            <ol class="sim-chapters" data-sim-chapters aria-label="Simulation chapters">
+              <li><button type="button" data-sim-chapter="0" aria-current="step"><span>01</span><strong>The dataset</strong><small>1,000 rows, 11 columns</small></button></li>
+              <li><button type="button" data-sim-chapter="1"><span>02</span><strong>The movement</strong><small>Download and external share</small></button></li>
+              <li><button type="button" data-sim-chapter="2"><span>03</span><strong>The ghost copy</strong><small>Rename, strip, drop</small></button></li>
+              <li><button type="button" data-sim-chapter="3"><span>04</span><strong>Intake and identification</strong><small>Hash, scan, label</small></button></li>
+              <li><button type="button" data-sim-chapter="4"><span>05</span><strong>Data DNA</strong><small>Cell hashes and rarity</small></button></li>
+              <li><button type="button" data-sim-chapter="5"><span>06</span><strong>Canary and tracking</strong><small>Events and lineage</small></button></li>
+              <li><button type="button" data-sim-chapter="6"><span>07</span><strong>Neural behaviour</strong><small>Autoencoder scoring</small></button></li>
+              <li><button type="button" data-sim-chapter="7"><span>08</span><strong>Risk and report</strong><small>Score and next actions</small></button></li>
+            </ol>
+
+            <div class="sim-stage">
+              <div class="sim-visual" data-sim-visual aria-hidden="true"></div>
+              <div class="sim-readout">
+                <div class="sim-readout-top">
+                  <span class="sim-step" data-sim-step>01 / 08</span>
+                  <span class="sim-live" data-sim-live>Loading</span>
+                </div>
+                <h3 data-sim-title>The dataset</h3>
+                <p data-sim-body>Reading the synthetic customer master and its canary rows.</p>
+                <dl class="sim-facts" data-sim-facts></dl>
+                <div class="sim-agents" data-sim-agents></div>
+                <p class="sim-hint" data-sim-hint></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-controls">
+            <button class="sim-button sim-button-ghost" type="button" data-sim-prev aria-label="Previous chapter">&larr; Prev</button>
+            <div class="sim-progress" data-sim-progress role="progressbar" aria-label="Chapter progress" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1">
+              <span data-sim-progress-fill></span>
+            </div>
+            <button class="sim-button sim-button-ghost" type="button" data-sim-next aria-label="Next chapter">Next &rarr;</button>
+            <label class="sim-speed">Speed
+              <select data-sim-speed>
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="sim-footnote" data-sim-footnote>Synthetic data only. Movement events are labelled SIMULATED. A match is a lead, not proof of intent.</p>
+          <div class="visually-hidden" data-sim-announcer aria-live="polite"></div>
+        </div>
+
+        <p class="demo-note reveal">The live demo runs on a 1,000 row synthetic customer file and a 300 row ghost copy.</p>
+      </div>
+    </section>
+
+    <section class="section evidence" id="evidence">
+      <div class="container evidence-grid">
+        <div class="reveal">
+          <p class="eyebrow">Evidence, not guesses</p>
+          <h2>The ghost copy is built to be hard.</h2>
+          <p class="body-large">The demo copy is renamed, converted to CSV, stripped of its watermark, reduced to 300 rows, and missing three columns. SALUS still recovers 30 percent of the source records and finds the canary.</p>
+          <ul class="check-list">
+            <li><svg class="icon check-icon" aria-hidden="true"><use href="#i-check"></use></svg>Cell hashes ignore column names, so deleted columns do not break the match.</li>
+            <li><svg class="icon check-icon" aria-hidden="true"><use href="#i-check"></use></svg>Rare values carry more weight than common values.</li>
+            <li><svg class="icon check-icon" aria-hidden="true"><use href="#i-check"></use></svg>The canary shows which issuance the copy came from.</li>
+            <li><svg class="icon check-icon" aria-hidden="true"><use href="#i-check"></use></svg>A match is a lead, not proof of intent.</li>
+          </ul>
+        </div>
+        <div class="evidence-side reveal" style="--delay:80ms">
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="stat-value">0.999</span>
+              <span class="stat-label">Match score</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">300</span>
+              <span class="stat-label">of 1,000 records</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">93</span>
+              <span class="stat-label">Risk score</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">3</span>
+              <span class="stat-label">Canary rows</span>
+            </div>
+          </div>
+          <div class="limits" id="limits">
+            <div class="limits-head">
+              <svg class="icon warning-icon" aria-hidden="true"><use href="#i-warning"></use></svg>
+              <h3>What SALUS cannot see</h3>
+            </div>
+            <ul>
+              <li>USB copies, screenshots, and retyped data.</li>
+              <li>Activity outside connected or simulated sources.</li>
+              <li>A canary or watermark that was removed.</li>
+              <li>Intent. A match is a lead, not proof.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq">
+      <div class="container faq-grid">
+        <div class="faq-intro reveal">
+          <p class="eyebrow">Questions</p>
+          <h2>What owners ask before they try it.</h2>
+          <p class="body-muted">The demo is open. No signup, no card, and no production data.</p>
+        </div>
+        <div class="faq-list">
+          <details class="reveal">
+            <summary>Is SALUS a DLP product?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>No. DLP blocks known patterns at a gateway or endpoint. SALUS investigates a file that is already outside and links it to the source, the actor, and the stored events.</p>
+          </details>
+          <details class="reveal">
+            <summary>What does SALUS store?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>Fingerprints, labels, counts, and metadata. Raw uploads are parsed in memory and are not kept as file contents.</p>
+          </details>
+          <details class="reveal">
+            <summary>Can it see USB copies, screenshots, or retyped data?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>No. It can only see events from connected or simulated sources. Those limits are shown in every incident.</p>
+          </details>
+          <details class="reveal">
+            <summary>How do you avoid false positives?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>Rare value weighting, a minimum of one rare matched cell, coverage checks, and an explicit rule that a match is a lead, not proof. The report shows the evidence.</p>
+          </details>
+          <details class="reveal">
+            <summary>Does it work with Google Workspace?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>Not in this build. The event schema and lineage are ready for a Drive Activity and Admin Reports connector in the next phase.</p>
+          </details>
+          <details class="reveal">
+            <summary>What happens if Gemini is unavailable?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>The deterministic composer produces the same report structure from the evidence. The UI shows which provider wrote the report.</p>
+          </details>
+          <details class="reveal">
+            <summary>Is the demo using real data?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>No. Every record is synthetic, including the canary rows. Simulated events are labelled.</p>
+          </details>
+          <details class="reveal">
+            <summary>What does it cost?<svg class="icon faq-icon" aria-hidden="true"><use href="#i-plus"></use></svg></summary>
+            <p>The demo is free. Pilot pricing is not set. The goal is a tool small businesses can afford without a security team.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section final" id="demo">
+      <div class="container final-inner reveal">
+        <p class="eyebrow">Try the demo</p>
+        <h2>Find the file. Keep the proof.</h2>
+        <p class="body-large">Open the live Ghost Copy and walk from a suspect CSV to a stored match, a canary, a risk score, and a report in one session.</p>
+        <a class="button button-large" href="/app/">
+          Open the live Ghost Copy
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <p class="caption muted">Synthetic data. No signup. No card.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="SALUS home">
+          <svg class="brand-icon" aria-hidden="true"><use href="#i-shield"></use></svg>
+          <span class="brand-word">SALUS</span>
+        </a>
+        <p class="footer-tagline">Your data does not disappear. It leaves a trail.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#how-it-works">How it works</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#faq">FAQ</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </nav>
+      <div class="footer-note">
+        <p>SALUS is a hackathon prototype. All demo data is synthetic. No production data is processed.</p>
+        <p class="caption muted">Copyright 2026 SALUS. Built in India.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+  <script src="simulation.js" defer></script>
+</body>
+</html>

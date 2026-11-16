@@ -37,7 +37,9 @@ def main():
     assert login.status_code == 200, login.content
     client.credentials(HTTP_AUTHORIZATION=f"Token {login.json()['token']}")
 
-    save("login", login.json())
+    login_payload = login.json()
+    login_payload["token"] = "demo-token-redacted"
+    save("login", login_payload)
     save("health", client.get(f"{BASE}/health").json())
     save("overview", client.get(f"{BASE}/overview").json())
     save("risk_policy", client.get(f"{BASE}/risk/policy").json())
@@ -59,7 +61,22 @@ def main():
     save("risk", bundle["risk"])
     save("report", bundle["report"])
     save("lineage", bundle["lineage"])
+    save("investigation", bundle["investigation"])
+    save("audit_trail", bundle["audit_trail"])
     save("incident_list", {"results": incidents})
+
+    investigations = client.get(f"{BASE}/investigations").json()
+    save("investigation_list", investigations)
+    audit = client.get(f"{BASE}/audit?entity_id={incident_id}").json()
+    save("audit", audit)
+
+    storyboard = client.get(f"{BASE}/simulation/ghost-copy").json()
+    save("simulation_storyboard", storyboard)
+    landing_snapshot = REPO_ROOT / "frontend" / "landing" / "simulation-data.json"
+    landing_snapshot.write_text(
+        json.dumps(storyboard, indent=2, ensure_ascii=True) + "\n", encoding="utf-8"
+    )
+    print("wrote", landing_snapshot)
     print("fixtures exported for", incident_id)
 
 

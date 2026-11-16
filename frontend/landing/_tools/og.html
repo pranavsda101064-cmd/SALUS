@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <style>
+    @font-face {
+      font-family: "Manrope";
+      src: url("../assets/fonts/Manrope-VariableFont_wght.ttf") format("truetype");
+      font-weight: 200 800;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1200px;
+      height: 630px;
+      margin: 0;
+      overflow: hidden;
+      background: #000000;
+      color: #ffffff;
+      font-family: "Manrope", sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+    }
+    .brand svg {
+      width: 44px;
+      height: 44px;
+      fill: #35d6a4;
+    }
+    .rule {
+      width: 96px;
+      height: 4px;
+      margin-bottom: 32px;
+      background: #35d6a4;
+    }
+    h1 {
+      max-width: 980px;
+      margin: 0;
+      font-size: 60px;
+      line-height: 60px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #9b9b9b;
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 256 256" aria-hidden="true"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></svg>
+    SALUS
+  </div>
+  <div>
+    <div class="rule"></div>
+    <h1>Your data does not disappear.<br>It leaves a trail.</h1>
+  </div>
+  <div class="footer">
+    <span>Data investigation for small business</span>
+    <span>Find the file. Keep the proof.</span>
+  </div>
+</body>
+</html>

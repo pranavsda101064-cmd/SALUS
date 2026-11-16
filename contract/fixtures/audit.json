@@ -1,0 +1,48 @@
+{
+  "results": [
+    {
+      "audit_id": 9,
+      "action": "REPORT_REGENERATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "report_id": "RP-5001",
+        "provider": "SALUS_TEMPLATE",
+        "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 8,
+      "action": "INCIDENT_STATUS_CHANGED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "from": "OPEN",
+        "to": "TRIAGED"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 6,
+      "action": "INVESTIGATION_CREATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "investigation_id": "INV-6001",
+        "match_id": "MT-2001",
+        "risk_id": "RS-3001",
+        "rows": 300,
+        "columns": 8,
+        "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    }
+  ],
+  "count": 3,
+  "limit": 100,
+  "offset": 0
+}

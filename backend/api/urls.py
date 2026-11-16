@@ -1,6 +1,7 @@
 from django.urls import path
 
 from api import views
+from api.simulation import SimulationStoryboardView
 
 urlpatterns = [
     path("health", views.HealthView.as_view(), name="health"),
@@ -36,6 +37,11 @@ urlpatterns = [
     ),
     path("events", views.EventListView.as_view(), name="events"),
     path("simulator/run", views.SimulatorRunView.as_view(), name="simulator-run"),
+    path(
+        "simulation/ghost-copy",
+        SimulationStoryboardView.as_view(),
+        name="simulation-ghost-copy",
+    ),
     path("dev/seed", views.DevSeedView.as_view(), name="dev-seed"),
     path("risk/policy", views.RiskPolicyView.as_view(), name="risk-policy"),
 ]

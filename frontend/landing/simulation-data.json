@@ -1,0 +1,1310 @@
+{
+  "incident": {
+    "incident_id": "INC-4001",
+    "organization_id": "ORG-01",
+    "title": "Ghost copy of customer_master_v1 found outside the organization",
+    "status": "TRIAGED",
+    "severity": "CRITICAL",
+    "suspect_asset_id": "SL-9310",
+    "source_asset_id": "SL-9281",
+    "match_id": "MT-2001",
+    "investigation_id": "INV-6001",
+    "created_at": "2026-11-16T12:23:23Z",
+    "correlation": {
+      "basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
+      "found_activity": true,
+      "share_only": false,
+      "download_event_id": "EV-10021",
+      "share_event_ids": [
+        "EV-10027"
+      ],
+      "actor_id": "USER-104"
+    }
+  },
+  "investigation": {
+    "investigation_id": "INV-6001",
+    "organization_id": "ORG-01",
+    "status": "OPEN",
+    "created_by": "USER-100",
+    "source_asset_id": "SL-9281",
+    "suspect_asset_id": "SL-9310",
+    "match_id": "MT-2001",
+    "incident_id": "INC-4001",
+    "input": {
+      "filename": "clients_export_final.csv",
+      "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d",
+      "rows": 300,
+      "columns": 8
+    },
+    "created_at": "2026-11-16T12:23:23Z"
+  },
+  "source_asset": {
+    "asset_id": "SL-9281",
+    "organization_id": "ORG-01",
+    "name": "customer_master_v1",
+    "original_filename": "customer_master_v1.xlsx",
+    "kind": "ORIGINAL",
+    "row_count": 1000,
+    "column_count": 11,
+    "columns": [
+      {
+        "name": "customer_ref",
+        "pii_type": "OTHER",
+        "sensitivity": "LOW",
+        "sensitivity_score": 10,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "full_name",
+        "pii_type": "NAME",
+        "sensitivity": "MEDIUM",
+        "sensitivity_score": 55,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "email",
+        "pii_type": "EMAIL",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 80,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "phone",
+        "pii_type": "PHONE",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 78,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "aadhaar",
+        "pii_type": "AADHAAR",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 100,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 987,
+        "invalid_count": 13
+      },
+      {
+        "name": "pan",
+        "pii_type": "PAN",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 95,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "gstin",
+        "pii_type": "GSTIN",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 85,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "upi_id",
+        "pii_type": "UPI_ID",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 82,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "city",
+        "pii_type": "LOCATION",
+        "sensitivity": "LOW",
+        "sensitivity_score": 35,
+        "non_empty": 1000,
+        "unique_count": 27,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "account_no",
+        "pii_type": "FINANCIAL_ACCOUNT",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 92,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "monthly_income",
+        "pii_type": "FINANCIAL_AMOUNT",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 75,
+        "non_empty": 1000,
+        "unique_count": 401,
+        "valid_count": 1000,
+        "invalid_count": 0
+      }
+    ],
+    "sensitivity_score": 100,
+    "sensitivity_label": "CRITICAL",
+    "exact_sha256": "42443f13da36f969ca6c38e5cdaf8feb27275c8096c89ae91b7a15b60003df47",
+    "dna": {
+      "version": "dna-v1",
+      "cell_fingerprints": 11000,
+      "unique_cells": 9428,
+      "canary_rows": 5
+    },
+    "watermark": "SALUS-WM-0727",
+    "is_baseline": false,
+    "created_at": "2026-11-16T12:22:58Z"
+  },
+  "suspect_asset": {
+    "asset_id": "SL-9310",
+    "organization_id": "ORG-01",
+    "name": "clients_export_final",
+    "original_filename": "clients_export_final.csv",
+    "kind": "SUSPECT",
+    "row_count": 300,
+    "column_count": 8,
+    "columns": [
+      {
+        "name": "full_name",
+        "pii_type": "NAME",
+        "sensitivity": "MEDIUM",
+        "sensitivity_score": 55,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "email",
+        "pii_type": "EMAIL",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 80,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "phone",
+        "pii_type": "PHONE",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 78,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "aadhaar",
+        "pii_type": "AADHAAR",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 100,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 295,
+        "invalid_count": 5
+      },
+      {
+        "name": "pan",
+        "pii_type": "PAN",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 95,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "gstin",
+        "pii_type": "GSTIN",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 85,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "upi_id",
+        "pii_type": "UPI_ID",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 82,
+        "non_empty": 300,
+        "unique_count": 300,
+        "valid_count": 300,
+        "invalid_count": 0
+      },
+      {
+        "name": "monthly_income",
+        "pii_type": "FINANCIAL_AMOUNT",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 75,
+        "non_empty": 300,
+        "unique_count": 219,
+        "valid_count": 300,
+        "invalid_count": 0
+      }
+    ],
+    "sensitivity_score": 100,
+    "sensitivity_label": "CRITICAL",
+    "exact_sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d",
+    "dna": {
+      "version": "dna-v1",
+      "cell_fingerprints": 2400,
+      "unique_cells": 2319,
+      "canary_rows": 0
+    },
+    "watermark": "",
+    "is_baseline": false,
+    "created_at": "2026-11-16T12:23:23Z"
+  },
+  "match": {
+    "match_id": "MT-2001",
+    "query_asset_id": "SL-9310",
+    "source_asset_id": "SL-9281",
+    "method": "CELL_HASH_WEIGHTED_V1",
+    "match_score": 0.999,
+    "containment": 1.0,
+    "recall_vs_original": 0.3,
+    "matched_rows": 300,
+    "matched_cells": 2400,
+    "matched_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "aadhaar",
+      "pan",
+      "gstin",
+      "upi_id",
+      "monthly_income"
+    ],
+    "dropped_columns": [
+      "account_no",
+      "city",
+      "customer_ref"
+    ],
+    "canary": {
+      "found": true,
+      "canary_id": "CN-007",
+      "token": "CN-007",
+      "recipient": "vendor.acme@external.test",
+      "issued_at": "2026-11-01T09:00:00Z",
+      "matched_values": 18,
+      "matched_rows": 3
+    },
+    "evidence": {
+      "shared_unique_values": 2319,
+      "rare_shared_values": 2319,
+      "source_unique_values": 9428,
+      "query_unique_values": 2319,
+      "cell_recall": 0.2444,
+      "row_recall": 0.3,
+      "rare_matched_rows": 300,
+      "source_row_count": 1000,
+      "query_row_count": 300,
+      "column_report": [
+        {
+          "column": "full_name",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "email",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "phone",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "aadhaar",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "pan",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "gstin",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "upi_id",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        },
+        {
+          "column": "monthly_income",
+          "matched": 300,
+          "total": 300,
+          "ratio": 1.0
+        }
+      ],
+      "exact_copy": false,
+      "watermark_on_source": "SALUS-WM-0727",
+      "watermark_on_query": "",
+      "watermark_stripped": true,
+      "canary": {
+        "found": true,
+        "canary_id": "CN-007",
+        "token": "CN-007",
+        "recipient": "vendor.acme@external.test",
+        "issued_at": "2026-11-01T09:00:00Z",
+        "matched_values": 18,
+        "matched_rows": 3
+      }
+    },
+    "created_at": "2026-11-16T12:23:23Z"
+  },
+  "risk": {
+    "risk_id": "RS-3001",
+    "incident_id": "INC-4001",
+    "total": 93,
+    "band": "CRITICAL",
+    "weights": {
+      "S": 0.35,
+      "D": 0.3,
+      "B": 0.2,
+      "E": 0.15
+    },
+    "factors": {
+      "S": {
+        "score": 92,
+        "basis": "8 matched columns, 7 of them identity, contact or financial: AADHAAR, EMAIL, FINANCIAL_AMOUNT, GSTIN, PAN, PHONE, UPI_ID",
+        "matched_columns": [
+          "aadhaar",
+          "email",
+          "full_name",
+          "gstin",
+          "monthly_income",
+          "pan",
+          "phone",
+          "upi_id"
+        ]
+      },
+      "D": {
+        "score": 85,
+        "destination": "external_domain.com",
+        "trust": "UNKNOWN_EXTERNAL",
+        "event_id": "EV-10027",
+        "basis": "Recorded EXTERNAL_SHARE to external_domain.com."
+      },
+      "B": {
+        "score": 100,
+        "percentile": 100,
+        "top_features": [
+          {
+            "feature": "log_volume",
+            "contribution": 0.39,
+            "value": 6.909
+          },
+          {
+            "feature": "hour_cos",
+            "contribution": 0.325,
+            "value": 0.866
+          },
+          {
+            "feature": "is_weekend",
+            "contribution": 0.155,
+            "value": 1.0
+          }
+        ],
+        "basis": "Reconstruction error 0.60326 against a baseline of 140 events.",
+        "samples": 140,
+        "error": 0.603265,
+        "baseline_p95": 0.123327
+      },
+      "E": {
+        "score": 100,
+        "reasons": [
+          "MATCH_FOUND",
+          "AFTER_HOURS",
+          "DOWNLOAD_THEN_EXTERNAL_SHARE",
+          "BULK_VOLUME",
+          "CANARY_PRESENT",
+          "HIGH_MATCH_CONFIDENCE"
+        ],
+        "details": [
+          "Match exists between the uploaded file and a stored dataset.",
+          "Download recorded at 22:40 IST.",
+          "An external share follows the download within 24 hours.",
+          "Download covered 1000 rows.",
+          "Canary record CN-007 was found in the copy.",
+          "Match score is 0.999."
+        ]
+      }
+    },
+    "policy_version": "risk-v1-demo",
+    "computed_at": "2026-11-16T12:23:23Z"
+  },
+  "timeline": [
+    {
+      "event_id": "EV-10021",
+      "organization_id": "ORG-01",
+      "actor_id": "USER-104",
+      "asset_id": "SL-9281",
+      "action": "FILE_DOWNLOADED",
+      "source": "SIMULATOR",
+      "destination": "local_device",
+      "timestamp": "2026-11-15T17:10:00Z",
+      "evidence": {
+        "rows": 1000,
+        "bytes": 184320,
+        "device": "Windows laptop",
+        "simulated": true
+      },
+      "simulated": true
+    },
+    {
+      "event_id": "EV-10027",
+      "organization_id": "ORG-01",
+      "actor_id": "USER-104",
+      "asset_id": "SL-9281",
+      "action": "EXTERNAL_SHARE",
+      "source": "SIMULATOR",
+      "destination": "external_domain.com",
+      "timestamp": "2026-11-15T17:14:00Z",
+      "evidence": {
+        "channel": "email",
+        "recipient": "vendor.acme@external.test",
+        "rows": 300,
+        "simulated": true
+      },
+      "simulated": true
+    },
+    {
+      "event_id": "EV-11281",
+      "organization_id": "ORG-01",
+      "actor_id": "USER-100",
+      "asset_id": "SL-9310",
+      "action": "SUSPECT_UPLOAD",
+      "source": "INTAKE",
+      "destination": "investigation_intake",
+      "timestamp": "2026-11-16T12:23:23Z",
+      "evidence": {
+        "filename": "clients_export_final.csv",
+        "rows": 300,
+        "bytes": 38581,
+        "simulated": false
+      },
+      "simulated": false
+    }
+  ],
+  "lineage": {
+    "incident_id": "INC-4001",
+    "nodes": [
+      {
+        "id": "SL-9281",
+        "type": "ASSET",
+        "label": "customer_master_v1",
+        "meta": {
+          "rows": 1000,
+          "sensitivity": "CRITICAL"
+        }
+      },
+      {
+        "id": "SL-9310",
+        "type": "ASSET",
+        "label": "clients_export_final",
+        "meta": {
+          "rows": 300,
+          "suspect": true
+        }
+      },
+      {
+        "id": "USER-104",
+        "type": "USER",
+        "label": "Priya Sharma",
+        "meta": {}
+      },
+      {
+        "id": "external_domain.com",
+        "type": "DESTINATION",
+        "label": "external_domain.com",
+        "meta": {}
+      },
+      {
+        "id": "USER-100",
+        "type": "USER",
+        "label": "Meera Nair",
+        "meta": {}
+      }
+    ],
+    "edges": [
+      {
+        "id": "LE-01",
+        "from": "USER-104",
+        "to": "SL-9281",
+        "relation": "FILE_DOWNLOADED",
+        "label": "local_device",
+        "simulated": true,
+        "ref": {
+          "type": "EVENT",
+          "id": "EV-10021"
+        }
+      },
+      {
+        "id": "LE-02",
+        "from": "USER-104",
+        "to": "external_domain.com",
+        "relation": "SHARED_TO",
+        "label": "external share",
+        "simulated": true,
+        "ref": {
+          "type": "EVENT",
+          "id": "EV-10027"
+        }
+      },
+      {
+        "id": "LE-03",
+        "from": "USER-100",
+        "to": "SL-9310",
+        "relation": "UPLOADED_FOR_INVESTIGATION",
+        "label": "intake",
+        "simulated": false,
+        "ref": {
+          "type": "EVENT",
+          "id": "EV-11281"
+        }
+      },
+      {
+        "id": "LE-04",
+        "from": "SL-9310",
+        "to": "SL-9281",
+        "relation": "DERIVED_FROM",
+        "label": "30 percent of rows, 8 matched columns",
+        "simulated": false,
+        "ref": {
+          "type": "MATCH",
+          "id": "MT-2001"
+        }
+      }
+    ]
+  },
+  "report": {
+    "provider": "SALUS_TEMPLATE",
+    "model": "",
+    "grounding_refs": [
+      "MT-2001",
+      "RS-3001",
+      "EV-10021",
+      "EV-10027",
+      "EV-11281"
+    ],
+    "summary": "The uploaded file reuses 300 of 1000 records (30 percent) from customer_master_v1. Matched columns include full_name, email, phone, aadhaar, pan, gstin. Canary record CN-007 was issued to vendor.acme@external.test and appears in the copy.",
+    "what_left": [
+      "300 customer records",
+      "8 columns corroborated in the copy",
+      "Columns not present: account_no, city, customer_ref",
+      "Canary values from issuance CN-007"
+    ],
+    "who_moved_it": {
+      "assessment": "Priya Sharma was recorded downloading customer_master_v1 and an external share to external_domain.com followed about 4 minutes later.",
+      "confidence": "HIGH",
+      "basis": [
+        "EV-10021",
+        "EV-10027"
+      ]
+    },
+    "why_flagged": [
+      {
+        "factor": "S",
+        "reason": "8 matched columns, 7 of them identity, contact or financial: AADHAAR, EMAIL, FINANCIAL_AMOUNT, GSTIN, PAN, PHONE, UPI_ID",
+        "points": 32.2
+      },
+      {
+        "factor": "D",
+        "reason": "Recorded EXTERNAL_SHARE to external_domain.com.",
+        "points": 25.5
+      },
+      {
+        "factor": "B",
+        "reason": "Reconstruction error 0.60326 against a baseline of 140 events.",
+        "points": 20.0
+      },
+      {
+        "factor": "E",
+        "reason": "MATCH_FOUND, AFTER_HOURS, DOWNLOAD_THEN_EXTERNAL_SHARE, BULK_VOLUME, CANARY_PRESENT, HIGH_MATCH_CONFIDENCE",
+        "points": 15.0
+      }
+    ],
+    "recommended_actions": [
+      {
+        "priority": 1,
+        "action": "Revoke outside access and confirm whether the recipient still holds the file.",
+        "why": "A recorded share names external_domain.com."
+      },
+      {
+        "priority": 2,
+        "action": "Contact the canary recipient and ask whether the copy was forwarded.",
+        "why": "Canary CN-007 links this copy to one issuance."
+      },
+      {
+        "priority": 3,
+        "action": "Review whether affected customers must be notified.",
+        "why": "Identity, contact or financial columns are present in the corroborated rows."
+      },
+      {
+        "priority": 4,
+        "action": "Restrict downloads on customer_master_v1 and alert on future exports.",
+        "why": "The source dataset has no download control in this demo."
+      }
+    ],
+    "limitations": [
+      "SALUS cannot see USB copies, screenshots, or retyped data.",
+      "A match is a lead, not proof of intent.",
+      "Only events from connected or simulated sources are visible."
+    ],
+    "correlation_basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
+    "generated_at": "2026-11-16T12:23:23Z",
+    "engine_note": "Gemini is not configured in this build. The deterministic composer produced this report.",
+    "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1",
+    "report_id": "RP-5001",
+    "incident_id": "INC-4001"
+  },
+  "audit_trail": [
+    {
+      "audit_id": 9,
+      "action": "REPORT_REGENERATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "report_id": "RP-5001",
+        "provider": "SALUS_TEMPLATE",
+        "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 8,
+      "action": "INCIDENT_STATUS_CHANGED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "from": "OPEN",
+        "to": "TRIAGED"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 6,
+      "action": "INVESTIGATION_CREATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "investigation_id": "INV-6001",
+        "match_id": "MT-2001",
+        "risk_id": "RS-3001",
+        "rows": 300,
+        "columns": 8,
+        "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    }
+  ],
+  "limits": [
+    "SALUS cannot see USB copies, screenshots, or retyped data.",
+    "A match is a lead, not proof of intent.",
+    "Only events from connected or simulated sources are visible."
+  ],
+  "available": true,
+  "mode": "LIVE_DEMO",
+  "generated_at": "2026-11-16T13:34:22.626123Z",
+  "organization": {
+    "organization_id": "ORG-01",
+    "name": "Acme Traders"
+  },
+  "dataset": {
+    "asset_id": "SL-9281",
+    "name": "customer_master_v1",
+    "filename": "customer_master_v1.xlsx",
+    "rows": 1000,
+    "columns": 11,
+    "column_metadata": [
+      {
+        "name": "customer_ref",
+        "pii_type": "OTHER",
+        "sensitivity": "LOW",
+        "sensitivity_score": 10,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "full_name",
+        "pii_type": "NAME",
+        "sensitivity": "MEDIUM",
+        "sensitivity_score": 55,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "email",
+        "pii_type": "EMAIL",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 80,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "phone",
+        "pii_type": "PHONE",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 78,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "aadhaar",
+        "pii_type": "AADHAAR",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 100,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 987,
+        "invalid_count": 13
+      },
+      {
+        "name": "pan",
+        "pii_type": "PAN",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 95,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "gstin",
+        "pii_type": "GSTIN",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 85,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "upi_id",
+        "pii_type": "UPI_ID",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 82,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "city",
+        "pii_type": "LOCATION",
+        "sensitivity": "LOW",
+        "sensitivity_score": 35,
+        "non_empty": 1000,
+        "unique_count": 27,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "account_no",
+        "pii_type": "FINANCIAL_ACCOUNT",
+        "sensitivity": "CRITICAL",
+        "sensitivity_score": 92,
+        "non_empty": 1000,
+        "unique_count": 1000,
+        "valid_count": 1000,
+        "invalid_count": 0
+      },
+      {
+        "name": "monthly_income",
+        "pii_type": "FINANCIAL_AMOUNT",
+        "sensitivity": "HIGH",
+        "sensitivity_score": 75,
+        "non_empty": 1000,
+        "unique_count": 401,
+        "valid_count": 1000,
+        "invalid_count": 0
+      }
+    ],
+    "sensitivity": "CRITICAL",
+    "sensitivity_score": 100,
+    "watermark": "SALUS-WM-0727",
+    "dna": {
+      "version": "dna-v1",
+      "cell_fingerprints": 11000,
+      "unique_cells": 9428,
+      "canary_rows": 5
+    },
+    "pii_types": [
+      "NAME",
+      "EMAIL",
+      "PHONE",
+      "AADHAAR",
+      "PAN",
+      "GSTIN",
+      "UPI_ID",
+      "LOCATION",
+      "FINANCIAL_ACCOUNT",
+      "FINANCIAL_AMOUNT"
+    ],
+    "canary": {
+      "canary_id": "CN-007",
+      "token": "CN-007",
+      "recipient": "vendor.acme@external.test",
+      "issued_at": "2026-11-01T09:00:00Z",
+      "row_labels": [
+        "CN-007-A",
+        "CN-007-B",
+        "CN-007-C",
+        "CN-007-D",
+        "CN-007-E"
+      ]
+    }
+  },
+  "movement": {
+    "events": [
+      {
+        "event_id": "EV-10021",
+        "organization_id": "ORG-01",
+        "actor_id": "USER-104",
+        "asset_id": "SL-9281",
+        "action": "FILE_DOWNLOADED",
+        "source": "SIMULATOR",
+        "destination": "local_device",
+        "timestamp": "2026-11-15T17:10:00Z",
+        "evidence": {
+          "rows": 1000,
+          "bytes": 184320,
+          "device": "Windows laptop",
+          "simulated": true
+        },
+        "simulated": true
+      },
+      {
+        "event_id": "EV-10027",
+        "organization_id": "ORG-01",
+        "actor_id": "USER-104",
+        "asset_id": "SL-9281",
+        "action": "EXTERNAL_SHARE",
+        "source": "SIMULATOR",
+        "destination": "external_domain.com",
+        "timestamp": "2026-11-15T17:14:00Z",
+        "evidence": {
+          "channel": "email",
+          "recipient": "vendor.acme@external.test",
+          "rows": 300,
+          "simulated": true
+        },
+        "simulated": true
+      }
+    ]
+  },
+  "ghost_copy": {
+    "renamed_from": "customer_master_v1.xlsx",
+    "renamed_to": "clients_export_final.csv",
+    "format_change": "XLSX to CSV",
+    "original_rows": 1000,
+    "ghost_rows": 300,
+    "rows_removed": 700,
+    "original_columns": 11,
+    "ghost_columns": 8,
+    "matched_columns": [
+      "full_name",
+      "email",
+      "phone",
+      "aadhaar",
+      "pan",
+      "gstin",
+      "upi_id",
+      "monthly_income"
+    ],
+    "dropped_columns": [
+      "account_no",
+      "city",
+      "customer_ref"
+    ],
+    "canary_rows_kept": 3,
+    "canary_values_found": 18,
+    "watermark_on_source": "SALUS-WM-0727",
+    "watermark_on_query": "",
+    "watermark_stripped": true
+  },
+  "intake": {
+    "investigation_id": "INV-6001",
+    "filename": "clients_export_final.csv",
+    "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d",
+    "rows": 300,
+    "columns": 8,
+    "status": "OPEN",
+    "suspect_asset_id": "SL-9310",
+    "raw_rows_stored": false,
+    "note": "Parsed in memory. Only hashes, labels and metadata are retained."
+  },
+  "tracking": {
+    "lineage": {
+      "incident_id": "INC-4001",
+      "nodes": [
+        {
+          "id": "SL-9281",
+          "type": "ASSET",
+          "label": "customer_master_v1",
+          "meta": {
+            "rows": 1000,
+            "sensitivity": "CRITICAL"
+          }
+        },
+        {
+          "id": "SL-9310",
+          "type": "ASSET",
+          "label": "clients_export_final",
+          "meta": {
+            "rows": 300,
+            "suspect": true
+          }
+        },
+        {
+          "id": "USER-104",
+          "type": "USER",
+          "label": "Priya Sharma",
+          "meta": {}
+        },
+        {
+          "id": "external_domain.com",
+          "type": "DESTINATION",
+          "label": "external_domain.com",
+          "meta": {}
+        },
+        {
+          "id": "USER-100",
+          "type": "USER",
+          "label": "Meera Nair",
+          "meta": {}
+        }
+      ],
+      "edges": [
+        {
+          "id": "LE-01",
+          "from": "USER-104",
+          "to": "SL-9281",
+          "relation": "FILE_DOWNLOADED",
+          "label": "local_device",
+          "simulated": true,
+          "ref": {
+            "type": "EVENT",
+            "id": "EV-10021"
+          }
+        },
+        {
+          "id": "LE-02",
+          "from": "USER-104",
+          "to": "external_domain.com",
+          "relation": "SHARED_TO",
+          "label": "external share",
+          "simulated": true,
+          "ref": {
+            "type": "EVENT",
+            "id": "EV-10027"
+          }
+        },
+        {
+          "id": "LE-03",
+          "from": "USER-100",
+          "to": "SL-9310",
+          "relation": "UPLOADED_FOR_INVESTIGATION",
+          "label": "intake",
+          "simulated": false,
+          "ref": {
+            "type": "EVENT",
+            "id": "EV-11281"
+          }
+        },
+        {
+          "id": "LE-04",
+          "from": "SL-9310",
+          "to": "SL-9281",
+          "relation": "DERIVED_FROM",
+          "label": "30 percent of rows, 8 matched columns",
+          "simulated": false,
+          "ref": {
+            "type": "MATCH",
+            "id": "MT-2001"
+          }
+        }
+      ]
+    },
+    "timeline": [
+      {
+        "event_id": "EV-10021",
+        "organization_id": "ORG-01",
+        "actor_id": "USER-104",
+        "asset_id": "SL-9281",
+        "action": "FILE_DOWNLOADED",
+        "source": "SIMULATOR",
+        "destination": "local_device",
+        "timestamp": "2026-11-15T17:10:00Z",
+        "evidence": {
+          "rows": 1000,
+          "bytes": 184320,
+          "device": "Windows laptop",
+          "simulated": true
+        },
+        "simulated": true
+      },
+      {
+        "event_id": "EV-10027",
+        "organization_id": "ORG-01",
+        "actor_id": "USER-104",
+        "asset_id": "SL-9281",
+        "action": "EXTERNAL_SHARE",
+        "source": "SIMULATOR",
+        "destination": "external_domain.com",
+        "timestamp": "2026-11-15T17:14:00Z",
+        "evidence": {
+          "channel": "email",
+          "recipient": "vendor.acme@external.test",
+          "rows": 300,
+          "simulated": true
+        },
+        "simulated": true
+      },
+      {
+        "event_id": "EV-11281",
+        "organization_id": "ORG-01",
+        "actor_id": "USER-100",
+        "asset_id": "SL-9310",
+        "action": "SUSPECT_UPLOAD",
+        "source": "INTAKE",
+        "destination": "investigation_intake",
+        "timestamp": "2026-11-16T12:23:23Z",
+        "evidence": {
+          "filename": "clients_export_final.csv",
+          "rows": 300,
+          "bytes": 38581,
+          "simulated": false
+        },
+        "simulated": false
+      }
+    ],
+    "audit_trail": [
+      {
+        "audit_id": 9,
+        "action": "REPORT_REGENERATED",
+        "actor_id": "USER-100",
+        "entity_type": "INCIDENT",
+        "entity_id": "INC-4001",
+        "detail": {
+          "report_id": "RP-5001",
+          "provider": "SALUS_TEMPLATE",
+          "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1"
+        },
+        "created_at": "2026-11-16T12:23:23Z"
+      },
+      {
+        "audit_id": 8,
+        "action": "INCIDENT_STATUS_CHANGED",
+        "actor_id": "USER-100",
+        "entity_type": "INCIDENT",
+        "entity_id": "INC-4001",
+        "detail": {
+          "from": "OPEN",
+          "to": "TRIAGED"
+        },
+        "created_at": "2026-11-16T12:23:23Z"
+      },
+      {
+        "audit_id": 6,
+        "action": "INVESTIGATION_CREATED",
+        "actor_id": "USER-100",
+        "entity_type": "INCIDENT",
+        "entity_id": "INC-4001",
+        "detail": {
+          "investigation_id": "INV-6001",
+          "match_id": "MT-2001",
+          "risk_id": "RS-3001",
+          "rows": 300,
+          "columns": 8,
+          "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d"
+        },
+        "created_at": "2026-11-16T12:23:23Z"
+      }
+    ]
+  },
+  "behaviour": {
+    "architecture": [
+      10,
+      8,
+      4,
+      10
+    ],
+    "feature_names": [
+      "hour_sin",
+      "hour_cos",
+      "is_weekend",
+      "viewed",
+      "downloaded",
+      "copied",
+      "shared",
+      "log_volume",
+      "destination_trust",
+      "file_sensitivity"
+    ],
+    "model_version": "ae-v1",
+    "score": 100,
+    "percentile": 100,
+    "top_features": [
+      {
+        "feature": "log_volume",
+        "contribution": 0.39,
+        "value": 6.909
+      },
+      {
+        "feature": "hour_cos",
+        "contribution": 0.325,
+        "value": 0.866
+      },
+      {
+        "feature": "is_weekend",
+        "contribution": 0.155,
+        "value": 1.0
+      }
+    ],
+    "samples": 140,
+    "error": 0.603265,
+    "baseline_p95": 0.123327,
+    "basis": "Reconstruction error 0.60326 against a baseline of 140 events.",
+    "note": "Illustration of the stored autoencoder architecture. The score, percentile and top features are computed by the model."
+  },
+  "policy": {
+    "formula": "R = 0.35*S + 0.30*D + 0.20*B + 0.15*E",
+    "weights": {
+      "S": 0.35,
+      "D": 0.3,
+      "B": 0.2,
+      "E": 0.15
+    },
+    "bands": [
+      {
+        "band": "CRITICAL",
+        "min": 75
+      },
+      {
+        "band": "HIGH",
+        "min": 55
+      },
+      {
+        "band": "MEDIUM",
+        "min": 30
+      },
+      {
+        "band": "LOW",
+        "min": 0
+      }
+    ],
+    "destination_table": [
+      {
+        "destination": "internal_drive",
+        "score": 10,
+        "label": "INTERNAL"
+      },
+      {
+        "destination": "internal_share",
+        "score": 15,
+        "label": "INTERNAL"
+      },
+      {
+        "destination": "local_device",
+        "score": 25,
+        "label": "LOCAL_DEVICE"
+      },
+      {
+        "destination": "known_partner",
+        "score": 35,
+        "label": "KNOWN_PARTNER"
+      },
+      {
+        "destination": "personal_email",
+        "score": 65,
+        "label": "PERSONAL_EMAIL"
+      },
+      {
+        "destination": "external_domain.com",
+        "score": 85,
+        "label": "UNKNOWN_EXTERNAL"
+      },
+      {
+        "destination": "public_url",
+        "score": 95,
+        "label": "PUBLIC"
+      }
+    ],
+    "sequence_table": [
+      {
+        "reason": "Base for any investigated match",
+        "points": 10
+      },
+      {
+        "reason": "AFTER_HOURS",
+        "points": 25
+      },
+      {
+        "reason": "DOWNLOAD_THEN_EXTERNAL_SHARE",
+        "points": 25
+      },
+      {
+        "reason": "CANARY_PRESENT",
+        "points": 20
+      },
+      {
+        "reason": "HIGH_MATCH_CONFIDENCE",
+        "points": 15
+      },
+      {
+        "reason": "BULK_VOLUME",
+        "points": 15
+      },
+      {
+        "reason": "REPEATED_ACCESS",
+        "points": 10
+      }
+    ],
+    "policy_version": "risk-v1-demo",
+    "disclaimer": "Demo policy values, not validated standards. The engine is deterministic; the language model only explains."
+  }
+}
