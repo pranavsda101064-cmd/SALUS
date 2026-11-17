@@ -47,11 +47,11 @@ services:
     plan: free
     rootDir: frontend
     buildCommand: bash build_render.sh
-    staticPublishPath: build/web
+    staticPublishPath: dist
     envVars:
       - key: API_BASE
         value: https://salus-api.onrender.com
     routes:
       - type: rewrite
-        source: /*
-        destination: /index.html
+        source: /app
+        destination: /app/index.html

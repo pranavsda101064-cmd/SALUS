@@ -62,8 +62,14 @@ def main():
     report = bundle["report"]
     lineage = bundle["lineage"]
     incident = bundle["incident"]
+    investigation = payload["investigation"]
 
-    print("\nincident:", incident["incident_id"], incident["severity"])
+    print(
+        "\ninvestigation:",
+        investigation["investigation_id"],
+        "duplicate" if payload.get("duplicate") else "new",
+    )
+    print("incident:", incident["incident_id"], incident["severity"])
     print(
         "match:",
         match["match_id"],
@@ -90,10 +96,67 @@ def main():
     assert all(edge["ref"]["type"] in {"EVENT", "MATCH"} for edge in lineage["edges"])
     assert report["provider"] in {"SALUS_TEMPLATE", "GEMINI"}
     assert report["recommended_actions"], "report must include next actions"
+    assert len(report["evidence_hash"]) == 64, "report must carry an evidence hash"
+    assert bundle["investigation"]["investigation_id"] == investigation["investigation_id"]
+    assert bundle["audit_trail"], "incident bundle must include an audit trail"
 
     detail = client.get(f"{BASE}/incidents/{incident['incident_id']}")
     assert detail.status_code == 200
-    print("\nincident detail ok, lineage nodes:", len(detail.json()["lineage"]["nodes"]))
+    detail_payload = detail.json()
+    assert detail_payload["investigation"]["investigation_id"] == investigation["investigation_id"]
+    assert detail_payload["audit_trail"]
+    print("\nincident detail ok, lineage nodes:", len(detail_payload["lineage"]["nodes"]))
+    print("audit trail:", [(item["action"], item["actor_id"]) for item in detail_payload["audit_trail"]])
+
+    duplicate_upload = SimpleUploadedFile(
+        "clients_export_final.csv", GHOST.read_bytes(), content_type="text/csv"
+    )
+    duplicate = client.post(
+        f"{BASE}/investigations", {"file": duplicate_upload}, format="multipart"
+    )
+    assert duplicate.status_code == 200, duplicate.content
+    duplicate_payload = duplicate.json()
+    assert duplicate_payload["duplicate"] is True
+    assert (
+        duplicate_payload["investigation"]["investigation_id"]
+        == investigation["investigation_id"]
+    )
+    assert duplicate_payload["bundle"]["incident"]["incident_id"] == incident["incident_id"]
+    print("duplicate upload returns", duplicate_payload["investigation"]["investigation_id"])
+
+    investigations = client.get(f"{BASE}/investigations")
+    assert investigations.status_code == 200
+    ids = [item["investigation_id"] for item in investigations.json()["results"]]
+    assert investigation["investigation_id"] in ids
+    print("investigations:", ids)
+
+    investigation_detail = client.get(
+        f"{BASE}/investigations/{investigation['investigation_id']}"
+    )
+    assert investigation_detail.status_code == 200
+    assert investigation_detail.json()["incident"]["incident_id"] == incident["incident_id"]
+    print("investigation detail ok")
+
+    status_change = client.post(
+        f"{BASE}/incidents/{incident['incident_id']}/status",
+        {"status": "TRIAGED"},
+        format="json",
+    )
+    assert status_change.status_code == 200, status_change.content
+    regenerated = client.post(
+        f"{BASE}/incidents/{incident['incident_id']}/report", {}, format="json"
+    )
+    assert regenerated.status_code == 200, regenerated.content
+    regenerated_report = regenerated.json()["report"]
+    assert len(regenerated_report["evidence_hash"]) == 64
+    assert regenerated_report["evidence_hash"] == report["evidence_hash"]
+
+    audit = client.get(f"{BASE}/audit?entity_id={incident['incident_id']}")
+    assert audit.status_code == 200
+    audit_actions = [item["action"] for item in audit.json()["results"]]
+    assert "INCIDENT_STATUS_CHANGED" in audit_actions
+    assert "REPORT_REGENERATED" in audit_actions
+    print("audit entries:", audit_actions)
 
     events = client.get(f"{BASE}/events?asset_id=SL-9281")
     print("source events:", [(e["event_id"], e["action"], e["simulated"]) for e in events.json()["results"]])

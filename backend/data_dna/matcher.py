@@ -15,6 +15,18 @@ def match_threshold():
     return float(getattr(settings, "SALUS_MATCH_THRESHOLD", DEFAULT_MATCH_THRESHOLD))
 
 
+def rare_threshold(row_count):
+    """Rarity is relative to the source size.
+
+    A value that appears once in five rows is unusual. A city that appears
+    twenty times in one hundred rows is not. The stored weights stay the
+    same; this threshold only decides whether a shared cell counts as
+    evidence strong enough to corroborate a row.
+    """
+    n = max(int(row_count or 0), 1)
+    return max(1.0, 0.5 * math.log(1 + n))
+
+
 def _load_source_index(source_asset):
     rows = CellFingerprint.objects.filter(asset=source_asset).values_list(
         "column_name", "value_hash", "weight"
@@ -76,6 +88,7 @@ def match_one(query_asset, query_fp, source_asset):
     containment = round(shared_source_weight / total_query_weight, 4)
     cell_recall = round(shared_source_weight / total_source_weight, 4)
 
+    rare_cutoff = rare_threshold(source_asset.row_count)
     matched_cells = 0
     matched_rows = 0
     rare_row_count = 0
@@ -87,7 +100,7 @@ def match_one(query_asset, query_fp, source_asset):
             if entry is None:
                 continue
             hits += 1
-            if entry["weight"] >= RARE_WEIGHT:
+            if entry["weight"] >= rare_cutoff:
                 rare_hits += 1
         matched_cells += hits
         if rare_hits >= 1 or hits >= 3:
@@ -121,7 +134,9 @@ def match_one(query_asset, query_fp, source_asset):
 
     canary = _canary_for_source(source_asset, query_fp, query_hashes)
 
-    rare_shared = sum(1 for hashed in shared if source_index[hashed]["weight"] >= RARE_WEIGHT)
+    rare_shared = sum(
+        1 for hashed in shared if source_index[hashed]["weight"] >= rare_cutoff
+    )
     confidence = 1 - math.exp(-rare_shared / 40) if rare_shared else 0.0
     match_score = round(min(0.999, 0.7 * containment + 0.3 * confidence), 3)
 
@@ -187,7 +202,15 @@ def find_best_match(organization, query_asset, query_fp):
         if best is None or result["match_score"] > best["match_score"]:
             best = result
             best_source = source
-    if best is None or best["match_score"] < match_threshold():
+    if best is None:
+        return None, best_source, scanned
+
+    evidence = best.get("evidence", {})
+    if not evidence.get("exact_copy"):
+        if best.get("matched_rows", 0) < 1 or evidence.get("rare_shared_values", 0) < 1:
+            return None, best_source, scanned
+
+    if best["match_score"] < match_threshold():
         return None, best_source, scanned
     match = MatchRecord.objects.create(
         public_id=best["match_id"],

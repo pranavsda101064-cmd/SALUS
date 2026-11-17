@@ -127,11 +127,11 @@ def _existing_result(investigation):
 
 @transaction.atomic
 def create_investigation(organization, user, uploaded_file):
-    uploaded.seek(0)
-    raw_bytes = uploaded.read()
-    uploaded.seek(0)
+    uploaded_file.seek(0)
+    raw_bytes = uploaded_file.read()
+    uploaded_file.seek(0)
     exact_sha = hash_bytes(raw_bytes)
-    filename = uploaded.name or "upload"
+    filename = uploaded_file.name or "upload"
 
     existing = (
         Investigation.objects.filter(organization=organization, input_sha256=exact_sha)
@@ -139,9 +139,17 @@ def create_investigation(organization, user, uploaded_file):
         .first()
     )
     if existing is not None:
+        log_audit(
+            organization,
+            user,
+            "INVESTIGATION_DUPLICATE",
+            "INVESTIGATION",
+            existing.public_id,
+            {"sha256": exact_sha},
+        )
         return _existing_result(existing)
 
-    df, raw_bytes, filename = parse_uploaded_file(uploaded)
+    df, raw_bytes, filename = parse_uploaded_file(uploaded_file)
     exact_sha = hash_bytes(raw_bytes)
     watermark = extract_watermark(raw_bytes, filename)
     name = filename.rsplit(".", 1)[0][:200]

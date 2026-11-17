@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../icons.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/motion.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.api, required this.onAuthenticated});
+  const LoginScreen({
+    super.key,
+    required this.api,
+    required this.onAuthenticated,
+  });
 
   final ApiClient api;
   final void Function(Map<String, dynamic> session) onAuthenticated;
@@ -15,7 +21,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _email = TextEditingController(text: 'meera@acmetraders.test');
+  final TextEditingController _email = TextEditingController(
+    text: 'meera@acmetraders.test',
+  );
   bool _busy = false;
   String? _error;
 
@@ -48,238 +56,307 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment(-0.7, -0.9),
-            radius: 1.5,
-            colors: [Color(0xFF10243C), SalusColors.background],
+      backgroundColor: SalusColors.canvas,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final wide = constraints.maxWidth >= 900;
+          if (wide) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(flex: 6, child: _brandPanel(context, wide: true)),
+                Expanded(flex: 5, child: _formPanel(context)),
+              ],
+            );
+          }
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _brandPanel(context, wide: false),
+                _formPanel(context),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _brandPanel(BuildContext context, {required bool wide}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: SalusColors.primary,
+        image: DecorationImage(
+          image: const AssetImage('assets/photos/typing-laptop.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            SalusColors.primary.withValues(alpha: 0.9),
+            BlendMode.srcOver,
           ),
         ),
-        child: Stack(
-          children: [
-            Positioned.fill(child: CustomPaint(painter: _GridPainter())),
-            Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1080),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final wide = constraints.maxWidth > 820;
-                      final brand = _brandPanel(context);
-                      final form = _loginPanel(context);
-                      if (!wide) {
-                        return Column(
-                          children: [brand, const SizedBox(height: 24), form],
-                        );
-                      }
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(flex: 6, child: brand),
-                          const SizedBox(width: 48),
-                          Expanded(flex: 5, child: form),
-                        ],
-                      );
-                    },
+      ),
+      padding: EdgeInsets.all(wide ? 56 : 28),
+      child: Center(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 620),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: SalusColors.white.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: SalusColors.ink.withValues(alpha: 0.18),
+                        ),
+                      ),
+                      child: const Icon(
+                        SalusIcons.shield,
+                        color: SalusColors.ink,
+                        size: 23,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'SALUS',
+                          style: TextStyle(
+                            color: SalusColors.ink,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 2.5,
+                          ),
+                        ),
+                        Text(
+                          'INVESTIGATION DESK',
+                          style: TextStyle(
+                            color: SalusColors.ink,
+                            fontSize: 8,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: wide ? 56 : 32),
+                const Text(
+                  'SMALL BUSINESS DATA INVESTIGATION',
+                  style: TextStyle(
+                    color: SalusColors.ink,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.2,
                   ),
                 ),
-              ),
+                const SizedBox(height: 12),
+                Text(
+                  'Open the investigation desk.',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: SalusColors.ink,
+                    fontSize: wide ? 44 : 32,
+                    height: wide ? 50 / 44 : 38 / 32,
+                    letterSpacing: -0.8,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  'See what left, who moved it, and what to do next. Built for Indian teams of 10 to 100 with no security staff.',
+                  style: TextStyle(
+                    color: SalusColors.ink.withValues(alpha: 0.78),
+                    fontSize: 15,
+                    height: 1.55,
+                  ),
+                ),
+                SizedBox(height: wide ? 40 : 28),
+                _Point(
+                  icon: SalusIcons.fingerprint,
+                  title: 'Partial copies',
+                  body: 'Cell level fingerprints survive renamed files, deleted columns, and dropped rows.',
+                ),
+                _Point(
+                  icon: SalusIcons.sealCheck,
+                  title: 'India PII',
+                  body:
+                      'Aadhaar, PAN, GSTIN, UPI, phone, and financial fields.',
+                ),
+                _Point(
+                  icon: SalusIcons.tree,
+                  title: 'Evidence trail',
+                  body:
+                      'Every edge points to a stored event or a stored match.',
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: SalusColors.ink,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Synthetic demo. Simulated activity is labelled.',
+                      style: TextStyle(
+                        color: SalusColors.ink.withValues(alpha: 0.7),
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _brandPanel(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 46,
-              height: 46,
-              decoration: BoxDecoration(
-                color: SalusColors.mint.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: SalusColors.mint.withValues(alpha: 0.4)),
-              ),
-              child: const Icon(Icons.shield_outlined, color: SalusColors.mint, size: 26),
-            ),
-            const SizedBox(width: 14),
-            const Text(
-              'SALUS',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 4,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 40),
-        Text(
-          'Your data does not disappear.\nIt leaves a trail.',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontSize: 38,
-                height: 1.15,
-                letterSpacing: -1.0,
-              ),
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          'A data identity and investigation desk for small businesses in India. '
-          'See what left, who moved it, and what to do next.',
-          style: TextStyle(color: SalusColors.muted, fontSize: 15, height: 1.55),
-        ),
-        const SizedBox(height: 34),
-        const _Point(
-          icon: Icons.fingerprint,
-          title: 'Cell level Data DNA',
-          body: 'Finds partial copies after rename, format change, deleted columns and dropped rows.',
-        ),
-        const _Point(
-          icon: Icons.account_tree_outlined,
-          title: 'Lineage from real records',
-          body: 'Every edge points to a logged event or a stored match. Nothing is invented.',
-        ),
-        const _Point(
-          icon: Icons.psychology_outlined,
-          title: 'Explainable risk and next steps',
-          body: 'A deterministic score, a behaviour model, and a plain language incident report.',
-        ),
-        const SizedBox(height: 26),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: const [
-            SalusBadge(label: 'Aadhaar with Verhoeff', color: SalusColors.mint),
-            SalusBadge(label: 'PAN, GSTIN, UPI', color: SalusColors.blue),
-            SalusBadge(label: 'Synthetic data only', color: SalusColors.violet),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _loginPanel(BuildContext context) {
-    return SalusCard(
+  Widget _formPanel(BuildContext context) {
+    return Container(
+      color: SalusColors.canvas,
+      alignment: Alignment.center,
       padding: const EdgeInsets.all(28),
-      borderColor: SalusColors.border,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 440),
+        child: SalusCard(
+          padding: const EdgeInsets.all(28),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const Expanded(
-                child: Text(
-                  'Command center access',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: SalusColors.surfaceAlt,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(Icons.lock_outline, size: 18, color: SalusColors.muted),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Demo login for the Acme Traders workspace.',
-            style: TextStyle(color: SalusColors.muted),
-          ),
-          const SizedBox(height: 24),
-          const Text(
-            'WORK EMAIL',
-            style: TextStyle(
-              color: SalusColors.muted,
-              fontSize: 10.5,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.0,
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _email,
-            keyboardType: TextInputType.emailAddress,
-            onSubmitted: (_) => _busy ? null : _login(),
-            decoration: const InputDecoration(
-              hintText: 'you@company.test',
-              prefixIcon: Icon(Icons.alternate_email, size: 18),
-            ),
-          ),
-          const SizedBox(height: 18),
-          ElevatedButton.icon(
-            onPressed: _busy ? null : () => _login(),
-            icon: _busy
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: SalusColors.background),
-                  )
-                : const Icon(Icons.arrow_forward, size: 18),
-            label: Text(_busy ? 'Opening' : 'Enter command center'),
-          ),
-          const SizedBox(height: 10),
-          OutlinedButton.icon(
-            onPressed: _busy ? null : () => _login(seedFirst: true),
-            icon: const Icon(Icons.auto_awesome, size: 16),
-            label: const Text('Initialize demo data'),
-          ),
-          if (_error != null) ...[
-            const SizedBox(height: 18),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: SalusColors.red.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: SalusColors.red.withValues(alpha: 0.35)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  const Icon(Icons.error_outline, size: 16, color: SalusColors.red),
-                  const SizedBox(width: 8),
-                  Expanded(
+                  const Expanded(
                     child: Text(
-                      _error!,
-                      style: const TextStyle(color: SalusColors.red, fontSize: 12.5, height: 1.4),
+                      'Command center access',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      color: SalusColors.surfaceAlt,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      SalusIcons.lock,
+                      size: 17,
+                      color: SalusColors.muted,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: SalusColors.surfaceAlt,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.info_outline, size: 15, color: SalusColors.muted),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Demo build. All records are synthetic. Simulated activity is labelled in the UI.',
-                    style: TextStyle(color: SalusColors.muted, fontSize: 11.5, height: 1.4),
+              const SizedBox(height: 6),
+              const Text(
+                'Demo login for the Acme Traders workspace.',
+                style: TextStyle(color: SalusColors.muted, fontSize: 12.5),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'WORK EMAIL',
+                style: TextStyle(
+                  color: SalusColors.muted,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.9,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                onSubmitted: (_) => _busy ? null : _login(),
+                decoration: const InputDecoration(
+                  hintText: 'you@company.test',
+                  prefixIcon: Icon(SalusIcons.at, size: 18),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: _busy ? null : () => _login(),
+                icon: _busy
+                    ? const SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: SalusColors.onPrimary,
+                        ),
+                      )
+                    : const Icon(SalusIcons.arrowRight, size: 17),
+                label: Text(_busy ? 'Opening' : 'Enter command center'),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : () => _login(seedFirst: true),
+                icon: const Icon(SalusIcons.sparkle, size: 15),
+                label: const Text('Initialize demo data'),
+              ),
+              if (_error != null) ...[
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: SalusColors.primary.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: SalusColors.ink.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        SalusIcons.warningCircle,
+                        size: 16,
+                        color: SalusColors.ink,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _error!,
+                          style: const TextStyle(
+                            color: SalusColors.ink,
+                            fontSize: 12,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
+              const SizedBox(height: 18),
+              const Divider(height: 1),
+              const SizedBox(height: 14),
+              const Text(
+                'No password in this demo. All records are synthetic.',
+                style: TextStyle(
+                  color: SalusColors.muted,
+                  fontSize: 11,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -293,55 +370,52 @@ class _Point extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: SalusColors.surfaceAlt,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, size: 17, color: SalusColors.mint),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-                const SizedBox(height: 3),
-                Text(
-                  body,
-                  style: const TextStyle(color: SalusColors.muted, fontSize: 12.5, height: 1.45),
+    return FadeSlideIn(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 18),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: SalusColors.white.withValues(alpha: 0.35),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: SalusColors.ink.withValues(alpha: 0.18),
                 ),
-              ],
+              ),
+              child: Icon(icon, size: 16, color: SalusColors.ink),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: SalusColors.ink,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    body,
+                    style: TextStyle(
+                      color: SalusColors.ink.withValues(alpha: 0.72),
+                      fontSize: 12,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-
-class _GridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = SalusColors.mint.withValues(alpha: 0.035)
-      ..strokeWidth = 1;
-    const spacing = 56.0;
-    for (double x = 0; x < size.width; x += spacing) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-    for (double y = 0; y < size.height; y += spacing) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

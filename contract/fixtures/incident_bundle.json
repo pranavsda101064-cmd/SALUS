@@ -3,21 +3,40 @@
     "incident_id": "INC-4001",
     "organization_id": "ORG-01",
     "title": "Ghost copy of customer_master_v1 found outside the organization",
-    "status": "OPEN",
+    "status": "TRIAGED",
     "severity": "CRITICAL",
     "suspect_asset_id": "SL-9310",
     "source_asset_id": "SL-9281",
     "match_id": "MT-2001",
-    "created_at": "2026-11-13T06:41:54Z",
+    "investigation_id": "INV-6001",
+    "created_at": "2026-11-16T12:23:23Z",
     "correlation": {
       "basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
       "found_activity": true,
+      "share_only": false,
       "download_event_id": "EV-10021",
       "share_event_ids": [
         "EV-10027"
       ],
       "actor_id": "USER-104"
     }
+  },
+  "investigation": {
+    "investigation_id": "INV-6001",
+    "organization_id": "ORG-01",
+    "status": "OPEN",
+    "created_by": "USER-100",
+    "source_asset_id": "SL-9281",
+    "suspect_asset_id": "SL-9310",
+    "match_id": "MT-2001",
+    "incident_id": "INC-4001",
+    "input": {
+      "filename": "clients_export_final.csv",
+      "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d",
+      "rows": 300,
+      "columns": 8
+    },
+    "created_at": "2026-11-16T12:23:23Z"
   },
   "source_asset": {
     "asset_id": "SL-9281",
@@ -134,23 +153,23 @@
         "sensitivity": "HIGH",
         "sensitivity_score": 75,
         "non_empty": 1000,
-        "unique_count": 403,
+        "unique_count": 401,
         "valid_count": 1000,
         "invalid_count": 0
       }
     ],
     "sensitivity_score": 100,
     "sensitivity_label": "CRITICAL",
-    "exact_sha256": "0af05606a17597149149b9317f08e7ea2d3ed4b329bca9f5801f782f01b42464",
+    "exact_sha256": "42443f13da36f969ca6c38e5cdaf8feb27275c8096c89ae91b7a15b60003df47",
     "dna": {
       "version": "dna-v1",
       "cell_fingerprints": 11000,
-      "unique_cells": 9430,
+      "unique_cells": 9428,
       "canary_rows": 5
     },
     "watermark": "SALUS-WM-0727",
     "is_baseline": false,
-    "created_at": "2026-11-13T06:41:30Z"
+    "created_at": "2026-11-16T12:22:58Z"
   },
   "suspect_asset": {
     "asset_id": "SL-9310",
@@ -198,8 +217,8 @@
         "sensitivity_score": 100,
         "non_empty": 300,
         "unique_count": 300,
-        "valid_count": 299,
-        "invalid_count": 1
+        "valid_count": 295,
+        "invalid_count": 5
       },
       {
         "name": "pan",
@@ -237,23 +256,23 @@
         "sensitivity": "HIGH",
         "sensitivity_score": 75,
         "non_empty": 300,
-        "unique_count": 216,
+        "unique_count": 219,
         "valid_count": 300,
         "invalid_count": 0
       }
     ],
     "sensitivity_score": 100,
     "sensitivity_label": "CRITICAL",
-    "exact_sha256": "ef355e3c722b5fd9074259c24983b182ab08089272fff226053c66a38f365b93",
+    "exact_sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d",
     "dna": {
       "version": "dna-v1",
       "cell_fingerprints": 2400,
-      "unique_cells": 2316,
+      "unique_cells": 2319,
       "canary_rows": 0
     },
     "watermark": "",
     "is_baseline": false,
-    "created_at": "2026-11-13T06:41:54Z"
+    "created_at": "2026-11-16T12:23:23Z"
   },
   "match": {
     "match_id": "MT-2001",
@@ -290,12 +309,13 @@
       "matched_rows": 3
     },
     "evidence": {
-      "shared_unique_values": 2316,
-      "rare_shared_values": 2316,
-      "source_unique_values": 9430,
-      "query_unique_values": 2316,
-      "cell_recall": 0.244,
+      "shared_unique_values": 2319,
+      "rare_shared_values": 2319,
+      "source_unique_values": 9428,
+      "query_unique_values": 2319,
+      "cell_recall": 0.2444,
       "row_recall": 0.3,
+      "rare_matched_rows": 300,
       "source_row_count": 1000,
       "query_row_count": 300,
       "column_report": [
@@ -362,7 +382,7 @@
         "matched_rows": 3
       }
     },
-    "created_at": "2026-11-13T06:41:54Z"
+    "created_at": "2026-11-16T12:23:23Z"
   },
   "risk": {
     "risk_id": "RS-3001",
@@ -403,24 +423,24 @@
         "top_features": [
           {
             "feature": "log_volume",
-            "contribution": 0.443,
+            "contribution": 0.39,
             "value": 6.909
           },
           {
             "feature": "hour_cos",
-            "contribution": 0.322,
+            "contribution": 0.325,
             "value": 0.866
           },
           {
-            "feature": "viewed",
-            "contribution": 0.147,
-            "value": 0.0
+            "feature": "is_weekend",
+            "contribution": 0.155,
+            "value": 1.0
           }
         ],
-        "basis": "Reconstruction error 0.92717 against a baseline of 140 events.",
+        "basis": "Reconstruction error 0.60326 against a baseline of 140 events.",
         "samples": 140,
-        "error": 0.927169,
-        "baseline_p95": 0.228496
+        "error": 0.603265,
+        "baseline_p95": 0.123327
       },
       "E": {
         "score": 100,
@@ -443,7 +463,7 @@
       }
     },
     "policy_version": "risk-v1-demo",
-    "computed_at": "2026-11-13T06:41:54Z"
+    "computed_at": "2026-11-16T12:23:23Z"
   },
   "timeline": [
     {
@@ -454,7 +474,7 @@
       "action": "FILE_DOWNLOADED",
       "source": "SIMULATOR",
       "destination": "local_device",
-      "timestamp": "2026-11-12T17:10:00Z",
+      "timestamp": "2026-11-15T17:10:00Z",
       "evidence": {
         "rows": 1000,
         "bytes": 184320,
@@ -471,7 +491,7 @@
       "action": "EXTERNAL_SHARE",
       "source": "SIMULATOR",
       "destination": "external_domain.com",
-      "timestamp": "2026-11-12T17:14:00Z",
+      "timestamp": "2026-11-15T17:14:00Z",
       "evidence": {
         "channel": "email",
         "recipient": "vendor.acme@external.test",
@@ -488,11 +508,11 @@
       "action": "SUSPECT_UPLOAD",
       "source": "INTAKE",
       "destination": "investigation_intake",
-      "timestamp": "2026-11-13T06:41:54Z",
+      "timestamp": "2026-11-16T12:23:23Z",
       "evidence": {
         "filename": "clients_export_final.csv",
         "rows": 300,
-        "bytes": 38568,
+        "bytes": 38581,
         "simulated": false
       },
       "simulated": false
@@ -627,7 +647,7 @@
       },
       {
         "factor": "B",
-        "reason": "Reconstruction error 0.92717 against a baseline of 140 events.",
+        "reason": "Reconstruction error 0.60326 against a baseline of 140 events.",
         "points": 20.0
       },
       {
@@ -664,11 +684,55 @@
       "Only events from connected or simulated sources are visible."
     ],
     "correlation_basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
-    "generated_at": "2026-11-13T06:41:54Z",
+    "generated_at": "2026-11-16T12:23:23Z",
     "engine_note": "Gemini is not configured in this build. The deterministic composer produced this report.",
+    "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1",
     "report_id": "RP-5001",
     "incident_id": "INC-4001"
   },
+  "audit_trail": [
+    {
+      "audit_id": 9,
+      "action": "REPORT_REGENERATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "report_id": "RP-5001",
+        "provider": "SALUS_TEMPLATE",
+        "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 8,
+      "action": "INCIDENT_STATUS_CHANGED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "from": "OPEN",
+        "to": "TRIAGED"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    },
+    {
+      "audit_id": 6,
+      "action": "INVESTIGATION_CREATED",
+      "actor_id": "USER-100",
+      "entity_type": "INCIDENT",
+      "entity_id": "INC-4001",
+      "detail": {
+        "investigation_id": "INV-6001",
+        "match_id": "MT-2001",
+        "risk_id": "RS-3001",
+        "rows": 300,
+        "columns": 8,
+        "sha256": "ea8a784396d923f213f0c0caead42b4f47d5525e54d20eb40d790b03d965008d"
+      },
+      "created_at": "2026-11-16T12:23:23Z"
+    }
+  ],
   "limits": [
     "SALUS cannot see USB copies, screenshots, or retyped data.",
     "A match is a lead, not proof of intent.",

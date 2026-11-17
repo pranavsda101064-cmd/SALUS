@@ -37,11 +37,7 @@ class _SalusAppState extends State<SalusApp> {
       theme: buildSalusTheme(),
       home: _session == null
           ? LoginScreen(api: _api, onAuthenticated: _handleAuthenticated)
-          : Shell(
-              api: _api,
-              session: _session!,
-              onLogout: _logout,
-            ),
+          : Shell(api: _api, session: _session!, onLogout: _logout),
     );
   }
 }

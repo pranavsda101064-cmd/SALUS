@@ -24,3 +24,11 @@ def validate(value: str) -> bool:
 def generate(state_code: str, pan: str, entity: str = "1") -> str:
     first_fourteen = f"{state_code}{pan}{entity}Z"
     return first_fourteen + check_digit(first_fourteen)
+
+
+def checksum_char(first_fourteen: str) -> str:
+    return check_digit(first_fourteen)
+
+
+def is_valid_gstin(value) -> bool:
+    return validate(value)

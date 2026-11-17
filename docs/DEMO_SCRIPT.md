@@ -5,20 +5,27 @@ Goal: finish the Ghost Copy in under 3 minutes and leave time for the risk story
 ## Before you walk on stage
 
 1. Warm the API: open `https://salus-api.onrender.com/api/v1/health` in a tab.
-2. Log in once and keep the command center open.
-3. Confirm `demo_data/clients_export_final.csv` exists on the demo laptop.
-4. Keep a recorded backup of the full flow.
-5. Keep the local fallback ready: Django on port 8000, Flutter on port 8080.
+2. Open the landing page at `https://salus-web.onrender.com/` and confirm the "Open the live Ghost Copy" button reaches `/app/`.
+3. Log in once and keep the command center open.
+4. Confirm `demo_data/clients_export_final.csv` exists on the demo laptop.
+5. Keep a recorded backup of the full flow.
+6. Keep the local fallback ready: Django on port 8000, built site on port 8080 with landing at `/` and app at `/app/`.
 
 ## The script
 
-### 0:00 to 0:20, open
+### 0:00 to 0:20, landing page
+
+Start on the landing page.
 
 "Small companies in India handle Aadhaar, PAN and customer lists every day, and they have no security team. When a file leaks, they cannot answer a simple question: where did this come from?"
 
 Tagline: "Your data does not disappear. It leaves a trail."
 
-### 0:20 to 0:40, command center
+Point at the single action, then click "Open the live Ghost Copy".
+
+### 0:20 to 0:40, login and command center
+
+Sign in with `meera@acmetraders.test`.
 
 "This is the SALUS command center for Acme Traders, a synthetic 60 person distributor. Everything you see is simulated and labelled. We have one data source, customer_master_v1, one thousand synthetic customers, and five canary rows."
 
@@ -42,7 +49,7 @@ Show the ghost recipe card or the terminal output from `scripts/ghost_copy.py`.
 
 Open Investigation, select `demo_data/clients_export_final.csv`, click "Run investigation".
 
-While it runs: "SALUS fingerprints each cell, weights rare values by how unusual they are, and compares the overlap with stored datasets. Row hashes would break when columns are deleted. Cell hashes do not."
+While it runs: "SALUS fingerprints each cell, weights rare values by how unusual they are, and compares the overlap with stored datasets. It checks Aadhaar with the Verhoeff checksum and GSTIN with its own check digit. Row hashes would break when columns are deleted. Cell hashes do not."
 
 ### 1:50 to 2:30, the incident
 
@@ -53,6 +60,7 @@ Point at the result in this order.
 3. Lineage: "Every edge points to a real event or a real match. The download is EV-10021, the share is EV-10027, the match is MT-2001. We never invent a download from a similarity score."
 4. Risk: "93 out of 100. Sensitivity 92, destination 85, behaviour 100 against Priya's normal pattern, sequence 100 because it was after hours and followed by an external share. The weights are demo policy and shown on screen."
 5. Report and actions: "The report explains what left, who moved it, and four actions: revoke access, contact the canary recipient, review notification, and restrict downloads."
+6. Backend proof: "Every intake is a first class investigation, deduplicated on the file hash. The audit trail records the intake, the status change and the report regeneration. The report carries an evidence hash, so the prose is tied to one evidence snapshot."
 
 ### 2:30 to 2:50, honesty and close
 

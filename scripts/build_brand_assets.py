@@ -10,8 +10,9 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "frontend" / "landing"
-ACCENT = (53, 214, 164, 255)
-SURFACE = (24, 24, 24, 255)
+ACCENT = (255, 255, 255, 255)
+HIGHLIGHT = (245, 255, 0, 255)
+SURFACE = (8, 100, 232, 255)
 
 
 def draw_icon(size: int) -> Image.Image:
@@ -45,7 +46,7 @@ def draw_icon(size: int) -> Image.Image:
         (left + int(width * 0.45), top + int(height * 0.66)),
         (left + int(width * 0.74), top + int(height * 0.3)),
     ]
-    draw.line(check, fill=ACCENT, width=stroke, joint="curve")
+    draw.line(check, fill=HIGHLIGHT, width=stroke, joint="curve")
     return image.resize((size, size), Image.LANCZOS)
 
 

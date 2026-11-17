@@ -74,6 +74,81 @@ class GhostCopyMatchingTests(TestCase):
         self.assertTrue(match.evidence["watermark_stripped"])
 
 
+class WeakOverlapTests(TestCase):
+    def test_common_values_do_not_create_a_match(self):
+        organization = Organization.objects.create(
+            id="ORG-T3", name="Weak Traders", slug="weak-traders"
+        )
+        cities = ["Mumbai", "Pune", "Delhi", "Chennai", "Kolkata"]
+        departments = ["Sales", "Operations", "Finance"]
+        source_df = pd.DataFrame(
+            {
+                "city": [cities[index % len(cities)] for index in range(100)],
+                "department": [departments[index % len(departments)] for index in range(100)],
+            }
+        )
+        prepare_asset(
+            organization=organization,
+            name="source",
+            filename="source.csv",
+            df=source_df,
+            kind="ORIGINAL",
+            id_floor=9281,
+        )
+        suspect_df = source_df.head(20).copy()
+        suspect, suspect_fp = prepare_asset(
+            organization=organization,
+            name="weak_copy",
+            filename="weak_copy.csv",
+            df=suspect_df,
+            kind="SUSPECT",
+            id_floor=9310,
+        )
+        match, _source, scanned = find_best_match(organization, suspect, suspect_fp)
+        self.assertEqual(scanned, 1)
+        self.assertIsNone(match, "common values alone must not open an incident")
+
+    def test_extra_unrelated_columns_still_match(self):
+        organization = Organization.objects.create(
+            id="ORG-T4", name="Extra Traders", slug="extra-traders"
+        )
+        source_df = pd.DataFrame(
+            {
+                "email": [f"user{index}@example.test" for index in range(100)],
+                "pan": [f"ABCDE{index:04d}F" for index in range(100)],
+                "city": ["Mumbai"] * 100,
+            }
+        )
+        source, _fp = prepare_asset(
+            organization=organization,
+            name="source",
+            filename="source.csv",
+            df=source_df,
+            kind="ORIGINAL",
+            id_floor=9281,
+        )
+        suspect_df = source_df.head(50).copy()
+        suspect_df["notes"] = [f"note {index}" for index in range(50)]
+        suspect, suspect_fp = prepare_asset(
+            organization=organization,
+            name="copy_with_notes",
+            filename="copy_with_notes.csv",
+            df=suspect_df,
+            kind="SUSPECT",
+            id_floor=9310,
+        )
+        match, matched_source, _scanned = find_best_match(
+            organization, suspect, suspect_fp
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(matched_source.pk, source.pk)
+        self.assertEqual(match.matched_rows, 50)
+        self.assertGreater(match.match_score, 0.5)
+        self.assertIn("email", match.matched_columns)
+        self.assertIn("pan", match.matched_columns)
+        self.assertNotIn("notes", match.matched_columns)
+
+
 class MatchThresholdTests(TestCase):
     def test_threshold_setting_controls_meaningful_match(self):
         organization = Organization.objects.create(

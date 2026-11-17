@@ -1,6 +1,9 @@
+import '../icons.dart';
+
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
+import 'motion.dart';
 
 class SalusCard extends StatelessWidget {
   const SalusCard({
@@ -20,27 +23,35 @@ class SalusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveBorder =
+        borderColor ??
+        (highlight == null
+            ? SalusColors.border
+            : highlight!.withValues(alpha: 0.5));
+    final effectiveFill = highlight == null
+        ? SalusColors.surface
+        : Color.alphaBlend(
+            highlight!.withValues(alpha: 0.06),
+            SalusColors.surface,
+          );
+
     final content = Container(
       padding: padding,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            highlight?.withValues(alpha: 0.16) ?? SalusColors.surface,
-            SalusColors.surface,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: borderColor ?? SalusColors.border),
+        color: effectiveFill,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: effectiveBorder),
       ),
       child: child,
     );
-    if (onTap == null) return content;
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
-      child: content,
+    if (onTap == null) return FadeSlideIn(offset: 12, child: content);
+    return FadeSlideIn(
+      offset: 12,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: content,
+      ),
     );
   }
 }
@@ -49,7 +60,7 @@ class SalusBadge extends StatelessWidget {
   const SalusBadge({
     super.key,
     required this.label,
-    this.color = SalusColors.mint,
+    this.color = SalusColors.cobalt,
     this.icon,
     this.small = false,
     this.filled = false,
@@ -63,16 +74,22 @@ class SalusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = filled ? SalusColors.background : color;
+    final isPrimary = color == SalusColors.primary;
+    final useFill = filled || isPrimary;
+    final textColor = useFill ? SalusColors.onPrimary : color;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: small ? 8 : 10,
         vertical: small ? 3 : 5,
       ),
       decoration: BoxDecoration(
-        color: filled ? color : color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: color.withValues(alpha: filled ? 1 : 0.45)),
+        color: useFill ? color : color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: useFill
+              ? SalusColors.ink.withValues(alpha: 0.18)
+              : color.withValues(alpha: 0.35),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -85,8 +102,8 @@ class SalusBadge extends StatelessWidget {
             label,
             style: TextStyle(
               color: textColor,
-              fontSize: small ? 10.5 : 12,
-              fontWeight: FontWeight.w700,
+              fontSize: small ? 10 : 11.5,
+              fontWeight: FontWeight.w600,
               letterSpacing: 0.3,
             ),
           ),
@@ -104,8 +121,8 @@ class SimulatedBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return SalusBadge(
       label: 'SIMULATED',
-      color: SalusColors.violet,
-      icon: Icons.science_outlined,
+      color: SalusColors.muted,
+      icon: SalusIcons.flask,
       small: small,
     );
   }
@@ -118,12 +135,14 @@ class PageHeader extends StatelessWidget {
     this.subtitle,
     this.actions = const [],
     this.eyebrow,
+    this.mark,
   });
 
   final String title;
   final String? subtitle;
   final List<Widget> actions;
   final String? eyebrow;
+  final String? mark;
 
   @override
   Widget build(BuildContext context) {
@@ -142,20 +161,32 @@ class PageHeader extends StatelessWidget {
                 Text(
                   eyebrow!.toUpperCase(),
                   style: const TextStyle(
-                    color: SalusColors.mint,
+                    color: SalusColors.cobalt,
                     fontSize: 11,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: 1.4,
                   ),
                 ),
                 const SizedBox(height: 6),
               ],
-              Text(title, style: Theme.of(context).textTheme.headlineSmall),
+              mark == null
+                  ? Text(
+                      title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    )
+                  : HighlightedText(
+                      text: title,
+                      mark: mark!,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
               if (subtitle != null) ...[
                 const SizedBox(height: 6),
                 Text(
                   subtitle!,
-                  style: const TextStyle(color: SalusColors.muted, height: 1.45),
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    height: 1.45,
+                  ),
                 ),
               ],
             ],
@@ -173,7 +204,7 @@ class MetricCard extends StatelessWidget {
     required this.label,
     required this.value,
     this.hint,
-    this.color = SalusColors.mint,
+    this.color = SalusColors.cobalt,
     this.icon,
   });
 
@@ -202,7 +233,7 @@ class MetricCard extends StatelessWidget {
                   style: const TextStyle(
                     color: SalusColors.muted,
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: 0.8,
                   ),
                 ),
@@ -214,14 +245,17 @@ class MetricCard extends StatelessWidget {
             value,
             style: TextStyle(
               fontSize: 26,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
               color: color,
               letterSpacing: -0.5,
             ),
           ),
           if (hint != null) ...[
             const SizedBox(height: 4),
-            Text(hint!, style: const TextStyle(color: SalusColors.muted, fontSize: 12)),
+            Text(
+              hint!,
+              style: const TextStyle(color: SalusColors.muted, fontSize: 12),
+            ),
           ],
         ],
       ),
@@ -230,7 +264,12 @@ class MetricCard extends StatelessWidget {
 }
 
 class SectionTitle extends StatelessWidget {
-  const SectionTitle({super.key, required this.title, this.subtitle, this.trailing});
+  const SectionTitle({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.trailing,
+  });
   final String title;
   final String? subtitle;
   final Widget? trailing;
@@ -247,7 +286,13 @@ class SectionTitle extends StatelessWidget {
               Text(title, style: Theme.of(context).textTheme.titleMedium),
               if (subtitle != null) ...[
                 const SizedBox(height: 3),
-                Text(subtitle!, style: const TextStyle(color: SalusColors.muted, fontSize: 12.5)),
+                Text(
+                  subtitle!,
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 12.5,
+                  ),
+                ),
               ],
             ],
           ),
@@ -285,7 +330,10 @@ class KeyValueRow extends StatelessWidget {
           ],
           SizedBox(
             width: 160,
-            child: Text(label, style: const TextStyle(color: SalusColors.muted, fontSize: 13)),
+            child: Text(
+              label,
+              style: const TextStyle(color: SalusColors.muted, fontSize: 13),
+            ),
           ),
           Expanded(
             child: Text(
@@ -323,76 +371,211 @@ class RiskFactorBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _factorColor(factor);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                width: 26,
-                height: 26,
+                width: 24,
+                height: 24,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(8),
+                  color: SalusColors.cobalt.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   factor,
-                  style: TextStyle(color: color, fontWeight: FontWeight.w800, fontSize: 13),
+                  style: const TextStyle(
+                    color: SalusColors.cobalt,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+                child: Text(
+                  label,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
               ),
               Text(
-                '${score.toString()} / 100',
-                style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 12.5),
+                '$score / 100',
+                style: const TextStyle(
+                  color: SalusColors.text,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.5,
+                ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 12),
               SizedBox(
-                width: 64,
+                width: 58,
                 child: Text(
                   '+${points.toStringAsFixed(1)}',
                   textAlign: TextAlign.right,
-                  style: const TextStyle(color: SalusColors.muted, fontSize: 12.5),
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 12.5,
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: (score / 100).clamp(0.0, 1.0),
-              minHeight: 7,
-              backgroundColor: SalusColors.surfaceAlt,
-              valueColor: AlwaysStoppedAnimation(color),
+              minHeight: 6,
+              backgroundColor: SalusColors.surfaceSoft,
+              valueColor: const AlwaysStoppedAnimation(SalusColors.cobalt),
             ),
           ),
           if (reason != null && reason!.isNotEmpty) ...[
             const SizedBox(height: 7),
-            Text(reason!, style: const TextStyle(color: SalusColors.muted, fontSize: 12, height: 1.4)),
+            Text(
+              reason!,
+              style: const TextStyle(
+                color: SalusColors.muted,
+                fontSize: 12,
+                height: 1.4,
+              ),
+            ),
           ],
         ],
       ),
     );
   }
+}
 
-  static Color _factorColor(String factor) {
-    switch (factor) {
-      case 'S':
-        return SalusColors.red;
-      case 'D':
-        return SalusColors.amber;
-      case 'B':
-        return SalusColors.blue;
-      default:
-        return SalusColors.violet;
-    }
+class StatItem {
+  const StatItem({
+    required this.label,
+    required this.value,
+    this.hint,
+    this.color = SalusColors.text,
+  });
+
+  final String label;
+  final String value;
+  final String? hint;
+  final Color color;
+}
+
+class StatStrip extends StatelessWidget {
+  const StatStrip({super.key, required this.items});
+  final List<StatItem> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return SalusCard(
+      padding: EdgeInsets.zero,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 680) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var index = 0; index < items.length; index++) ...[
+                  if (index > 0) const Divider(height: 1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 16,
+                    ),
+                    child: _StatCell(item: items[index]),
+                  ),
+                ],
+              ],
+            );
+          }
+          return Row(
+            children: [
+              const SizedBox(width: 20),
+              for (var index = 0; index < items.length; index++) ...[
+                if (index > 0)
+                  Container(
+                    width: 1,
+                    height: 56,
+                    color: SalusColors.border,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: _StatCell(item: items[index]),
+                  ),
+                ),
+              ],
+              const SizedBox(width: 20),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _StatCell extends StatelessWidget {
+  const _StatCell({required this.item});
+  final StatItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final isPrimary = item.color == SalusColors.primary;
+    final value = CountingText(
+      text: item.value,
+      style: TextStyle(
+        color: isPrimary ? SalusColors.onPrimary : item.color,
+        fontSize: 24,
+        height: 30 / 24,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.4,
+        fontFeatures: const [FontFeature.tabularFigures()],
+      ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          item.label.toUpperCase(),
+          style: const TextStyle(
+            color: SalusColors.muted,
+            fontSize: 10.5,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 6),
+        if (isPrimary)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+            decoration: BoxDecoration(
+              color: SalusColors.primary,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: SalusColors.ink.withValues(alpha: 0.16),
+              ),
+            ),
+            child: value,
+          )
+        else
+          value,
+        if (item.hint != null) ...[
+          const SizedBox(height: 3),
+          Text(
+            item.hint!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: SalusColors.muted, fontSize: 11.5),
+          ),
+        ],
+      ],
+    );
   }
 }
 
@@ -430,10 +613,7 @@ class EmptyState extends StatelessWidget {
                 style: const TextStyle(color: SalusColors.muted, height: 1.45),
               ),
             ),
-            if (action != null) ...[
-              const SizedBox(height: 18),
-              action!,
-            ],
+            if (action != null) ...[const SizedBox(height: 18), action!],
           ],
         ),
       ),
@@ -449,13 +629,19 @@ class ErrorBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SalusCard(
-      borderColor: SalusColors.red.withValues(alpha: 0.5),
+      borderColor: SalusColors.primary,
       child: Row(
         children: [
-          const Icon(Icons.error_outline, color: SalusColors.red),
+          const Icon(SalusIcons.warningCircle, color: SalusColors.yellow),
           const SizedBox(width: 12),
-          Expanded(child: Text(message, style: const TextStyle(color: SalusColors.text))),
-          if (onRetry != null) TextButton(onPressed: onRetry, child: const Text('Retry')),
+          Expanded(
+            child: Text(
+              message,
+              style: const TextStyle(color: SalusColors.text),
+            ),
+          ),
+          if (onRetry != null)
+            TextButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
@@ -485,20 +671,32 @@ class LoadingBox extends StatelessWidget {
 }
 
 class RefChip extends StatelessWidget {
-  const RefChip({super.key, required this.type, required this.id, this.simulated = false});
+  const RefChip({
+    super.key,
+    required this.type,
+    required this.id,
+    this.simulated = false,
+  });
   final String type;
   final String id;
   final bool simulated;
 
   @override
   Widget build(BuildContext context) {
-    final color = type == 'MATCH' ? SalusColors.amber : SalusColors.mint;
+    final isMatch = type == 'MATCH';
+    final background = isMatch
+        ? SalusColors.primary
+        : SalusColors.secondarySoft;
+    final foreground = isMatch ? SalusColors.ink : SalusColors.secondary;
+    final outline = isMatch
+        ? SalusColors.ink.withValues(alpha: 0.16)
+        : SalusColors.secondary.withValues(alpha: 0.25);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
+        color: background,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: outline),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -506,25 +704,29 @@ class RefChip extends StatelessWidget {
           Text(
             type,
             style: TextStyle(
-              color: color,
-              fontSize: 9.5,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.6,
+              color: foreground,
+              fontSize: 9,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Text(
             id,
-            style: const TextStyle(
-              color: SalusColors.text,
-              fontSize: 11,
+            style: TextStyle(
+              color: foreground,
+              fontSize: 10.5,
               fontWeight: FontWeight.w600,
-              fontFeatures: [FontFeature.tabularFigures()],
+              fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
           if (simulated) ...[
-            const SizedBox(width: 6),
-            const Icon(Icons.science_outlined, size: 11, color: SalusColors.violet),
+            const SizedBox(width: 5),
+            Icon(
+              SalusIcons.flask,
+              size: 10,
+              color: foreground.withValues(alpha: 0.65),
+            ),
           ],
         ],
       ),

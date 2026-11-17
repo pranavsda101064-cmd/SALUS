@@ -34,8 +34,11 @@ Write-Host "Demo ready" -ForegroundColor Green
 Write-Host "  Login: meera@acmetraders.test"
 Write-Host "  Suspect file: demo_data/clients_export_final.csv"
 Write-Host ""
-Write-Host "Start the API:  cd backend; python manage.py runserver 0.0.0.0:8000"
-Write-Host "Start the app:  cd frontend; flutter run -d chrome --web-port 8080 --dart-define=API_BASE=http://localhost:8000"
+Write-Host "Start the API:   cd backend; python manage.py runserver 0.0.0.0:8000"
+Write-Host "Build the site:  .\scripts\build_site.ps1 -ApiBase http://localhost:8000"
+Write-Host "Serve the site:  .\scripts\serve_site.ps1"
+Write-Host "Landing:         http://localhost:8080/"
+Write-Host "App:             http://localhost:8080/app/"
 
 if ($Serve) {
     Push-Location (Join-Path $Root "backend")

@@ -27,6 +27,10 @@ def _fixture_incident():
     match["public_id"] = match["match_id"]
     risk = dict(bundle["risk"])
     risk["public_id"] = risk["risk_id"]
+    source_asset = _namespace(bundle["source_asset"])
+    source_asset.public_id = bundle["source_asset"]["asset_id"]
+    suspect_asset = _namespace(bundle["suspect_asset"])
+    suspect_asset.public_id = bundle["suspect_asset"]["asset_id"]
     return SimpleNamespace(
         public_id=payload["incident_id"],
         title=payload["title"],
@@ -40,8 +44,8 @@ def _fixture_incident():
             "correlation": payload["correlation"],
             "limits": bundle["limits"],
         },
-        source_asset=_namespace(bundle["source_asset"]),
-        suspect_asset=_namespace(bundle["suspect_asset"]),
+        source_asset=source_asset,
+        suspect_asset=suspect_asset,
         match=_namespace(match),
         risk=_namespace(risk),
     )
@@ -134,7 +138,7 @@ class GeminiFallbackTests(SimpleTestCase):
 class GeminiValidationTests(SimpleTestCase):
     @override_settings(GEMINI_API_KEY="fake-key", GEMINI_MODEL="gemini-test")
     def test_valid_payload_is_merged(self):
-        incident = SimpleNamespace(evidence={}, public_id="INC-T3", title="t", severity="HIGH", source_asset=None, suspect_asset=None)
+        incident = _fixture_incident()
         with patch(
             "ai_reports.composer.httpx.post",
             return_value=_gemini_response(_valid_gemini_payload()),
@@ -145,6 +149,19 @@ class GeminiValidationTests(SimpleTestCase):
         self.assertEqual(content["model"], "gemini-test")
         self.assertEqual(content["summary"], "Gemini summary.")
         self.assertEqual(content["what_left"], ["300 records"])
+
+    @override_settings(GEMINI_API_KEY="fake-key", GEMINI_MODEL="gemini-test")
+    def test_unknown_reference_falls_back(self):
+        incident = _fixture_incident()
+        payload = _valid_gemini_payload()
+        payload["who_moved_it"]["basis"] = ["EV-99999"]
+        with patch(
+            "ai_reports.composer.httpx.post",
+            return_value=_gemini_response(payload),
+        ):
+            content, reason = _call_gemini(incident, _deterministic())
+        self.assertIsNone(content)
+        self.assertIn("not in the evidence", reason)
 
     @override_settings(GEMINI_API_KEY="fake-key")
     def test_malformed_payload_falls_back(self):

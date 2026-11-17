@@ -37,24 +37,24 @@
       "top_features": [
         {
           "feature": "log_volume",
-          "contribution": 0.443,
+          "contribution": 0.39,
           "value": 6.909
         },
         {
           "feature": "hour_cos",
-          "contribution": 0.322,
+          "contribution": 0.325,
           "value": 0.866
         },
         {
-          "feature": "viewed",
-          "contribution": 0.147,
-          "value": 0.0
+          "feature": "is_weekend",
+          "contribution": 0.155,
+          "value": 1.0
         }
       ],
-      "basis": "Reconstruction error 0.92717 against a baseline of 140 events.",
+      "basis": "Reconstruction error 0.60326 against a baseline of 140 events.",
       "samples": 140,
-      "error": 0.927169,
-      "baseline_p95": 0.228496
+      "error": 0.603265,
+      "baseline_p95": 0.123327
     },
     "E": {
       "score": 100,
@@ -77,5 +77,5 @@
     }
   },
   "policy_version": "risk-v1-demo",
-  "computed_at": "2026-11-13T06:41:54Z"
+  "computed_at": "2026-11-16T12:23:23Z"
 }

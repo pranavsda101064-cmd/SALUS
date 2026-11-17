@@ -18,7 +18,7 @@ Expected result: match score 0.999, 300 matched rows, canary CN-007 found, risk 
 
 ## Stack
 
-- Flutter Web, Material 3, custom lineage graph
+- Flutter Web, Material 3, Manrope, electric cobalt and neon yellow, custom lineage graph
 - Django 5 and Django REST Framework
 - PostgreSQL on Render, SQLite for local tests
 - pandas, openpyxl, hashlib for the data engine
@@ -134,6 +134,10 @@ python scripts/check_replay.py
 
 The end to end check also verifies duplicate upload returns the same investigation, the audit trail records status changes and report regeneration, and the report evidence hash is stable.
 
+## UI direction
+
+The product and landing page share one visual language: Manrope, near black surfaces, electric cobalt for primary actions and links, and neon yellow for risk, critical state and key numbers. The app has no background gradients or italics. The command center uses one stat strip, a focused incident card, a compact demo steps rail and a limits panel. Incident detail is split into Overview, Trail and Report tabs, with the audit trail in Report.
+
 ## Investigation workflow and backend models
 
 - `Investigation` is a first class intake record. It links the source asset, suspect asset, match and incident, stores the input SHA-256, and uses a unique constraint on organization and input hash. Uploading the same file twice returns the existing investigation with `duplicate: true`.
@@ -150,7 +154,8 @@ The public landing page follows the installed `landing-page-design` skill. It li
 - Offer: run the live Ghost Copy and see a partial copy traced to its source.
 - Primary action: open the live demo. One primary action, repeated in the nav, hero and final section.
 - Layout: classic hero plus sections, with a mandatory tagline reveal after the hero.
-- Visual system: Manrope, flat dark backgrounds, one mint accent, Phosphor icons, Tailwind scale spacing and radius, base curve `cubic-bezier(0.22, 1, 0.36, 1)`.
+- How it works includes an interactive Ghost Copy console that fetches live demo evidence when the API is awake and falls back to a stored snapshot.
+- Visual system: Manrope, flat dark backgrounds, electric cobalt `#0864E8` and neon yellow `#F5FF00`, Phosphor icons, Tailwind scale spacing and radius, base curve `cubic-bezier(0.22, 1, 0.36, 1)`.
 - Ship items: skip link, focus rings, mobile full height menu, FAQ JSON-LD, OG image, branded favicon, privacy and terms pages, branded 404, 390px check.
 - QA: 1440, 1024, 768 and 390 widths have no horizontal overflow, the primary action is visible in the first screen, all links return 200, all reveals and tagline words trigger on scroll, and there are no console errors.
 - Scope: the skill was applied to the landing page. The product dashboard keeps its own working design system.

@@ -388,7 +388,7 @@
       ["B score", fmt(behaviour.score)],
       ["Percentile", fmt(behaviour.percentile)],
       ["Baseline samples", fmt(behaviour.samples)],
-      ["Reconstruction error", behaviour.error === null || behaviour.error === undefined ? "—" : fixed(behaviour.error, 6)]
+      ["Reconstruction error", behaviour.error === null || behaviour.error === undefined ? "n/a" : fixed(behaviour.error, 6)]
     ];
   }
 

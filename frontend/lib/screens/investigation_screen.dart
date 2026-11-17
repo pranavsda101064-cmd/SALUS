@@ -1,3 +1,5 @@
+import '../icons.dart';
+
 import 'package:flutter/material.dart';
 
 import '../api.dart';
@@ -100,15 +102,10 @@ class InvestigationScreenState extends State<InvestigationScreen> {
           PageHeader(
             eyebrow: 'Investigation intake',
             title: 'A file showed up. Find out where it came from.',
-            subtitle: 'Upload the suspect CSV or XLSX. SALUS creates Data DNA, matches stored datasets, '
+            mark: 'Find out where it came from.',
+            subtitle:
+                'Upload the suspect CSV or XLSX. SALUS creates Data DNA, matches stored datasets, '
                 'checks canaries, correlates events and opens an incident.',
-            actions: [
-              OutlinedButton.icon(
-                onPressed: _pick,
-                icon: const Icon(Icons.attach_file, size: 16),
-                label: const Text('Select file'),
-              ),
-            ],
           ),
           const SizedBox(height: 22),
           LayoutBuilder(
@@ -130,15 +127,11 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                   _demoRecipe(context),
                 ],
               );
-              final right = Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _whatHappensCard(context),
-                  const SizedBox(height: 16),
-                  _recentCard(context),
-                ],
-              );
-              if (!wide) return Column(children: [left, const SizedBox(height: 18), right]);
+              final right = _recentCard(context);
+              if (!wide)
+                return Column(
+                  children: [left, const SizedBox(height: 18), right],
+                );
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -159,7 +152,7 @@ class InvestigationScreenState extends State<InvestigationScreen> {
     return SalusCard(
       borderColor: picked == null
           ? SalusColors.border
-          : SalusColors.mint.withValues(alpha: 0.45),
+          : SalusColors.cobalt.withValues(alpha: 0.45),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -169,7 +162,9 @@ class InvestigationScreenState extends State<InvestigationScreen> {
               color: SalusColors.surfaceAlt.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: SalusColors.mint.withValues(alpha: picked == null ? 0.25 : 0.5),
+                color: SalusColors.cobalt.withValues(
+                  alpha: picked == null ? 0.25 : 0.5,
+                ),
               ),
             ),
             child: Column(
@@ -178,12 +173,12 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: SalusColors.mint.withValues(alpha: 0.1),
+                    color: SalusColors.cobalt.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(
-                    picked == null ? Icons.upload_file : Icons.description_outlined,
-                    color: SalusColors.mint,
+                    picked == null ? SalusIcons.upload : SalusIcons.fileText,
+                    color: SalusColors.cobalt,
                     size: 28,
                   ),
                 ),
@@ -191,15 +186,22 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                 Text(
                   picked == null ? 'Choose the suspect file' : picked.name,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   picked == null
                       ? 'CSV or XLSX. The file is parsed in memory and not kept as raw content.'
-                      : '${formatBytes(picked.bytes.length)}  |  ready for investigation',
+                      : '${formatBytes(picked.bytes.length)}  ·  ready for investigation',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: SalusColors.muted, fontSize: 12.5, height: 1.45),
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 12.5,
+                    height: 1.45,
+                  ),
                 ),
                 const SizedBox(height: 18),
                 Wrap(
@@ -209,11 +211,15 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                   children: [
                     OutlinedButton.icon(
                       onPressed: _uploading ? null : _pick,
-                      icon: const Icon(Icons.folder_open, size: 16),
-                      label: Text(picked == null ? 'Select file' : 'Choose another'),
+                      icon: const Icon(SalusIcons.folderOpen, size: 16),
+                      label: Text(
+                        picked == null ? 'Select file' : 'Choose another',
+                      ),
                     ),
                     ElevatedButton.icon(
-                      onPressed: _uploading || picked == null ? null : _investigate,
+                      onPressed: _uploading || picked == null
+                          ? null
+                          : _investigate,
                       icon: _uploading
                           ? const SizedBox(
                               width: 15,
@@ -223,8 +229,10 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                                 color: SalusColors.background,
                               ),
                             )
-                          : const Icon(Icons.travel_explore, size: 16),
-                      label: Text(_uploading ? 'Running DNA match' : 'Run investigation'),
+                          : const Icon(SalusIcons.investigate, size: 16),
+                      label: Text(
+                        _uploading ? 'Running DNA match' : 'Run investigation',
+                      ),
                     ),
                   ],
                 ),
@@ -234,7 +242,7 @@ class InvestigationScreenState extends State<InvestigationScreen> {
           const SizedBox(height: 16),
           Row(
             children: [
-              const Icon(Icons.lock_outline, size: 14, color: SalusColors.muted),
+              const Icon(SalusIcons.lock, size: 14, color: SalusColors.muted),
               const SizedBox(width: 7),
               const Expanded(
                 child: Text(
@@ -242,7 +250,6 @@ class InvestigationScreenState extends State<InvestigationScreen> {
                   style: TextStyle(color: SalusColors.muted, fontSize: 11.5),
                 ),
               ),
-              const SimulatedBadge(small: false),
             ],
           ),
         ],
@@ -253,21 +260,31 @@ class InvestigationScreenState extends State<InvestigationScreen> {
   Widget _noMatchCard(BuildContext context) {
     final suspect = asMap(_noMatch?['suspect_asset']);
     return SalusCard(
-      borderColor: SalusColors.amber.withValues(alpha: 0.4),
+      borderColor: SalusColors.yellow.withValues(alpha: 0.4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(Icons.search_off, color: SalusColors.amber, size: 18),
+              Icon(SalusIcons.searchOff, color: SalusColors.ink, size: 18),
               SizedBox(width: 8),
-              Text('No meaningful match', style: TextStyle(fontWeight: FontWeight.w700)),
+              Text(
+                'No meaningful match',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            asString(_noMatch?['message'], 'The file was scanned but did not overlap enough with a stored dataset.'),
-            style: const TextStyle(color: SalusColors.muted, fontSize: 12.5, height: 1.45),
+            asString(
+              _noMatch?['message'],
+              'The file was scanned but did not overlap enough with a stored dataset.',
+            ),
+            style: const TextStyle(
+              color: SalusColors.muted,
+              fontSize: 12.5,
+              height: 1.45,
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -297,12 +314,20 @@ class InvestigationScreenState extends State<InvestigationScreen> {
           const Text(
             'The script renames the file, converts XLSX to CSV, removes the watermark, deletes three columns, '
             'drops 700 rows and keeps three canary rows. SALUS should still find about 30 percent of the source records.',
-            style: TextStyle(color: SalusColors.muted, fontSize: 12.5, height: 1.5),
+            style: TextStyle(
+              color: SalusColors.muted,
+              fontSize: 12.5,
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 10),
           const Text(
             'Expected file: demo_data/clients_export_final.csv',
-            style: TextStyle(color: SalusColors.mint, fontSize: 11.5, fontFamily: 'monospace'),
+            style: TextStyle(
+              color: SalusColors.cobalt,
+              fontSize: 11.5,
+              fontFamily: 'monospace',
+            ),
           ),
         ],
       ),
@@ -314,7 +339,7 @@ class InvestigationScreenState extends State<InvestigationScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
-        color: const Color(0xFF060B14),
+        color: SalusColors.background,
         borderRadius: BorderRadius.circular(9),
         border: Border.all(color: SalusColors.border),
       ),
@@ -329,108 +354,108 @@ class InvestigationScreenState extends State<InvestigationScreen> {
     );
   }
 
-  Widget _whatHappensCard(BuildContext context) {
-    const steps = [
-      ('Parse and scan', 'Column types, Verhoeff Aadhaar check, sensitivity labels.'),
-      ('Fingerprint', 'Normalized values hashed with the organization salt and weighted by rarity.'),
-      ('Match', 'Weighted containment plus row coverage against each source dataset.'),
-      ('Correlate', 'Stored download and share events, matched by actor and time.'),
-      ('Score and explain', 'Deterministic risk, behaviour model, grounded report.'),
-    ];
+  Widget _recentCard(BuildContext context) {
+    final recent = _incidents.take(5).toList();
     return SalusCard(
+      padding: EdgeInsets.zero,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SectionTitle(title: 'What runs on upload'),
-          const SizedBox(height: 14),
-          ...steps.map(
-            (step) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 18, 12, 10),
+            child: SectionTitle(
+              title: 'Recent investigations',
+              trailing: _loadingIncidents
+                  ? const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : IconButton(
+                      onPressed: loadIncidents,
+                      icon: const Icon(SalusIcons.refresh, size: 17),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+            ),
+          ),
+          if (recent.isEmpty)
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Text(
+                'No investigations yet.',
+                style: TextStyle(color: SalusColors.muted, fontSize: 12.5),
+              ),
+            )
+          else
+            for (var index = 0; index < recent.length; index++) ...[
+              if (index > 0) const Divider(height: 1),
+              _RecentRow(
+                incident: asMap(recent[index]),
+                onTap: () => widget.onOpenIncident(
+                  asString(asMap(recent[index])['incident_id']),
+                  null,
+                ),
+              ),
+            ],
+        ],
+      ),
+    );
+  }
+}
+
+class _RecentRow extends StatelessWidget {
+  const _RecentRow({required this.incident, required this.onTap});
+  final Map<String, dynamic> incident;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final band = asString(incident['risk_band'], 'LOW');
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+        child: Row(
+          children: [
+            Container(
+              width: 4,
+              height: 32,
+              decoration: BoxDecoration(
+                color: SalusColors.band(band),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.circle, size: 6, color: SalusColors.mint),
-                  const SizedBox(width: 9),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(step.$1, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5)),
-                        const SizedBox(height: 2),
-                        Text(
-                          step.$2,
-                          style: const TextStyle(color: SalusColors.muted, fontSize: 11.5, height: 1.4),
-                        ),
-                      ],
+                  Text(
+                    asString(incident['incident_id']),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.5,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '${formatPercent(incident['match_score'], decimals: 1)} match  ·  risk ${formatInt(incident['risk_total'])}',
+                    style: const TextStyle(
+                      color: SalusColors.muted,
+                      fontSize: 11,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _recentCard(BuildContext context) {
-    return SalusCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(
-            title: 'Recent investigations',
-            trailing: _loadingIncidents
-                ? const SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : IconButton(
-                    onPressed: loadIncidents,
-                    icon: const Icon(Icons.refresh, size: 17),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-          ),
-          const SizedBox(height: 12),
-          if (_incidents.isEmpty)
-            const Text('No investigations yet.', style: TextStyle(color: SalusColors.muted, fontSize: 12.5))
-          else
-            ..._incidents.take(5).map((raw) {
-              final incident = asMap(raw);
-              final band = asString(incident['risk_band'], 'LOW');
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 9),
-                child: SalusCard(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  onTap: () => widget.onOpenIncident(asString(incident['incident_id']), null),
-                  child: Row(
-                    children: [
-                      Icon(Icons.circle, size: 8, color: SalusColors.band(band)),
-                      const SizedBox(width: 9),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              asString(incident['incident_id']),
-                              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5),
-                            ),
-                            Text(
-                              '${formatPercent(incident['match_score'], decimals: 1)} match  |  risk ${formatInt(incident['risk_total'])}',
-                              style: const TextStyle(color: SalusColors.muted, fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.chevron_right, size: 16, color: SalusColors.muted),
-                    ],
-                  ),
-                ),
-              );
-            }),
-        ],
+            const Icon(
+              SalusIcons.caretRight,
+              size: 16,
+              color: SalusColors.muted,
+            ),
+          ],
+        ),
       ),
     );
   }

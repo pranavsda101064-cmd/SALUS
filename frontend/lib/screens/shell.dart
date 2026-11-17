@@ -1,12 +1,13 @@
+import '../icons.dart';
+
 import 'package:flutter/material.dart';
 
 import '../api.dart';
 import '../theme.dart';
 import '../utils.dart';
-import '../widgets/common.dart';
 import 'command_center.dart';
 import 'data_discovery.dart';
-import 'incident_detail.dart';
+import '../incident/incident_screen.dart';
 import 'investigation_screen.dart';
 
 class Shell extends StatefulWidget {
@@ -97,10 +98,10 @@ class _ShellState extends State<Shell> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment(1.1, -1.1),
-            radius: 1.3,
-            colors: [Color(0xFF0E2030), SalusColors.background],
+          color: SalusColors.background,
+          image: DecorationImage(
+            image: AssetImage('assets/paper.png'),
+            repeat: ImageRepeat.repeat,
           ),
         ),
         child: SafeArea(
@@ -129,12 +130,16 @@ class _ShellState extends State<Shell> {
     );
   }
 
-  Widget _sidebar(BuildContext context, Map<String, dynamic> org, Map<String, dynamic> user) {
+  Widget _sidebar(
+    BuildContext context,
+    Map<String, dynamic> org,
+    Map<String, dynamic> user,
+  ) {
     return Container(
       width: 252,
-      decoration: BoxDecoration(
-        color: SalusColors.background.withValues(alpha: 0.6),
-        border: const Border(right: BorderSide(color: SalusColors.border)),
+      decoration: const BoxDecoration(
+        color: SalusColors.surface,
+        border: Border(right: BorderSide(color: SalusColors.border)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -147,11 +152,17 @@ class _ShellState extends State<Shell> {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: SalusColors.mint.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(11),
-                    border: Border.all(color: SalusColors.mint.withValues(alpha: 0.4)),
+                    color: SalusColors.cobalt.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: SalusColors.cobalt.withValues(alpha: 0.45),
+                    ),
                   ),
-                  child: const Icon(Icons.shield_outlined, color: SalusColors.mint, size: 21),
+                  child: const Icon(
+                    SalusIcons.shield,
+                    color: SalusColors.cobalt,
+                    size: 21,
+                  ),
                 ),
                 const SizedBox(width: 11),
                 const Column(
@@ -160,18 +171,18 @@ class _ShellState extends State<Shell> {
                     Text(
                       'SALUS',
                       style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 3,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2.5,
                       ),
                     ),
                     Text(
-                      'DATA UNKNOWN',
+                      'INVESTIGATION DESK',
                       style: TextStyle(
                         fontSize: 8,
                         color: SalusColors.muted,
-                        letterSpacing: 1.5,
-                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -192,13 +203,13 @@ class _ShellState extends State<Shell> {
                 children: [
                   CircleAvatar(
                     radius: 17,
-                    backgroundColor: SalusColors.mint.withValues(alpha: 0.14),
+                    backgroundColor: SalusColors.cobalt.withValues(alpha: 0.16),
                     child: Text(
                       initials(asString(user['name'], 'S')),
                       style: const TextStyle(
-                        color: SalusColors.mint,
+                        color: SalusColors.cobalt,
                         fontSize: 12,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -211,13 +222,19 @@ class _ShellState extends State<Shell> {
                           asString(org['name'], 'Workspace'),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.5,
+                          ),
                         ),
                         Text(
                           '${asString(user['name'])}  |  ${asString(user['role'])}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: SalusColors.muted, fontSize: 10.5),
+                          style: const TextStyle(
+                            color: SalusColors.muted,
+                            fontSize: 10.5,
+                          ),
                         ),
                       ],
                     ),
@@ -227,67 +244,60 @@ class _ShellState extends State<Shell> {
             ),
           ),
           const SizedBox(height: 18),
-          _navItem(context, 0, Icons.space_dashboard_outlined, 'Command center'),
-          _navItem(context, 1, Icons.dataset_outlined, 'Data discovery'),
-          _navItem(context, 2, Icons.travel_explore, 'Investigation'),
-          const SizedBox(height: 18),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'DEMO SAFETY',
-              style: TextStyle(
-                color: SalusColors.muted,
-                fontSize: 9.5,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.2,
+          _navItem(context, 0, SalusIcons.dashboard, 'Command center'),
+          _navItem(context, 1, SalusIcons.database, 'Data discovery'),
+          _navItem(context, 2, SalusIcons.investigate, 'Investigation'),
+          const SizedBox(height: 22),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: SalusColors.surfaceAlt,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: SalusColors.border),
               ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                SalusBadge(label: 'Synthetic data', color: SalusColors.violet, small: true),
-                SalusBadge(label: 'Labelled events', color: SalusColors.mint, small: true),
-                SalusBadge(label: 'No raw files', color: SalusColors.blue, small: true),
-              ],
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        SalusIcons.flask,
+                        size: 13,
+                        color: SalusColors.secondary,
+                      ),
+                      SizedBox(width: 7),
+                      Text(
+                        'Demo mode',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Synthetic data. Simulated events are labelled.',
+                    style: TextStyle(
+                      color: SalusColors.muted,
+                      fontSize: 10.5,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: SalusColors.surfaceAlt,
-                    borderRadius: BorderRadius.circular(11),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.auto_awesome, size: 15, color: SalusColors.mint),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Report engine: template first, Gemini when a key is present.',
-                          style: TextStyle(color: SalusColors.muted, fontSize: 10.5, height: 1.4),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextButton.icon(
-                  onPressed: widget.onLogout,
-                  icon: const Icon(Icons.logout, size: 15),
-                  label: const Text('Sign out'),
-                  style: TextButton.styleFrom(foregroundColor: SalusColors.muted),
-                ),
-              ],
+            child: TextButton.icon(
+              onPressed: widget.onLogout,
+              icon: const Icon(SalusIcons.signOut, size: 15),
+              label: const Text('Sign out'),
+              style: TextButton.styleFrom(foregroundColor: SalusColors.muted),
             ),
           ),
         ],
@@ -295,7 +305,12 @@ class _ShellState extends State<Shell> {
     );
   }
 
-  Widget _navItem(BuildContext context, int index, IconData icon, String label) {
+  Widget _navItem(
+    BuildContext context,
+    int index,
+    IconData icon,
+    String label,
+  ) {
     final selected = _index == index && _incidentId == null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
@@ -305,10 +320,12 @@ class _ShellState extends State<Shell> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
           decoration: BoxDecoration(
-            color: selected ? SalusColors.mint.withValues(alpha: 0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(11),
+            color: selected ? SalusColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: selected ? SalusColors.mint.withValues(alpha: 0.3) : Colors.transparent,
+              color: selected
+                  ? SalusColors.ink.withValues(alpha: 0.16)
+                  : Colors.transparent,
             ),
           ),
           child: Row(
@@ -316,13 +333,13 @@ class _ShellState extends State<Shell> {
               Icon(
                 icon,
                 size: 18,
-                color: selected ? SalusColors.mint : SalusColors.muted,
+                color: selected ? SalusColors.ink : SalusColors.muted,
               ),
               const SizedBox(width: 11),
               Text(
                 label,
                 style: TextStyle(
-                  color: selected ? SalusColors.text : SalusColors.muted,
+                  color: selected ? SalusColors.ink : SalusColors.muted,
                   fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   fontSize: 13,
                 ),
@@ -332,7 +349,10 @@ class _ShellState extends State<Shell> {
                 Container(
                   width: 5,
                   height: 5,
-                  decoration: const BoxDecoration(color: SalusColors.mint, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(
+                    color: SalusColors.secondary,
+                    shape: BoxShape.circle,
+                  ),
                 ),
             ],
           ),
@@ -343,9 +363,9 @@ class _ShellState extends State<Shell> {
 
   Widget _mobileBar(BuildContext context, Map<String, dynamic> org) {
     final items = [
-      (Icons.space_dashboard_outlined, 'Home'),
-      (Icons.dataset_outlined, 'Data'),
-      (Icons.travel_explore, 'Investigate'),
+      (SalusIcons.dashboard, 'Home'),
+      (SalusIcons.database, 'Data'),
+      (SalusIcons.investigate, 'Investigate'),
     ];
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -355,11 +375,11 @@ class _ShellState extends State<Shell> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.shield_outlined, color: SalusColors.mint, size: 20),
+          const Icon(SalusIcons.shield, color: SalusColors.cobalt, size: 20),
           const SizedBox(width: 8),
           const Text(
             'SALUS',
-            style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 2.5),
+            style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: 2.5),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -376,16 +396,18 @@ class _ShellState extends State<Shell> {
               icon: Icon(
                 items[index].$1,
                 size: 20,
-                color: _index == index && _incidentId == null
-                    ? SalusColors.mint
-                    : SalusColors.muted,
+                color: _index == index ? SalusColors.ink : SalusColors.muted,
               ),
               tooltip: items[index].$2,
             );
           }),
           IconButton(
             onPressed: widget.onLogout,
-            icon: const Icon(Icons.logout, size: 18, color: SalusColors.muted),
+            icon: const Icon(
+              SalusIcons.signOut,
+              size: 18,
+              color: SalusColors.muted,
+            ),
           ),
         ],
       ),

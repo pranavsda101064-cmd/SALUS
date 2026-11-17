@@ -18,6 +18,8 @@ frontend/.dart_tool/
 frontend/.flutter-plugins
 frontend/.flutter-plugins-dependencies
 frontend/build/
+frontend/dist/
+frontend/landing/_tools/*.png
 frontend/.packages
 .DS_Store
 Thumbs.db

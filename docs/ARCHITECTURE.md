@@ -16,7 +16,8 @@ CSV or XLSX upload
   -> canary check
   -> correlate stored events by source asset, actor and time window
   -> deterministic risk S, D, B, E
-  -> incident, risk snapshot, grounded report
+  -> investigation, incident, risk snapshot, grounded report
+  -> audit trail for intake, status and report changes
   -> lineage derived from events and match
 ```
 
@@ -24,19 +25,20 @@ CSV or XLSX upload
 
 | App | Responsibility |
 |---|---|
-| organizations | Organization, user, tenant anchor |
+| organizations | Organization, user, audit log, tenant anchor |
 | assets | Dataset metadata, columns, sensitivity, DNA summary |
-| pii_scan | Verhoeff, regex and header detectors, scan result |
+| pii_scan | Verhoeff, GSTIN check digit, regex and header detectors, scan result |
 | data_dna | Cell fingerprints, match records, canary issuances |
-| events | Standard schema, dedup, serialization |
+| events | Standard schema, dedup, actor integrity, serialization |
 | simulator | Simulated download, share and baseline events |
 | lineage | Read only graph derived from events and matches |
 | risk_engine | Policy, factor computation, assessment snapshot |
 | anomaly_model | Per user MLP autoencoder and top features |
-| incidents | Correlation, incident creation, bundle assembly |
-| ai_reports | Deterministic composer, Gemini client, fallback |
+| incidents | Investigation, correlation, incident creation, bundle assembly |
+| ai_reports | Deterministic composer, grounded Gemini client, fallback |
 | demo | Seeded organization and synthetic generator |
 | api | Contract serializers and endpoints |
+| frontend/landing | Public landing page and legal pages |
 
 ## Data DNA
 
@@ -46,7 +48,10 @@ Row hashing fails when a column is deleted or a row moves. SALUS hashes each nor
 2. Hash: SHA-256 of organization salt plus the normalized value. The column name is not included.
 3. Weight: `log(1 + N / frequency)`, so rare identity values dominate common ones.
 4. Match: weighted containment of the suspect inside the source, plus row coverage.
-5. Report: matched columns, dropped columns, matched cells, canary hits.
+5. Evidence: a row only counts when it has at least one rare matched cell or three matched cells. Rarity is relative to the source size, `max(1.0, 0.5 * log(1 + N))`.
+6. Report: matched columns, dropped columns, matched cells, canary hits.
+
+A match must have at least one rare shared value and one matched row, unless the file is an exact copy. This stops a file that only shares common values such as city and department from opening an incident.
 
 The demo ghost copy keeps 8 of 11 columns and 300 of 1,000 rows. It still scores 0.999 because the suspect values have very high containment in the source. The headline "30 percent" is row coverage, which is shown separately from weighted cell recall.
 
@@ -58,10 +63,11 @@ The event schema is the only activity write shape. Events are deduplicated on or
 
 Correlation is deliberately conservative:
 
-1. Find the latest download or copy of the source dataset in the last 30 days before the suspect upload.
+1. Find the latest download or copy of the source dataset in the last 180 days before the suspect upload.
 2. Prefer a download that has an external share by the same actor within 48 hours.
-3. Never synthesize a share from a similarity match.
-4. If no event exists, the incident still opens but D and E reflect the missing evidence.
+3. If no download exists, fall back to recent external share events for the source asset. Do not invent a download.
+4. Never synthesize a share from a similarity match.
+5. If no event exists, the incident still opens but D and E reflect the missing evidence.
 
 The lineage painter builds nodes and edges on read. Every edge carries a ref to an EVENT or a MATCH. There is no writable edge table, which structurally prevents invented lineage.
 
@@ -74,7 +80,7 @@ R = 0.35*S + 0.30*D + 0.20*B + 0.15*E
 - S uses the matched columns only. It mixes the highest sensitivity with the mean.
 - D uses the destination trust table and the most severe correlated external share.
 - B uses a per user autoencoder trained on synthetic baseline events.
-- E uses a fixed sequence table with after hours, download then share, bulk volume, canary, high match confidence and repeated access.
+- E uses a fixed sequence table with after hours, download then share, external share only, bulk volume, canary, high match confidence and repeated access.
 
 Weights are demo policy. The report shows the formula and points so judges can audit the result.
 
@@ -95,9 +101,25 @@ The Gemini client:
 - sends only structured evidence and the schema,
 - requests `application/json`,
 - validates keys and types,
-- falls back on timeout, network, parse or schema failure,
+- checks every referenced identifier against the stored evidence,
+- keeps risk points, limitations and grounding references deterministic,
+- falls back on timeout, network, parse, schema or unknown reference failure,
 - sanitizes em dashes and control characters,
-- records the provider so the UI can be honest.
+- records the provider and the SHA-256 hash of the evidence snapshot so the UI can be honest.
+
+## Investigation and audit
+
+An investigation is a first class record, not an implicit side effect of an incident. It stores the organization, creator, source asset, suspect asset, match, incident, input filename, input SHA-256, rows, columns, status and creation time. The unique constraint on organization and input SHA-256 makes uploads idempotent: the second upload of the same file returns the first investigation with `duplicate: true`.
+
+The audit log records investigation creation, duplicate intake, incident status changes, report regeneration and demo seed. Audit rows are organization scoped and exposed through the incident bundle and `GET /audit`.
+
+Events can reference up to two actor fields: the standard `actor_id` string and a nullable `actor_ref` foreign key to the organization user. Simulator, intake and manual events must resolve to a user in the organization. Connector events may carry an external actor string without a user reference.
+
+## Landing page
+
+The public landing page is a static HTML, CSS and JavaScript site at `frontend/landing`. It follows the `landing-page-design` skill: one audience, one offer, one primary action, Manrope, Phosphor icons, flat dark backgrounds, electric cobalt and neon yellow accents, token spacing, a word by word tagline reveal, FAQ JSON-LD, legal pages and a branded 404. The How it works section includes an interactive Ghost Copy console that reads live demo evidence when the API is awake and falls back to a stored snapshot.
+
+`scripts/build_site.ps1` and `frontend/build_render.sh` produce a `dist` folder with the landing page at `/` and the Flutter product at `/app/`. `scripts/serve_site.ps1` serves the same layout locally. The dashboard keeps its own working product design system; the skill is scoped to the landing page.
 
 ## Tenancy and privacy
 

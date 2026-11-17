@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SALUS | Know what left your company</title>
   <meta name="description" content="SALUS matches partial copies of sensitive spreadsheets, flags India PII, and shows the event trail behind a leak. Synthetic demo for small businesses.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#F7F4EE">
   <meta name="salus-api-base" content="__SALUS_API_BASE__">
   <link rel="canonical" href="https://salus-web.onrender.com/">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -155,10 +155,13 @@
 
   <main id="main">
     <section class="hero" id="top">
+      <figure class="bg-drift hero-bg" data-parallax aria-hidden="true">
+        <img class="photo-img" src="assets/photos/desk-top.jpg" width="1600" height="1068" loading="lazy" decoding="async" alt="">
+      </figure>
       <div class="container hero-grid">
         <div class="hero-copy reveal">
-          <p class="eyebrow">Data investigation for small business</p>
-          <h1>Know what left your company. Then know what to do next.</h1>
+          <p class="eyebrow live">Data investigation for small business</p>
+          <h1>Know what left your company. <span class="mark" data-mark>Then know what to do next.</span></h1>
           <p class="lead">SALUS fingerprints sensitive spreadsheets, matches partial copies, and shows the event trail behind a leak. Built for Indian teams of 10 to 100 with no security staff.</p>
           <div class="hero-actions">
             <a class="button" href="/app/">
@@ -166,14 +169,14 @@
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
           </div>
-          <p class="hero-proof">Synthetic demo: 300 of 1,000 customer records recovered from a copy with 3 deleted columns.</p>
+          <p class="hero-proof">Synthetic demo: <span class="highlight">300 of 1,000</span> customer records recovered from a copy with <span class="highlight">3 deleted columns</span>.</p>
         </div>
 
         <div class="hero-visual reveal" style="--delay:120ms">
-          <div class="product-panel" role="group" aria-label="Example incident from the SALUS demo">
+          <div class="product-panel" data-tilt role="group" aria-label="Example incident from the SALUS demo">
             <div class="panel-top">
               <span class="caption muted">INC-4001</span>
-              <span class="chip">CRITICAL</span>
+              <span class="chip chip-critical">CRITICAL</span>
             </div>
             <p class="panel-title">Ghost copy of customer_master_v1</p>
             <div class="panel-metrics">
@@ -186,16 +189,16 @@
                 <span class="metric-label">of 1,000 rows</span>
               </div>
               <div>
-                <span class="metric-value">93</span>
+                <span class="metric-value metric-highlight">93</span>
                 <span class="metric-label">Risk score</span>
               </div>
             </div>
             <div class="track" aria-hidden="true"><span class="track-fill"></span></div>
             <div class="panel-row">
-              <span class="ref">MATCH</span>
+              <span class="ref ref-match">MATCH</span>
               <span class="panel-row-text">MT-2001, 8 columns corroborated</span>
             </div>
-            <div class="canary">
+            <div class="canary float">
               <svg class="canary-icon" aria-hidden="true"><use href="#i-fingerprint"></use></svg>
               <div class="canary-text">
                 <strong>Canary CN-007 found</strong>
@@ -231,7 +234,11 @@
     </section>
 
     <section class="tagline" aria-label="SALUS tagline">
-      <div class="container">
+      <div class="container tagline-split">
+        <figure class="photo-frame tagline-photo" data-parallax>
+          <img class="photo-img" src="assets/photos/boxes-stock.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="Stacked cardboard boxes in a warehouse">
+        </figure>
+        <div class="tagline-copy">
         <p class="tagline-text" id="tagline">
           <span class="word">Your</span>
           <span class="word">data</span>
@@ -241,19 +248,21 @@
           <span class="word">It</span>
           <span class="word">leaves</span>
           <span class="word">a</span>
-          <span class="word">trail.</span>
+          <span class="word is-accent">trail.</span>
         </p>
+        </div>
       </div>
     </section>
 
     <section class="section problem" id="problem">
       <div class="container split">
-        <div class="reveal">
-          <p class="eyebrow">The problem</p>
-          <h2>A leaked spreadsheet does not keep its original name.</h2>
-        </div>
+        <figure class="photo-frame photo-tall reveal" data-parallax>
+          <img class="photo-img" src="assets/photos/shop-laptop.jpg" width="1600" height="1067" loading="lazy" decoding="async" alt="A shop owner working on a laptop at a counter">
+        </figure>
         <div class="reveal" style="--delay:80ms">
-          <p class="body-large">By the time a small business hears about a leak, the file has a new name, fewer columns, and no history. The customer list is already outside, and the owner has no way to answer three simple questions.</p>
+          <p class="eyebrow">The problem</p>
+          <h2>A leaked spreadsheet does not keep its <span class="mark" data-mark>original name.</span></h2>
+          <p class="body-large problem-lead">By the time a small business hears about a leak, the file has a new name, fewer columns, and no history. The customer list is already outside, and the owner has no way to answer three simple questions.</p>
           <ul class="question-list">
             <li>What left?</li>
             <li>Who moved it?</li>
@@ -265,49 +274,94 @@
     </section>
 
     <section class="section benefits" id="benefits">
+      <figure class="bg-drift" data-parallax aria-hidden="true">
+        <img class="photo-img" src="assets/photos/shop-owner.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="">
+      </figure>
       <div class="container benefits-grid">
         <div class="benefits-intro reveal">
           <p class="eyebrow">What SALUS does</p>
-          <h2>Investigation first, not another blocklist.</h2>
+          <h2>Investigation first, <span class="mark" data-mark>not another blocklist.</span></h2>
           <p class="body-muted">When a sensitive file is already outside, blocking the next download does not answer the question. SALUS starts from the copy and works back to the source.</p>
         </div>
+        <div class="benefit-wrap">
+          <div class="rail" aria-hidden="true"><span class="rail-fill" data-rail></span></div>
         <ol class="benefit-list">
           <li class="reveal">
-            <span class="number">01</span>
+            <span class="number"><span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-fingerprint"></use></svg></span>01</span>
             <div>
               <h3>Find partial copies, not just identical files.</h3>
               <p>Cell level Data DNA survives a rename, an XLSX to CSV conversion, deleted columns, and dropped rows.</p>
             </div>
           </li>
           <li class="reveal">
-            <span class="number">02</span>
+            <span class="number"><span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span>02</span>
             <div>
               <h3>Check Indian IDs properly.</h3>
               <p>Aadhaar with the Verhoeff checksum, PAN, GSTIN with its own check digit, UPI IDs, phone numbers, and financial fields.</p>
             </div>
           </li>
           <li class="reveal">
-            <span class="number">03</span>
+            <span class="number"><span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-tree"></use></svg></span>03</span>
             <div>
               <h3>Follow a trail that points to real events.</h3>
               <p>Every lineage edge references a stored event or a stored match. Similarity never invents a download.</p>
             </div>
           </li>
           <li class="reveal">
-            <span class="number">04</span>
+            <span class="number"><span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-gauge"></use></svg></span>04</span>
             <div>
               <h3>Get a risk score you can defend.</h3>
               <p>Four visible factors, a deterministic formula, and a behaviour model that names its top contributors.</p>
             </div>
           </li>
           <li class="reveal">
-            <span class="number">05</span>
+            <span class="number"><span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-search"></use></svg></span>05</span>
             <div>
               <h3>Leave with next steps.</h3>
               <p>A grounded report that says what left, who moved it, and what to do now. The fallback report always works.</p>
             </div>
           </li>
         </ol>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-label="Checks SALUS runs on every file">
+      <div class="marquee-track">
+        <span class="marquee-item">Aadhaar with Verhoeff</span>
+        <span class="marquee-item">PAN</span>
+        <span class="marquee-item">GSTIN with check digit</span>
+        <span class="marquee-item">UPI IDs</span>
+        <span class="marquee-item">Indian phone numbers</span>
+        <span class="marquee-item">Financial headers</span>
+        <span class="marquee-item">Cell fingerprints</span>
+        <span class="marquee-item">Rare value weighting</span>
+        <span class="marquee-item" aria-hidden="true">Aadhaar with Verhoeff</span>
+        <span class="marquee-item" aria-hidden="true">PAN</span>
+        <span class="marquee-item" aria-hidden="true">GSTIN with check digit</span>
+        <span class="marquee-item" aria-hidden="true">UPI IDs</span>
+        <span class="marquee-item" aria-hidden="true">Indian phone numbers</span>
+        <span class="marquee-item" aria-hidden="true">Financial headers</span>
+        <span class="marquee-item" aria-hidden="true">Cell fingerprints</span>
+        <span class="marquee-item" aria-hidden="true">Rare value weighting</span>
+      </div>
+    </div>
+
+    <section class="ghost" id="ghost" aria-labelledby="ghost-title" data-ghost>
+      <div class="ghost-sticky ghost-stage" data-ghost-stage>
+        <div class="container ghost-inner">
+          <div class="ghost-copy">
+            <p class="eyebrow">The Ghost Copy</p>
+            <h2 id="ghost-title">One file, <span class="mark" data-mark>300 records left.</span></h2>
+            <ol class="ghost-steps">
+              <li class="ghost-step is-active" data-step="0"><strong>Source</strong><span>customer_master_v1, 1,000 rows and 11 columns. Each cell gets a fingerprint.</span></li>
+              <li class="ghost-step" data-step="1"><strong>Ghost copy</strong><span>Renamed, converted to CSV, 3 columns deleted, 700 rows dropped.</span></li>
+              <li class="ghost-step" data-step="2"><strong>Match</strong><span>SALUS recovers 300 of 1,000 source records and finds canary CN-007.</span></li>
+            </ol>
+            <p class="ghost-count" aria-live="polite"><span data-ghost-count>0</span> <span class="muted">of 1,000 records matched</span></p>
+          </div>
+          <div class="ghost-field" data-ghost-field aria-hidden="true"></div>
+        </div>
       </div>
     </section>
 
@@ -386,7 +440,7 @@
       <div class="container evidence-grid">
         <div class="reveal">
           <p class="eyebrow">Evidence, not guesses</p>
-          <h2>The ghost copy is built to be hard.</h2>
+          <h2>The ghost copy is built to be <span class="mark" data-mark>hard.</span></h2>
           <p class="body-large">The demo copy is renamed, converted to CSV, stripped of its watermark, reduced to 300 rows, and missing three columns. SALUS still recovers 30 percent of the source records and finds the canary.</p>
           <ul class="check-list">
             <li><svg class="icon check-icon" aria-hidden="true"><use href="#i-check"></use></svg>Cell hashes ignore column names, so deleted columns do not break the match.</li>
@@ -398,22 +452,29 @@
         <div class="evidence-side reveal" style="--delay:80ms">
           <div class="stat-grid">
             <div class="stat">
-              <span class="stat-value">0.999</span>
+              <span class="stat-value" data-count="0.999" data-decimals="3">0.999</span>
               <span class="stat-label">Match score</span>
             </div>
             <div class="stat">
-              <span class="stat-value">300</span>
+              <span class="stat-value" data-count="300">300</span>
               <span class="stat-label">of 1,000 records</span>
             </div>
             <div class="stat">
-              <span class="stat-value">93</span>
+              <span class="stat-value stat-highlight" data-count="93">93</span>
               <span class="stat-label">Risk score</span>
             </div>
             <div class="stat">
-              <span class="stat-value">3</span>
+              <span class="stat-value" data-count="3">3</span>
               <span class="stat-label">Canary rows</span>
             </div>
           </div>
+          <div class="meter-block" data-meter-block>
+            <div class="meter-label"><span>Match score</span><span>0.999</span></div>
+            <div class="meter" role="img" aria-label="Match score 0.999 on a 0 to 1 scale"><span class="meter-fill"></span></div>
+          </div>
+          <figure class="photo-frame evidence-photo" data-parallax>
+            <img class="photo-img" src="assets/photos/meeting-table.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="An empty meeting table with office chairs">
+          </figure>
           <div class="limits" id="limits">
             <div class="limits-head">
               <svg class="icon warning-icon" aria-hidden="true"><use href="#i-warning"></use></svg>
@@ -430,7 +491,95 @@
       </div>
     </section>
 
+    <section class="section carousel-section" id="carousel" aria-labelledby="carousel-title">
+      <div class="container">
+        <div class="carousel-head reveal">
+          <div>
+            <p class="eyebrow">Inside the investigation</p>
+            <h2 id="carousel-title">Five checks, <span class="mark" data-mark>in plain words.</span></h2>
+          </div>
+          <div class="carousel-buttons">
+            <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Previous slide">
+              <svg class="icon" aria-hidden="true" style="transform:rotate(180deg)"><use href="#i-arrow"></use></svg>
+            </button>
+            <button class="carousel-arrow" type="button" data-carousel-next aria-label="Next slide">
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="carousel reveal" data-carousel>
+          <div class="carousel-track" data-carousel-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="SALUS checks. Use the arrow keys to move between slides.">
+            <article class="carousel-slide" data-carousel-slide aria-roledescription="slide" aria-label="1 of 5">
+              <div class="slide-media" data-parallax-x>
+                <img class="photo-img" src="assets/photos/paperwork-pile.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="A stack of folders, notepads and pens on a desk">
+              </div>
+              <div class="slide-copy">
+                <span class="slide-index">01 / 05</span>
+                <h3>Partial copies</h3>
+                <p>Cell level fingerprints survive a rename, a CSV conversion, deleted columns, and dropped rows.</p>
+              </div>
+            </article>
+            <article class="carousel-slide" data-carousel-slide aria-roledescription="slide" aria-label="2 of 5">
+              <div class="slide-media" data-parallax-x>
+                <img class="photo-img" src="assets/photos/typing-laptop.jpg" width="1600" height="1068" loading="lazy" decoding="async" alt="A person typing on a laptop by a window">
+              </div>
+              <div class="slide-copy">
+                <span class="slide-index">02 / 05</span>
+                <h3>Indian IDs, checked properly</h3>
+                <p>Aadhaar with the Verhoeff checksum, PAN, GSTIN with its check digit, UPI IDs, and phone numbers.</p>
+              </div>
+            </article>
+            <article class="carousel-slide" data-carousel-slide aria-roledescription="slide" aria-label="3 of 5">
+              <div class="slide-media" data-parallax-x>
+                <img class="photo-img" src="assets/photos/team-chart.jpg" width="1068" height="1600" loading="lazy" decoding="async" alt="Two people reviewing a chart on a laptop together">
+              </div>
+              <div class="slide-copy">
+                <span class="slide-index">03 / 05</span>
+                <h3>An evidence trail</h3>
+                <p>Every lineage edge points to a stored event or a stored match. Similarity never invents a download.</p>
+              </div>
+            </article>
+            <article class="carousel-slide" data-carousel-slide aria-roledescription="slide" aria-label="4 of 5">
+              <div class="slide-media" data-parallax-x>
+                <img class="photo-img" src="assets/photos/window-office.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="An office interior with tall windows and a laptop on a table">
+              </div>
+              <div class="slide-copy">
+                <span class="slide-index">04 / 05</span>
+                <h3>A risk score you can defend</h3>
+                <p>Four visible factors and a deterministic formula. The behaviour model names its top contributors.</p>
+              </div>
+            </article>
+            <article class="carousel-slide" data-carousel-slide aria-roledescription="slide" aria-label="5 of 5">
+              <div class="slide-media" data-parallax-x>
+                <img class="photo-img" src="assets/photos/desk-mug.jpg" width="1600" height="1067" loading="lazy" decoding="async" alt="A laptop and a mug on a bright wooden desk">
+              </div>
+              <div class="slide-copy">
+                <span class="slide-index">05 / 05</span>
+                <h3>Next steps</h3>
+                <p>A grounded report says what left, who moved it, and what to do now. The template fallback always works.</p>
+              </div>
+            </article>
+          </div>
+          <div class="carousel-progress" aria-hidden="true"><span data-carousel-progress></span></div>
+          <div class="carousel-foot">
+            <div class="carousel-dots" role="group" aria-label="Choose a slide">
+              <button type="button" class="carousel-dot" data-carousel-dot aria-label="Slide 1" aria-current="true"></button>
+              <button type="button" class="carousel-dot" data-carousel-dot aria-label="Slide 2"></button>
+              <button type="button" class="carousel-dot" data-carousel-dot aria-label="Slide 3"></button>
+              <button type="button" class="carousel-dot" data-carousel-dot aria-label="Slide 4"></button>
+              <button type="button" class="carousel-dot" data-carousel-dot aria-label="Slide 5"></button>
+            </div>
+            <button type="button" class="carousel-toggle" data-carousel-toggle aria-pressed="false">Autoplay off</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section faq" id="faq">
+      <figure class="bg-drift" data-parallax aria-hidden="true">
+        <img class="photo-img" src="assets/photos/typewriter-desk.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="">
+      </figure>
       <div class="container faq-grid">
         <div class="faq-intro reveal">
           <p class="eyebrow">Questions</p>
@@ -475,9 +624,12 @@
     </section>
 
     <section class="section final" id="demo">
+      <figure class="bg-drift final-bg" data-parallax aria-hidden="true">
+        <img class="photo-img" src="assets/photos/paper-review.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="">
+      </figure>
       <div class="container final-inner reveal">
         <p class="eyebrow">Try the demo</p>
-        <h2>Find the file. Keep the proof.</h2>
+        <h2>Find the file. <span class="mark" data-mark>Keep the proof.</span></h2>
         <p class="body-large">Open the live Ghost Copy and walk from a suspect CSV to a stored match, a canary, a risk score, and a report in one session.</p>
         <a class="button button-large" href="/app/">
           Open the live Ghost Copy
@@ -507,6 +659,7 @@
       <div class="footer-note">
         <p>SALUS is a hackathon prototype. All demo data is synthetic. No production data is processed.</p>
         <p class="caption muted">Copyright 2026 SALUS. Built in India.</p>
+        <p class="caption muted">Photos from <a class="credit-link" href="https://www.pexels.com" rel="noopener">Pexels</a>, free to use.</p>
       </div>
     </div>
   </footer>

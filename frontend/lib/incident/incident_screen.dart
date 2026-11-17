@@ -1,3 +1,5 @@
+import '../icons.dart';
+
 import 'package:flutter/material.dart';
 
 import '../api.dart';
@@ -29,6 +31,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
   bool _loading = true;
   String? _error;
   bool _busy = false;
+  int _tab = 0;
 
   @override
   void initState() {
@@ -42,7 +45,11 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
   }
 
   Future<void> load() async {
-    if (mounted) setState(() { _loading = true; _error = null; });
+    if (mounted)
+      setState(() {
+        _loading = true;
+        _error = null;
+      });
     try {
       final bundle = await widget.api.incident(widget.incidentId);
       if (!mounted) return;
@@ -65,12 +72,12 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
       await widget.api.updateStatus(widget.incidentId, status);
       await load();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Incident marked $status.')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Incident marked $status.')));
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.toString())));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -82,12 +89,12 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
       await widget.api.regenerateReport(widget.incidentId);
       await load();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Report regenerated.')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Report regenerated.')));
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.toString())));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -110,7 +117,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
             const SizedBox(height: 12),
             TextButton.icon(
               onPressed: widget.onBack,
-              icon: const Icon(Icons.arrow_back, size: 16),
+              icon: const Icon(SalusIcons.arrowLeft, size: 16),
               label: const Text('Back'),
             ),
           ],
@@ -144,13 +151,21 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
             children: [
               OutlinedButton.icon(
                 onPressed: widget.onBack,
-                icon: const Icon(Icons.arrow_back, size: 16),
+                icon: const Icon(SalusIcons.arrowLeft, size: 16),
                 label: const Text('Back'),
               ),
               const SizedBox(width: 12),
-              SalusBadge(label: band, color: SalusColors.band(band), icon: Icons.priority_high),
+              SalusBadge(
+                label: band,
+                color: SalusColors.band(band),
+                icon: SalusIcons.warning,
+              ),
               const SizedBox(width: 8),
-              SalusBadge(label: status, color: SalusColors.blue, small: false),
+              SalusBadge(
+                label: status,
+                color: SalusColors.cobalt,
+                small: false,
+              ),
               const Spacer(),
               if (_busy)
                 const SizedBox(
@@ -165,11 +180,17 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 itemBuilder: (context) => const [
                   PopupMenuItem(value: 'OPEN', child: Text('Mark open')),
                   PopupMenuItem(value: 'TRIAGED', child: Text('Mark triaged')),
-                  PopupMenuItem(value: 'CONTAINED', child: Text('Mark contained')),
+                  PopupMenuItem(
+                    value: 'CONTAINED',
+                    child: Text('Mark contained'),
+                  ),
                   PopupMenuItem(value: 'CLOSED', child: Text('Mark closed')),
                 ],
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 11,
+                  ),
                   decoration: BoxDecoration(
                     color: SalusColors.surfaceAlt,
                     borderRadius: BorderRadius.circular(10),
@@ -180,7 +201,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                     children: [
                       Text('Change status', style: TextStyle(fontSize: 12.5)),
                       SizedBox(width: 6),
-                      Icon(Icons.expand_more, size: 16),
+                      Icon(SalusIcons.caretDown, size: 16),
                     ],
                   ),
                 ),
@@ -189,7 +210,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
               IconButton(
                 onPressed: load,
                 tooltip: 'Refresh',
-                icon: const Icon(Icons.refresh, size: 19),
+                icon: const Icon(SalusIcons.refresh, size: 19),
               ),
             ],
           ),
@@ -197,115 +218,122 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           Text(
             asString(incident['incident_id']),
             style: const TextStyle(
-              color: SalusColors.mint,
+              color: SalusColors.cobalt,
               fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.3,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.2,
             ),
           ),
           const SizedBox(height: 6),
           Text(
             asString(incident['title']),
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 30),
+            style: Theme.of(context).textTheme.headlineMedium
+                ?.copyWith(fontSize: 30),
           ),
           const SizedBox(height: 8),
           Text(
-            'Source ${asString(source['asset_id'])}  |  Suspect ${asString(suspect['asset_id'])}  |  '
-            'Opened ${shortDate(incident['created_at'])}  |  Policy ${asString(risk['policy_version'])}',
+            'Source ${asString(source['asset_id'])}  ·  Suspect ${asString(suspect['asset_id'])}  ·  '
+            'Opened ${shortDate(incident['created_at'])}  ·  Policy ${asString(risk['policy_version'])}',
             style: const TextStyle(color: SalusColors.muted, fontSize: 12.5),
           ),
-          const SizedBox(height: 20),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              final tile = width > 1000 ? (width - 54) / 4 : width > 680 ? (width - 36) / 3 : width;
-              return Wrap(
-                spacing: 18,
-                runSpacing: 18,
-                children: [
-                  SizedBox(
-                    width: tile,
-                    child: MetricCard(
-                      label: 'Risk score',
-                      value: formatInt(risk['total']),
-                      hint: '$band, ${asString(risk['policy_version'])}',
-                      color: SalusColors.band(band),
-                      icon: Icons.speed,
-                    ),
-                  ),
-                  SizedBox(
-                    width: tile,
-                    child: MetricCard(
-                      label: 'Match score',
-                      value: formatPercent(match['match_score'], decimals: 1),
-                      hint: 'Containment ${formatPercent(match['containment'])}',
-                      color: SalusColors.mint,
-                      icon: Icons.join_inner,
-                    ),
-                  ),
-                  SizedBox(
-                    width: tile,
-                    child: MetricCard(
-                      label: 'Records corroborated',
-                      value: formatInt(match['matched_rows']),
-                      hint: '${formatPercent(match['recall_vs_original'])} of ${formatInt(source['row_count'])} source rows',
-                      color: SalusColors.amber,
-                      icon: Icons.table_rows_outlined,
-                    ),
-                  ),
-                  SizedBox(
-                    width: tile,
-                    child: MetricCard(
-                      label: 'Canary',
-                      value: asBool(canary['found']) ? 'Found' : 'Missing',
-                      hint: asBool(canary['found'])
-                          ? asString(canary['canary_id'])
-                          : 'Can be stripped from a copy',
-                      color: asBool(canary['found']) ? SalusColors.violet : SalusColors.muted,
-                      icon: Icons.wifi_tethering,
-                    ),
-                  ),
-                ],
-              );
-            },
+          const SizedBox(height: 24),
+          StatStrip(
+            items: [
+              StatItem(
+                label: 'Risk score',
+                value: formatInt(risk['total']),
+                hint: band,
+                color: SalusColors.yellow,
+              ),
+              StatItem(
+                label: 'Match score',
+                value: formatPercent(match['match_score'], decimals: 1),
+                hint: 'Containment ${formatPercent(match['containment'])}',
+                color: SalusColors.cobalt,
+              ),
+              StatItem(
+                label: 'Records',
+                value: formatInt(match['matched_rows']),
+                hint:
+                    '${formatPercent(match['recall_vs_original'])} of ${formatInt(source['row_count'])} source rows',
+                color: SalusColors.text,
+              ),
+              StatItem(
+                label: 'Canary',
+                value: asBool(canary['found']) ? 'Found' : 'Missing',
+                hint: asBool(canary['found'])
+                    ? asString(canary['canary_id'])
+                    : 'Can be stripped',
+                color: asBool(canary['found'])
+                    ? SalusColors.yellow
+                    : SalusColors.muted,
+              ),
+            ],
           ),
           const SizedBox(height: 20),
-          _summaryCard(context, report, provider, band),
-          const SizedBox(height: 20),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final wide = constraints.maxWidth > 980;
-              final matchCard = _matchCard(context, match, source, suspect);
-              final riskCard = _riskCard(context, risk, factors, weights, band);
-              if (!wide) return Column(children: [matchCard, const SizedBox(height: 18), riskCard]);
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 5, child: matchCard),
-                  const SizedBox(width: 18),
-                  Expanded(flex: 6, child: riskCard),
-                ],
-              );
-            },
+          _TabSwitcher(
+            selected: _tab,
+            onChanged: (value) => setState(() => _tab = value),
           ),
           const SizedBox(height: 20),
-          _canaryCard(context, canary, match),
-          const SizedBox(height: 20),
-          LineageGraph(lineage: lineage),
-          const SizedBox(height: 20),
-          _timelineCard(context, timeline),
-          const SizedBox(height: 20),
-          _reportDetails(context, report, provider),
-          const SizedBox(height: 20),
-          _actionsCard(context, report),
-          const SizedBox(height: 20),
-          _limitsCard(context, limits, report),
+          if (_tab == 0) ...[
+            _summaryCard(context, report, provider, band),
+            const SizedBox(height: 20),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final wide = constraints.maxWidth > 980;
+                final matchCard = _matchCard(context, match, source, suspect);
+                final riskCard = _riskCard(
+                  context,
+                  risk,
+                  factors,
+                  weights,
+                  band,
+                );
+                if (!wide) {
+                  return Column(
+                    children: [matchCard, const SizedBox(height: 20), riskCard],
+                  );
+                }
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 5, child: matchCard),
+                    const SizedBox(width: 20),
+                    Expanded(flex: 6, child: riskCard),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            _canaryCard(context, canary, match),
+          ] else if (_tab == 1) ...[
+            LineageGraph(lineage: lineage),
+            const SizedBox(height: 20),
+            _timelineCard(context, timeline),
+          ] else ...[
+            _reportDetails(context, report, provider),
+            const SizedBox(height: 20),
+            _actionsCard(context, report),
+            const SizedBox(height: 20),
+            _auditCard(
+              context,
+              asList(bundle['audit_trail']).map(asMap).toList(),
+            ),
+            const SizedBox(height: 20),
+            _limitsCard(context, limits, report),
+          ],
         ],
       ),
     );
   }
 
-  Widget _summaryCard(BuildContext context, Map<String, dynamic> report, String provider, String band) {
+  Widget _summaryCard(
+    BuildContext context,
+    Map<String, dynamic> report,
+    String provider,
+    String band,
+  ) {
     return SalusCard(
       highlight: SalusColors.band(band),
       borderColor: SalusColors.band(band).withValues(alpha: 0.35),
@@ -314,27 +342,39 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.article_outlined, size: 18, color: SalusColors.mint),
+              const Icon(
+                SalusIcons.article,
+                size: 18,
+                color: SalusColors.cobalt,
+              ),
               const SizedBox(width: 8),
-              const Text('Incident report', style: TextStyle(fontWeight: FontWeight.w700)),
+              const Text(
+                'Incident report',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               const SizedBox(width: 10),
               SalusBadge(
                 label: provider == 'GEMINI' ? 'GEMINI' : 'SALUS TEMPLATE',
-                color: provider == 'GEMINI' ? SalusColors.blue : SalusColors.mint,
-                icon: Icons.auto_awesome,
+                color: provider == 'GEMINI'
+                    ? SalusColors.cobalt
+                    : SalusColors.cobalt,
+                icon: SalusIcons.sparkle,
                 small: true,
               ),
               if (asString(report['model']).isNotEmpty) ...[
                 const SizedBox(width: 8),
                 Text(
                   asString(report['model']),
-                  style: const TextStyle(color: SalusColors.muted, fontSize: 11),
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 11,
+                  ),
                 ),
               ],
               const Spacer(),
               TextButton.icon(
                 onPressed: _busy ? null : _regenerate,
-                icon: const Icon(Icons.refresh, size: 14),
+                icon: const Icon(SalusIcons.refresh, size: 14),
                 label: const Text('Regenerate'),
               ),
             ],
@@ -348,7 +388,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
             const SizedBox(height: 10),
             Text(
               asString(report['engine_note']),
-              style: const TextStyle(color: SalusColors.amber, fontSize: 11.5),
+              style: const TextStyle(color: SalusColors.ink, fontSize: 11.5),
             ),
           ],
           const SizedBox(height: 12),
@@ -389,17 +429,28 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
             children: [
               Text(
                 formatPercent(score, decimals: 1),
-                style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w800, color: SalusColors.mint),
+                style: const TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.w600,
+                  color: SalusColors.cobalt,
+                ),
               ),
               const SizedBox(width: 8),
               const Padding(
                 padding: EdgeInsets.only(bottom: 6),
-                child: Text('match score', style: TextStyle(color: SalusColors.muted, fontSize: 12)),
+                child: Text(
+                  'match score',
+                  style: TextStyle(color: SalusColors.muted, fontSize: 12),
+                ),
               ),
               const Spacer(),
               Text(
                 asString(match['method'], 'CELL_HASH_WEIGHTED_V1'),
-                style: const TextStyle(color: SalusColors.muted, fontSize: 10.5, fontFamily: 'monospace'),
+                style: const TextStyle(
+                  color: SalusColors.muted,
+                  fontSize: 10.5,
+                  fontFamily: 'monospace',
+                ),
               ),
             ],
           ),
@@ -410,58 +461,97 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
               value: score.clamp(0.0, 1.0),
               minHeight: 8,
               backgroundColor: SalusColors.surfaceAlt,
-              valueColor: const AlwaysStoppedAnimation(SalusColors.mint),
+              valueColor: const AlwaysStoppedAnimation(SalusColors.cobalt),
             ),
           ),
           const SizedBox(height: 18),
           KeyValueRow(label: 'Source', value: asString(source['name'])),
           KeyValueRow(label: 'Suspect file', value: asString(suspect['name'])),
-          KeyValueRow(label: 'Matched rows', value: formatInt(match['matched_rows'])),
-          KeyValueRow(label: 'Matched cells', value: formatInt(match['matched_cells'])),
-          KeyValueRow(label: 'Row coverage', value: formatPercent(match['recall_vs_original'])),
-          KeyValueRow(label: 'Weighted cell recall', value: formatPercent(evidence['cell_recall'], decimals: 1)),
-          KeyValueRow(label: 'Rare values shared', value: formatInt(evidence['rare_shared_values'])),
+          KeyValueRow(
+            label: 'Matched rows',
+            value: formatInt(match['matched_rows']),
+          ),
+          KeyValueRow(
+            label: 'Matched cells',
+            value: formatInt(match['matched_cells']),
+          ),
+          KeyValueRow(
+            label: 'Row coverage',
+            value: formatPercent(match['recall_vs_original']),
+          ),
+          KeyValueRow(
+            label: 'Weighted cell recall',
+            value: formatPercent(evidence['cell_recall'], decimals: 1),
+          ),
+          KeyValueRow(
+            label: 'Rare values shared',
+            value: formatInt(evidence['rare_shared_values']),
+          ),
           KeyValueRow(
             label: 'Watermark',
             value: asBool(evidence['watermark_stripped'])
                 ? 'Stripped (${asString(evidence['watermark_on_source'])})'
                 : (asString(evidence['watermark_on_query']).isEmpty
-                    ? 'Not present'
-                    : asString(evidence['watermark_on_query'])),
-            valueColor: asBool(evidence['watermark_stripped']) ? SalusColors.amber : null,
+                      ? 'Not present'
+                      : asString(evidence['watermark_on_query'])),
+            valueColor: asBool(evidence['watermark_stripped'])
+                ? SalusColors.ink
+                : null,
           ),
           const SizedBox(height: 12),
           const Text(
             'MATCHED COLUMNS',
-            style: TextStyle(color: SalusColors.muted, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1),
+            style: TextStyle(
+              color: SalusColors.muted,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
           ),
           const SizedBox(height: 7),
           Wrap(
             spacing: 6,
             runSpacing: 6,
             children: matchedColumns
-                .map((column) => SalusBadge(label: column.toString(), color: SalusColors.mint, small: true))
+                .map(
+                  (column) => SalusBadge(
+                    label: column.toString(),
+                    color: SalusColors.cobalt,
+                    small: true,
+                  ),
+                )
                 .toList(),
           ),
           if (droppedColumns.isNotEmpty) ...[
             const SizedBox(height: 12),
             const Text(
               'DROPPED COLUMNS',
-              style: TextStyle(color: SalusColors.muted, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1),
+              style: TextStyle(
+                color: SalusColors.muted,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1,
+              ),
             ),
             const SizedBox(height: 7),
             Wrap(
               spacing: 6,
               runSpacing: 6,
               children: droppedColumns
-                  .map((column) => SalusBadge(label: column.toString(), color: SalusColors.amber, small: true))
+                  .map(
+                    (column) => SalusBadge(
+                      label: column.toString(),
+                      color: SalusColors.yellow,
+                      small: true,
+                    ),
+                  )
                   .toList(),
             ),
           ],
           const SizedBox(height: 14),
           const Text(
             'A match is a lead, not proof of intent.',
-            style: TextStyle(color: SalusColors.muted, fontSize: 11.5, fontStyle: FontStyle.italic),
+            style: TextStyle(color: SalusColors.muted, fontSize: 11.5),
           ),
         ],
       ),
@@ -494,13 +584,25 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                formatInt(risk['total']),
-                style: TextStyle(
-                  fontSize: 44,
-                  fontWeight: FontWeight.w800,
-                  color: SalusColors.band(band),
-                  letterSpacing: -1,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: SalusColors.primary,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: SalusColors.ink.withValues(alpha: 0.16),
+                  ),
+                ),
+                child: Text(
+                  formatInt(risk['total']),
+                  style: const TextStyle(
+                    fontSize: 44,
+                    height: 50 / 44,
+                    fontWeight: FontWeight.w600,
+                    color: SalusColors.onPrimary,
+                    letterSpacing: -1,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -517,7 +619,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 style: TextStyle(
                   color: SalusColors.muted,
                   fontSize: 9.5,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   letterSpacing: 1,
                 ),
               ),
@@ -532,7 +634,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
             var reason = asString(data['basis']);
             if (factor == 'E') reason = asList(data['reasons']).join(', ');
             if (factor == 'D') {
-              reason = '${asString(data['destination'], 'unknown')}  |  ${asString(data['basis'])}';
+              reason = '${asString(data['destination'], 'unknown')}  ·  ';
             }
             return RiskFactorBar(
               factor: factor,
@@ -547,13 +649,22 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           const Text(
             'Weights are demo policy values, not validated standards. The deterministic engine computes the score. '
             'The language model only explains it.',
-            style: TextStyle(color: SalusColors.muted, fontSize: 11, height: 1.45),
+            style: TextStyle(
+              color: SalusColors.muted,
+              fontSize: 11,
+              height: 1.45,
+            ),
           ),
           if (asList(asMap(factors['B'])['top_features']).isNotEmpty) ...[
             const SizedBox(height: 12),
             const Text(
               'BEHAVIOUR CONTRIBUTORS',
-              style: TextStyle(color: SalusColors.muted, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1),
+              style: TextStyle(
+                color: SalusColors.muted,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1,
+              ),
             ),
             const SizedBox(height: 6),
             ...asList(asMap(factors['B'])['top_features']).map((raw) {
@@ -562,7 +673,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                   '${asString(feature['feature'])}  ${(asDouble(feature['contribution']) * 100).toStringAsFixed(0)}% of reconstruction error',
-                  style: const TextStyle(color: SalusColors.muted, fontSize: 11.5),
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 11.5,
+                  ),
                 ),
               );
             }),
@@ -572,17 +686,23 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
     );
   }
 
-  Widget _canaryCard(BuildContext context, Map<String, dynamic> canary, Map<String, dynamic> match) {
+  Widget _canaryCard(
+    BuildContext context,
+    Map<String, dynamic> canary,
+    Map<String, dynamic> match,
+  ) {
     final found = asBool(canary['found']);
     return SalusCard(
-      borderColor: (found ? SalusColors.violet : SalusColors.amber).withValues(alpha: 0.4),
-      highlight: found ? SalusColors.violet : null,
+      borderColor: (found ? SalusColors.yellow : SalusColors.muted).withValues(
+        alpha: 0.4,
+      ),
+      highlight: found ? SalusColors.yellow : null,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            found ? Icons.wifi_tethering : Icons.wifi_tethering_off,
-            color: found ? SalusColors.violet : SalusColors.amber,
+            found ? SalusIcons.broadcast : SalusIcons.broadcastOff,
+            color: found ? SalusColors.ink : SalusColors.muted,
             size: 22,
           ),
           const SizedBox(width: 14),
@@ -594,7 +714,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                   children: [
                     Text(
                       found ? 'Canary record matched' : 'Canary not found',
-                      style: const TextStyle(fontWeight: FontWeight.w700),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(width: 10),
                     if (found) const SimulatedBadge(small: false),
@@ -606,18 +726,30 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                     'Issuance ${asString(canary['canary_id'])} was assigned to ${asString(canary['recipient'])} '
                     'on ${shortDate(canary['issued_at'])}. ${formatInt(canary['matched_values'])} canary values '
                     'appear across ${formatInt(canary['matched_rows'])} rows of this copy.',
-                    style: const TextStyle(color: SalusColors.text, fontSize: 13, height: 1.5),
+                    style: const TextStyle(
+                      color: SalusColors.text,
+                      fontSize: 13,
+                      height: 1.5,
+                    ),
                   )
                 else
                   const Text(
                     'No canary values were found. A canary can be stripped or the rows can be dropped. '
                     'Treat the match as the primary evidence.',
-                    style: TextStyle(color: SalusColors.muted, fontSize: 13, height: 1.5),
+                    style: TextStyle(
+                      color: SalusColors.muted,
+                      fontSize: 13,
+                      height: 1.5,
+                    ),
                   ),
                 const SizedBox(height: 8),
                 const Text(
                   'A canary shows which issuance a copy came from. It does not prove who leaked it next.',
-                  style: TextStyle(color: SalusColors.muted, fontSize: 11.5, height: 1.45),
+                  style: TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 11.5,
+                    height: 1.45,
+                  ),
                 ),
               ],
             ),
@@ -627,7 +759,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
     );
   }
 
-  Widget _timelineCard(BuildContext context, List<Map<String, dynamic>> timeline) {
+  Widget _timelineCard(
+    BuildContext context,
+    List<Map<String, dynamic>> timeline,
+  ) {
     return SalusCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -638,7 +773,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           ),
           const SizedBox(height: 16),
           if (timeline.isEmpty)
-            const Text('No events were correlated with this match.', style: TextStyle(color: SalusColors.muted))
+            const Text(
+              'No events were correlated with this match.',
+              style: TextStyle(color: SalusColors.muted),
+            )
           else
             ...List.generate(timeline.length, (index) {
               final event = timeline[index];
@@ -660,7 +798,11 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                               color: color.withValues(alpha: 0.14),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(_actionIcon(action), size: 13, color: color),
+                            child: Icon(
+                              _actionIcon(action),
+                              size: 13,
+                              color: color,
+                            ),
                           ),
                           if (index < timeline.length - 1)
                             Expanded(
@@ -684,21 +826,30 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                               children: [
                                 Text(
                                   prettyAction(action),
-                                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 if (simulated) const SimulatedBadge(),
                                 const Spacer(),
                                 Text(
                                   shortDate(event['timestamp']),
-                                  style: const TextStyle(color: SalusColors.muted, fontSize: 11.5),
+                                  style: const TextStyle(
+                                    color: SalusColors.muted,
+                                    fontSize: 11.5,
+                                  ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '${asString(event['actor_id'])} to ${asString(event['destination'], 'no destination')}',
-                              style: const TextStyle(color: SalusColors.muted, fontSize: 12),
+                              style: const TextStyle(
+                                color: SalusColors.muted,
+                                fontSize: 12,
+                              ),
                             ),
                             const SizedBox(height: 6),
                             Wrap(
@@ -706,20 +857,34 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                               runSpacing: 6,
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                RefChip(type: 'EVENT', id: asString(event['event_id']), simulated: simulated),
+                                RefChip(
+                                  type: 'EVENT',
+                                  id: asString(event['event_id']),
+                                  simulated: simulated,
+                                ),
                                 if (asMap(event['evidence'])['rows'] != null)
                                   Text(
                                     '${formatInt(asMap(event['evidence'])['rows'])} rows',
-                                    style: const TextStyle(color: SalusColors.muted, fontSize: 11),
+                                    style: const TextStyle(
+                                      color: SalusColors.muted,
+                                      fontSize: 11,
+                                    ),
                                   ),
-                                if (asString(asMap(event['evidence'])['recipient']).isNotEmpty)
+                                if (asString(
+                                  asMap(event['evidence'])['recipient'],
+                                ).isNotEmpty)
                                   Text(
                                     'recipient ${asString(asMap(event['evidence'])['recipient'])}',
-                                    style: const TextStyle(color: SalusColors.muted, fontSize: 11),
+                                    style: const TextStyle(
+                                      color: SalusColors.muted,
+                                      fontSize: 11,
+                                    ),
                                   ),
                                 SalusBadge(
                                   label: asString(event['source'], 'SOURCE'),
-                                  color: simulated ? SalusColors.violet : SalusColors.mint,
+                                  color: simulated
+                                      ? SalusColors.muted
+                                      : SalusColors.cobalt,
                                   small: true,
                                 ),
                               ],
@@ -737,7 +902,11 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
     );
   }
 
-  Widget _reportDetails(BuildContext context, Map<String, dynamic> report, String provider) {
+  Widget _reportDetails(
+    BuildContext context,
+    Map<String, dynamic> report,
+    String provider,
+  ) {
     final who = asMap(report['who_moved_it']);
     final confidence = asString(who['confidence'], 'LOW');
     return LayoutBuilder(
@@ -747,7 +916,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionTitle(title: 'What left', subtitle: 'Plain language evidence.'),
+              const SectionTitle(
+                title: 'What left',
+                subtitle: 'Plain language evidence.',
+              ),
               const SizedBox(height: 14),
               ...asList(report['what_left']).map(
                 (item) => Padding(
@@ -755,7 +927,11 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.arrow_right, size: 18, color: SalusColors.mint),
+                      const Icon(
+                        SalusIcons.caretRight,
+                        size: 18,
+                        color: SalusColors.cobalt,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -768,17 +944,20 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 ),
               ),
               const Divider(height: 24),
-              const SectionTitle(title: 'Who moved it', subtitle: 'Derived only from stored events.'),
+              const SectionTitle(
+                title: 'Who moved it',
+                subtitle: 'Derived only from stored events.',
+              ),
               const SizedBox(height: 12),
               Row(
                 children: [
                   SalusBadge(
                     label: '$confidence confidence',
                     color: confidence == 'HIGH'
-                        ? SalusColors.red
+                        ? SalusColors.primary
                         : confidence == 'MEDIUM'
-                            ? SalusColors.amber
-                            : SalusColors.muted,
+                        ? SalusColors.secondary
+                        : SalusColors.muted,
                   ),
                 ],
               ),
@@ -805,7 +984,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionTitle(title: 'Why it was flagged', subtitle: 'Points are weight times factor score.'),
+              const SectionTitle(
+                title: 'Why it was flagged',
+                subtitle: 'Points are weight times factor score.',
+              ),
               const SizedBox(height: 14),
               ...asList(report['why_flagged']).map((raw) {
                 final item = asMap(raw);
@@ -825,7 +1007,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                         ),
                         child: Text(
                           factor,
-                          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 11),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 9),
@@ -838,7 +1023,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                       const SizedBox(width: 8),
                       Text(
                         '+${asDouble(item['points']).toStringAsFixed(1)}',
-                        style: const TextStyle(color: SalusColors.muted, fontSize: 12),
+                        style: const TextStyle(
+                          color: SalusColors.muted,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -847,12 +1035,17 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
               const Divider(height: 20),
               Text(
                 'Report provider: ${provider == 'GEMINI' ? 'Gemini, grounded in the evidence JSON' : 'deterministic SALUS template'}',
-                style: const TextStyle(color: SalusColors.muted, fontSize: 11.5, height: 1.4),
+                style: const TextStyle(
+                  color: SalusColors.muted,
+                  fontSize: 11.5,
+                  height: 1.4,
+                ),
               ),
             ],
           ),
         );
-        if (!wide) return Column(children: [left, const SizedBox(height: 18), right]);
+        if (!wide)
+          return Column(children: [left, const SizedBox(height: 18), right]);
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -868,7 +1061,7 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
   Widget _actionsCard(BuildContext context, Map<String, dynamic> report) {
     final actions = asList(report['recommended_actions']).map(asMap).toList();
     return SalusCard(
-      borderColor: SalusColors.mint.withValues(alpha: 0.35),
+      borderColor: SalusColors.cobalt.withValues(alpha: 0.35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -878,7 +1071,10 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
           ),
           const SizedBox(height: 14),
           if (actions.isEmpty)
-            const Text('No actions were generated.', style: TextStyle(color: SalusColors.muted))
+            const Text(
+              'No actions were generated.',
+              style: TextStyle(color: SalusColors.muted),
+            )
           else
             ...actions.map((action) {
               final number = asInt(action['priority']);
@@ -892,15 +1088,17 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                       height: 28,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: SalusColors.mint.withValues(alpha: 0.14),
+                        color: SalusColors.cobalt.withValues(alpha: 0.14),
                         borderRadius: BorderRadius.circular(9),
-                        border: Border.all(color: SalusColors.mint.withValues(alpha: 0.35)),
+                        border: Border.all(
+                          color: SalusColors.cobalt.withValues(alpha: 0.35),
+                        ),
                       ),
                       child: Text(
                         '$number',
                         style: const TextStyle(
-                          color: SalusColors.mint,
-                          fontWeight: FontWeight.w800,
+                          color: SalusColors.cobalt,
+                          fontWeight: FontWeight.w600,
                           fontSize: 12,
                         ),
                       ),
@@ -912,12 +1110,19 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
                         children: [
                           Text(
                             asString(action['action']),
-                            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13.5,
+                            ),
                           ),
                           const SizedBox(height: 3),
                           Text(
                             asString(action['why']),
-                            style: const TextStyle(color: SalusColors.muted, fontSize: 12, height: 1.45),
+                            style: const TextStyle(
+                              color: SalusColors.muted,
+                              fontSize: 12,
+                              height: 1.45,
+                            ),
                           ),
                         ],
                       ),
@@ -931,32 +1136,73 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
     );
   }
 
-  Widget _limitsCard(BuildContext context, List<dynamic> limits, Map<String, dynamic> report) {
+  Widget _auditCard(BuildContext context, List<Map<String, dynamic>> audit) {
+    return SalusCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(
+            title: 'Audit trail',
+            subtitle: 'Intake, status changes and report regeneration.',
+          ),
+          const SizedBox(height: 16),
+          if (audit.isEmpty)
+            const Text(
+              'No audit entries recorded.',
+              style: TextStyle(color: SalusColors.muted, fontSize: 12.5),
+            )
+          else
+            for (var index = 0; index < audit.length; index++) ...[
+              if (index > 0) const Divider(height: 20),
+              _AuditRow(entry: audit[index]),
+            ],
+        ],
+      ),
+    );
+  }
+
+  Widget _limitsCard(
+    BuildContext context,
+    List<dynamic> limits,
+    Map<String, dynamic> report,
+  ) {
     final all = limits.isEmpty ? asList(report['limitations']) : limits;
     return SalusCard(
-      borderColor: SalusColors.amber.withValues(alpha: 0.3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(Icons.visibility_off_outlined, size: 17, color: SalusColors.amber),
+              Icon(SalusIcons.eyeOff, size: 17, color: SalusColors.muted),
               SizedBox(width: 8),
-              Text('Limits of this investigation', style: TextStyle(fontWeight: FontWeight.w700)),
+              Text(
+                'Limits of this investigation',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           ...all.map(
             (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 6),
+              padding: const EdgeInsets.only(bottom: 7),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('• ', style: TextStyle(color: SalusColors.amber)),
+                  Container(
+                    width: 4,
+                    height: 4,
+                    margin: const EdgeInsets.only(top: 7),
+                    color: SalusColors.muted,
+                  ),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       item.toString(),
-                      style: const TextStyle(color: SalusColors.muted, fontSize: 12.5, height: 1.45),
+                      style: const TextStyle(
+                        color: SalusColors.muted,
+                        fontSize: 12.5,
+                        height: 1.45,
+                      ),
                     ),
                   ),
                 ],
@@ -971,15 +1217,15 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
   static IconData _actionIcon(String action) {
     switch (action) {
       case 'EXTERNAL_SHARE':
-        return Icons.public;
+        return SalusIcons.globe;
       case 'FILE_DOWNLOADED':
-        return Icons.download;
+        return SalusIcons.download;
       case 'FILE_COPIED':
-        return Icons.content_copy;
+        return SalusIcons.copy;
       case 'SUSPECT_UPLOAD':
-        return Icons.upload_file;
+        return SalusIcons.upload;
       default:
-        return Icons.visibility;
+        return SalusIcons.eye;
     }
   }
 
@@ -990,5 +1236,151 @@ class IncidentDetailScreenState extends State<IncidentDetailScreen> {
     if (id.startsWith('INC')) return 'INCIDENT';
     if (id.startsWith('RP')) return 'REPORT';
     return 'REF';
+  }
+}
+
+class _TabSwitcher extends StatelessWidget {
+  const _TabSwitcher({required this.selected, required this.onChanged});
+  final int selected;
+  final ValueChanged<int> onChanged;
+
+  static const _tabs = [
+    ('Overview', SalusIcons.dashboard),
+    ('Trail', SalusIcons.tree),
+    ('Report', SalusIcons.article),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: SalusColors.surfaceAlt,
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: SalusColors.border),
+      ),
+      child: Row(
+        children: [
+          for (var index = 0; index < _tabs.length; index++)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(6),
+                  onTap: () => onChanged(index),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    padding: const EdgeInsets.symmetric(vertical: 9),
+                    decoration: BoxDecoration(
+                      color: selected == index
+                          ? SalusColors.primary
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          _tabs[index].$2,
+                          size: 15,
+                          color: selected == index
+                              ? SalusColors.onPrimary
+                              : SalusColors.muted,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          _tabs[index].$1,
+                          style: TextStyle(
+                            color: selected == index
+                                ? SalusColors.onPrimary
+                                : SalusColors.muted,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AuditRow extends StatelessWidget {
+  const _AuditRow({required this.entry});
+  final Map<String, dynamic> entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final action = asString(entry['action']);
+    final detail = asMap(entry['detail']);
+    final detailText = _detailText(detail);
+    final isStatus = action == 'INCIDENT_STATUS_CHANGED';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 6,
+          height: 6,
+          margin: const EdgeInsets.only(top: 7),
+          decoration: BoxDecoration(
+            color: isStatus ? SalusColors.secondary : SalusColors.ink,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                prettyAction(action),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12.5,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '${asString(entry['actor_id'], 'system')}  ·  ${shortDate(entry['created_at'])}',
+                style: const TextStyle(color: SalusColors.muted, fontSize: 11),
+              ),
+              if (detailText.isNotEmpty) ...[
+                const SizedBox(height: 3),
+                Text(
+                  detailText,
+                  style: const TextStyle(
+                    color: SalusColors.muted,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _detailText(Map<String, dynamic> detail) {
+    if (detail['from'] != null) {
+      return '${detail['from']} to ${detail['to']}';
+    }
+    if (detail['provider'] != null) {
+      return '${detail['provider']} report';
+    }
+    if (detail['match_id'] != null) {
+      return '${asString(detail['investigation_id'])}  ·  ${asString(detail['match_id'])}';
+    }
+    if (detail['sha256'] != null) {
+      return 'Same file hash';
+    }
+    return '';
   }
 }

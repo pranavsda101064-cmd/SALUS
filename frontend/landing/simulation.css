@@ -42,7 +42,7 @@
   flex: none;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(53, 214, 164, 0.12);
+  box-shadow: 0 0 0 4px rgba(8, 100, 232, 0.12);
 }
 
 .sim-status-dot.is-snapshot {
@@ -51,8 +51,8 @@
 }
 
 .sim-status-dot.is-error {
-  background: #ff8d8d;
-  box-shadow: 0 0 0 4px rgba(255, 141, 141, 0.12);
+  background: #f5ff00;
+  box-shadow: 0 0 0 4px rgba(245, 255, 0, 0.12);
 }
 
 .sim-top-actions {
@@ -94,8 +94,8 @@
 }
 
 .sim-button-primary:hover {
-  border-color: #5be7bc;
-  background: #5be7bc;
+  border-color: #2f7cf6;
+  background: #2f7cf6;
   color: var(--accent-ink);
 }
 
@@ -143,8 +143,8 @@
 }
 
 .sim-chapters button[aria-current="step"] {
-  border-color: rgba(53, 214, 164, 0.35);
-  background: rgba(53, 214, 164, 0.08);
+  border-color: rgba(8, 100, 232, 0.35);
+  background: rgba(8, 100, 232, 0.08);
   color: var(--text);
 }
 
@@ -238,8 +238,8 @@
 }
 
 .sim-live.is-live {
-  border-color: rgba(53, 214, 164, 0.35);
-  background: rgba(53, 214, 164, 0.1);
+  border-color: rgba(8, 100, 232, 0.35);
+  background: rgba(8, 100, 232, 0.1);
   color: var(--accent);
 }
 
@@ -307,8 +307,8 @@
 }
 
 .sim-agent.is-active {
-  border-color: rgba(53, 214, 164, 0.4);
-  background: rgba(53, 214, 164, 0.1);
+  border-color: rgba(8, 100, 232, 0.4);
+  background: rgba(8, 100, 232, 0.1);
   color: var(--accent);
 }
 
@@ -401,15 +401,15 @@
 }
 
 .viz-chip.is-accent {
-  border-color: rgba(53, 214, 164, 0.4);
-  background: rgba(53, 214, 164, 0.1);
+  border-color: rgba(8, 100, 232, 0.4);
+  background: rgba(8, 100, 232, 0.1);
   color: var(--accent);
 }
 
 .viz-chip.is-warn {
-  border-color: rgba(255, 141, 141, 0.4);
-  background: rgba(255, 141, 141, 0.08);
-  color: #ffb3b3;
+  border-color: rgba(245, 255, 0, 0.4);
+  background: rgba(245, 255, 0, 0.08);
+  color: #f5ff00;
 }
 
 .viz-label {
@@ -492,7 +492,7 @@
   height: 2px;
   background: var(--accent);
   opacity: 0.7;
-  box-shadow: 0 0 18px 4px rgba(53, 214, 164, 0.2);
+  box-shadow: 0 0 18px 4px rgba(8, 100, 232, 0.2);
   animation: sim-scan 4.5s var(--ease) infinite;
 }
 
@@ -526,7 +526,7 @@
 }
 
 .viz-column.is-pii {
-  border-color: rgba(53, 214, 164, 0.4);
+  border-color: rgba(8, 100, 232, 0.4);
 }
 
 .viz-column.is-pii span {
@@ -542,7 +542,7 @@
 
 .viz-canary-row {
   padding: var(--s25) var(--s50);
-  border: 1px dashed rgba(53, 214, 164, 0.4);
+  border: 1px dashed rgba(8, 100, 232, 0.4);
   border-radius: var(--r-sm);
   color: var(--accent);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -605,12 +605,12 @@
 
 .flow-node.is-actor .flow-node-dot {
   border-color: var(--accent);
-  background: rgba(53, 214, 164, 0.14);
+  background: rgba(8, 100, 232, 0.14);
 }
 
 .flow-node.is-external .flow-node-dot {
-  border-color: rgba(255, 141, 141, 0.5);
-  background: rgba(255, 141, 141, 0.1);
+  border-color: rgba(245, 255, 0, 0.5);
+  background: rgba(245, 255, 0, 0.1);
 }
 
 .flow-token {
@@ -621,7 +621,7 @@
   height: 16px;
   border-radius: 4px;
   background: var(--accent);
-  box-shadow: 0 0 0 5px rgba(53, 214, 164, 0.15);
+  box-shadow: 0 0 0 5px rgba(8, 100, 232, 0.15);
   transform: translate(-50%, -50%);
   animation: sim-flow 4.8s var(--ease) infinite;
 }
@@ -703,9 +703,9 @@
   display: inline-block;
   margin-top: var(--s100);
   padding: var(--s25) var(--s50);
-  border: 1px dashed rgba(255, 141, 141, 0.5);
+  border: 1px dashed rgba(245, 255, 0, 0.5);
   border-radius: var(--r-sm);
-  color: #ffb3b3;
+  color: #f5ff00;
   font-size: 9px;
   line-height: 14px;
   font-weight: 600;
@@ -756,13 +756,13 @@
 }
 
 .ghost-col.is-dropped {
-  border-color: rgba(255, 141, 141, 0.35);
-  color: #ffb3b3;
+  border-color: rgba(245, 255, 0, 0.35);
+  color: #f5ff00;
   animation: sim-drop 2.2s var(--ease) infinite;
 }
 
 .ghost-col.is-kept {
-  border-color: rgba(53, 214, 164, 0.35);
+  border-color: rgba(8, 100, 232, 0.35);
   color: var(--accent);
 }
 
@@ -852,7 +852,7 @@
 }
 
 .dna-cell.is-matched {
-  background: rgba(53, 214, 164, 0.55);
+  background: rgba(8, 100, 232, 0.55);
   animation: sim-pulse 2.6s var(--ease) infinite;
 }
 
@@ -863,7 +863,7 @@
 }
 
 .dna-cell.is-dropped {
-  background: rgba(255, 141, 141, 0.35);
+  background: rgba(245, 255, 0, 0.35);
   opacity: 0.35;
 }
 
@@ -937,9 +937,9 @@
   align-items: flex-start;
   gap: var(--s75);
   padding: var(--s100);
-  border: 1px solid rgba(53, 214, 164, 0.4);
+  border: 1px solid rgba(8, 100, 232, 0.4);
   border-radius: var(--r-md);
-  background: rgba(53, 214, 164, 0.08);
+  background: rgba(8, 100, 232, 0.08);
 }
 
 .track-canary i {
@@ -1052,7 +1052,7 @@
 }
 
 .lineage-node.is-match {
-  border-color: rgba(53, 214, 164, 0.45);
+  border-color: rgba(8, 100, 232, 0.45);
 }
 
 /* Chapter 7: neural network */
@@ -1087,13 +1087,13 @@
 }
 
 .mlp-node.is-input {
-  fill: rgba(53, 214, 164, 0.12);
-  stroke: rgba(53, 214, 164, 0.4);
+  fill: rgba(8, 100, 232, 0.12);
+  stroke: rgba(8, 100, 232, 0.4);
 }
 
 .mlp-node.is-output {
   fill: var(--surface);
-  stroke: rgba(255, 141, 141, 0.4);
+  stroke: rgba(245, 255, 0, 0.4);
 }
 
 .mlp-node-label {

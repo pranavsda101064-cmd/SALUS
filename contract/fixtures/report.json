@@ -36,7 +36,7 @@
     },
     {
       "factor": "B",
-      "reason": "Reconstruction error 0.92717 against a baseline of 140 events.",
+      "reason": "Reconstruction error 0.60326 against a baseline of 140 events.",
       "points": 20.0
     },
     {
@@ -73,8 +73,9 @@
     "Only events from connected or simulated sources are visible."
   ],
   "correlation_basis": "Correlated download EV-10021 by USER-104 with 1 external share event(s).",
-  "generated_at": "2026-11-13T06:41:54Z",
+  "generated_at": "2026-11-16T12:23:23Z",
   "engine_note": "Gemini is not configured in this build. The deterministic composer produced this report.",
+  "evidence_hash": "74501a32dd007eab5da0bebc81c4fdaaad8b3be0e4d79eea8019547a0242a6e1",
   "report_id": "RP-5001",
   "incident_id": "INC-4001"
 }

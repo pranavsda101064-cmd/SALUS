@@ -17,7 +17,7 @@ The public landing page follows the installed `landing-page-design` skill at `D:
 3. Tagline reveal.
 4. Problem.
 5. Benefits, five outcome driven rows.
-6. How it works, three steps.
+6. How it works, with an interactive Ghost Copy console that reads live demo evidence and falls back to a snapshot.
 7. Evidence, real demo numbers and limits.
 8. FAQ, eight questions and answers.
 9. Final call to action.
@@ -36,7 +36,7 @@ The page uses the actual demo numbers and states the limits: USB copies, screens
 ## Visual system
 
 - Font: Manrope variable, bundled locally under the SIL Open Font License.
-- Palette: flat `#000000`, `#181818`, `#1F1F1F`, `#272727`, `#313131`, white text and `#9B9B9B` muted text, one mint accent `#35D6A4`.
+- Palette: flat `#000000`, `#181818`, `#1F1F1F`, `#272727`, `#313131`, white text and `#9B9B9B` muted text. Electric cobalt `#0864E8` is the primary accent for links, eyebrows, icons and actions. Neon yellow `#F5FF00` marks risk, critical state, match references and the final tagline word.
 - No background gradients. The only gradient is the hero heading text, white to muted.
 - Icons: Phosphor, inline SVG, MIT licensed. No Material icons on the landing page.
 - Type: sizes snap to the skill scale. Headings use semibold, never above 600.
@@ -44,6 +44,11 @@ The page uses the actual demo numbers and states the limits: USB copies, screens
 - Motion: base curve `cubic-bezier(0.22, 1, 0.36, 1)`, transform and opacity only.
 - Tagline reveal: each word starts at 28 percent opacity and lights up as it crosses a trigger line with an IntersectionObserver.
 - Scroll reveals run once. `prefers-reduced-motion` shows final states immediately.
+- Theme: cream paper with a faint grain texture (`assets/paper.png`). Key phrases carry a flat yellow highlighter stroke (`assets/marks/highlight.svg`, scaled on scroll with transform only). No dark sections.
+- Background motion: photos drift behind sections at low opacity with parallax. The hero tagline has a slow float on the incident panel. An Indian ID marquee pauses on hover.
+- Ghost Copy scene: a pinned scroll section with 1,000 cells. 300 match and light up, the rest drop out, matching the demo numbers.
+- Carousel autoplays every 6 seconds with a progress bar. It pauses on hover, focus or a hidden tab. Keyboard arrows, Home and End work.
+- Photos are from Pexels under the Pexels License. They are credited in the footer.
 
 ## Interaction and accessibility
 

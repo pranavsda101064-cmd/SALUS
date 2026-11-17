@@ -81,6 +81,39 @@ class TenantIsolationTests(TestCase):
         event_ids = [item["event_id"] for item in response.json()["results"]]
         self.assertEqual(event_ids, ["EV-8001"])
 
+    def test_audit_list_is_org_scoped(self):
+        from organizations.models import AuditLog
+
+        AuditLog.objects.create(
+            organization=self.org_a,
+            action="ALPHA_ACTION",
+            entity_type="INCIDENT",
+            entity_id="INC-A",
+        )
+        AuditLog.objects.create(
+            organization=self.org_b,
+            action="BETA_ACTION",
+            entity_type="INCIDENT",
+            entity_id="INC-B",
+        )
+        response = self.client.get("/api/v1/audit")
+        self.assertEqual(response.status_code, 200)
+        actions = [item["action"] for item in response.json()["results"]]
+        self.assertEqual(actions, ["ALPHA_ACTION"])
+
+    def test_other_org_audit_is_not_visible(self):
+        from organizations.models import AuditLog
+
+        AuditLog.objects.create(
+            organization=self.org_b,
+            action="BETA_ACTION",
+            entity_type="INCIDENT",
+            entity_id="INC-B",
+        )
+        response = self.client.get("/api/v1/audit?entity_id=INC-B")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["results"], [])
+
     def test_investigation_never_matches_another_org(self):
         df = pd.DataFrame(
             {

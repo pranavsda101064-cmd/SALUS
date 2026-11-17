@@ -1,3 +1,5 @@
+import '../icons.dart';
+
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -14,18 +16,28 @@ class LineageGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final nodes = asList(lineage['nodes']).map(asMap).toList();
     final edges = asList(lineage['edges']).map(asMap).toList();
-    final labels = {for (final node in nodes) asString(node['id']): asString(node['label'])};
+    final labels = {
+      for (final node in nodes) asString(node['id']): asString(node['label']),
+    };
 
     if (nodes.isEmpty) {
       return const SalusCard(
-        child: Text('No lineage has been recorded for this incident.', style: TextStyle(color: SalusColors.muted)),
+        child: Text(
+          'No lineage has been recorded for this incident.',
+          style: TextStyle(color: SalusColors.muted),
+        ),
       );
     }
 
     final sourceCount = nodes.where((node) => _isSource(node)).length;
-    final middleCount = nodes.where((node) => !_isSource(node) && !_isSuspect(node)).length;
+    final middleCount = nodes
+        .where((node) => !_isSource(node) && !_isSuspect(node))
+        .length;
     final suspectCount = nodes.where(_isSuspect).length;
-    final rows = math.max(math.max(sourceCount, middleCount), math.max(suspectCount, 1));
+    final rows = math.max(
+      math.max(sourceCount, middleCount),
+      math.max(suspectCount, 1),
+    );
     final height = math.max(280.0, 120.0 + rows * 92.0);
 
     return SalusCard(
@@ -59,10 +71,10 @@ class LineageGraph extends StatelessWidget {
             spacing: 14,
             runSpacing: 6,
             children: const [
-              _LegendDot(color: SalusColors.mint, label: 'Dataset'),
-              _LegendDot(color: SalusColors.red, label: 'Suspect'),
-              _LegendDot(color: SalusColors.blue, label: 'User'),
-              _LegendDot(color: SalusColors.amber, label: 'Destination'),
+              _LegendDot(color: SalusColors.cobalt, label: 'Dataset'),
+              _LegendDot(color: SalusColors.yellow, label: 'Suspect'),
+              _LegendDot(color: SalusColors.muted, label: 'User'),
+              _LegendDot(color: SalusColors.yellow, label: 'Destination'),
             ],
           ),
           const SizedBox(height: 16),
@@ -73,30 +85,38 @@ class LineageGraph extends StatelessWidget {
             style: TextStyle(
               color: SalusColors.muted,
               fontSize: 10,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.1,
             ),
           ),
           const SizedBox(height: 10),
           ...edges.map((edge) {
             final ref = asMap(edge['ref']);
-            final from = labels[asString(edge['from'])] ?? asString(edge['from']);
+            final from =
+                labels[asString(edge['from'])] ?? asString(edge['from']);
             final to = labels[asString(edge['to'])] ?? asString(edge['to']);
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
                 children: [
                   Icon(
-                    asString(ref['type']) == 'MATCH' ? Icons.link : Icons.bolt,
+                    asString(ref['type']) == 'MATCH'
+                        ? SalusIcons.link
+                        : SalusIcons.lightning,
                     size: 14,
-                    color: asString(ref['type']) == 'MATCH' ? SalusColors.amber : SalusColors.mint,
+                    color: asString(ref['type']) == 'MATCH'
+                        ? SalusColors.yellow
+                        : SalusColors.cobalt,
                   ),
                   const SizedBox(width: 8),
                   SizedBox(
                     width: 190,
                     child: Text(
                       prettyAction(asString(edge['relation'])),
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -104,7 +124,10 @@ class LineageGraph extends StatelessWidget {
                       '$from  to  $to',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: SalusColors.muted, fontSize: 11.5),
+                      style: const TextStyle(
+                        color: SalusColors.muted,
+                        fontSize: 11.5,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -123,11 +146,13 @@ class LineageGraph extends StatelessWidget {
   }
 
   static bool _isSuspect(Map<String, dynamic> node) {
-    return asString(node['type']) == 'ASSET' && asBool(asMap(node['meta'])['suspect']);
+    return asString(node['type']) == 'ASSET' &&
+        asBool(asMap(node['meta'])['suspect']);
   }
 
   static bool _isSource(Map<String, dynamic> node) {
-    return asString(node['type']) == 'ASSET' && !asBool(asMap(node['meta'])['suspect']);
+    return asString(node['type']) == 'ASSET' &&
+        !asBool(asMap(node['meta'])['suspect']);
   }
 }
 
@@ -144,10 +169,16 @@ class _LegendDot extends StatelessWidget {
         Container(
           width: 8,
           height: 8,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2)),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2),
+          ),
         ),
         const SizedBox(width: 5),
-        Text(label, style: const TextStyle(color: SalusColors.muted, fontSize: 11.5)),
+        Text(
+          label,
+          style: const TextStyle(color: SalusColors.muted, fontSize: 11.5),
+        ),
       ],
     );
   }
@@ -199,7 +230,8 @@ class _LineagePainter extends CustomPainter {
       final isMatch = asString(asMap(edge['ref'])['type']) == 'MATCH';
       final simulated = asBool(edge['simulated']);
       final paint = Paint()
-        ..color = (isMatch ? SalusColors.amber : SalusColors.mint).withValues(alpha: 0.75)
+        ..color = (isMatch ? SalusColors.ink : SalusColors.secondary)
+            .withValues(alpha: 0.72)
         ..strokeWidth = isMatch ? 2.2 : 1.6
         ..style = PaintingStyle.stroke;
       _drawLine(canvas, from.center, to.center, paint, dashed: simulated);
@@ -234,7 +266,11 @@ class _LineagePainter extends CustomPainter {
     return positions;
   }
 
-  void _place(Map<String, Offset> positions, List<Map<String, dynamic>> group, double xFraction) {
+  void _place(
+    Map<String, Offset> positions,
+    List<Map<String, dynamic>> group,
+    double xFraction,
+  ) {
     if (group.isEmpty) return;
     final top = 54.0;
     final bottom = height - 54.0;
@@ -245,7 +281,13 @@ class _LineagePainter extends CustomPainter {
     }
   }
 
-  void _drawLine(Canvas canvas, Offset from, Offset to, Paint paint, {required bool dashed}) {
+  void _drawLine(
+    Canvas canvas,
+    Offset from,
+    Offset to,
+    Paint paint, {
+    required bool dashed,
+  }) {
     final delta = to - from;
     final distance = delta.distance;
     if (distance == 0) return;
@@ -261,7 +303,11 @@ class _LineagePainter extends CustomPainter {
     var travelled = 0.0;
     while (travelled < (end - start).distance) {
       final next = math.min(travelled + dash, (end - start).distance);
-      canvas.drawLine(start + direction * travelled, start + direction * next, paint);
+      canvas.drawLine(
+        start + direction * travelled,
+        start + direction * next,
+        paint,
+      );
       travelled = next + gap;
     }
   }
@@ -274,8 +320,14 @@ class _LineagePainter extends CustomPainter {
     final normal = Offset(-direction.dy, direction.dx);
     final path = Path()
       ..moveTo(tip.dx, tip.dy)
-      ..lineTo(tip.dx - direction.dx * 10 + normal.dx * 5, tip.dy - direction.dy * 10 + normal.dy * 5)
-      ..lineTo(tip.dx - direction.dx * 10 - normal.dx * 5, tip.dy - direction.dy * 10 - normal.dy * 5)
+      ..lineTo(
+        tip.dx - direction.dx * 10 + normal.dx * 5,
+        tip.dy - direction.dy * 10 + normal.dy * 5,
+      )
+      ..lineTo(
+        tip.dx - direction.dx * 10 - normal.dx * 5,
+        tip.dy - direction.dy * 10 - normal.dy * 5,
+      )
       ..close();
     canvas.drawPath(path, Paint()..color = color);
   }
@@ -285,34 +337,26 @@ class _LineagePainter extends CustomPainter {
     final suspect = LineageGraph._isSuspect(node);
     final source = LineageGraph._isSource(node);
     final color = suspect
-        ? SalusColors.red
+        ? SalusColors.yellow
         : source
-            ? SalusColors.mint
-            : type == 'DESTINATION'
-                ? SalusColors.amber
-                : SalusColors.blue;
-
-    final shadow = Paint()
-      ..color = Colors.black.withValues(alpha: 0.35)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect.shift(const Offset(0, 3)), const Radius.circular(12)),
-      shadow,
-    );
+        ? SalusColors.cobalt
+        : SalusColors.muted;
 
     final fill = Paint()
-      ..shader = LinearGradient(
-        colors: [color.withValues(alpha: 0.18), SalusColors.surfaceAlt],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ).createShader(rect);
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(12)), fill);
+      ..color = Color.alphaBlend(
+        color.withValues(alpha: 0.08),
+        SalusColors.surfaceAlt,
+      );
     canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(12)),
+      RRect.fromRectAndRadius(rect, const Radius.circular(10)),
+      fill,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(10)),
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.2
-        ..color = color.withValues(alpha: 0.65),
+        ..strokeWidth = 1
+        ..color = color.withValues(alpha: 0.55),
     );
 
     final meta = asMap(node['meta']);
@@ -320,7 +364,7 @@ class _LineagePainter extends CustomPainter {
       asString(node['label']),
       color: SalusColors.text,
       size: 12.5,
-      weight: FontWeight.w700,
+      weight: FontWeight.w600,
       maxWidth: rect.width - 20,
       maxLines: 1,
     );
@@ -331,7 +375,7 @@ class _LineagePainter extends CustomPainter {
       if (suspect) 'SUSPECT',
     ];
     final subtitle = _text(
-      subtitleParts.join('  |  '),
+      subtitleParts.join('  ·  '),
       color: SalusColors.muted,
       size: 9.5,
       maxWidth: rect.width - 20,
@@ -342,13 +386,13 @@ class _LineagePainter extends CustomPainter {
       suspect
           ? 'SUSPECT ASSET'
           : source
-              ? 'SOURCE ASSET'
-              : type == 'DESTINATION'
-                  ? 'DESTINATION'
-                  : 'USER',
+          ? 'SOURCE ASSET'
+          : type == 'DESTINATION'
+          ? 'DESTINATION'
+          : 'USER',
       color: color,
       size: 8.5,
-      weight: FontWeight.w800,
+      weight: FontWeight.w600,
       maxWidth: rect.width - 20,
     );
     badge.paint(canvas, rect.topLeft + const Offset(10, 8));

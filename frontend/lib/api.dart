@@ -20,8 +20,13 @@ class PickedFile {
 
 class ApiClient {
   ApiClient({String? baseUrl})
-      : root = (baseUrl ?? const String.fromEnvironment('API_BASE', defaultValue: 'http://localhost:8000'))
-            .replaceAll(RegExp(r'/$'), '');
+    : root =
+          (baseUrl ??
+                  const String.fromEnvironment(
+                    'API_BASE',
+                    defaultValue: 'http://localhost:8000',
+                  ))
+              .replaceAll(RegExp(r'/$'), '');
 
   final String root;
   String? token;
@@ -30,9 +35,9 @@ class ApiClient {
   String get baseUrl => '$root/api/v1';
 
   Map<String, String> get _headers => {
-        'Accept': 'application/json',
-        if (token != null) 'Authorization': 'Token $token',
-      };
+    'Accept': 'application/json',
+    if (token != null) 'Authorization': 'Token $token',
+  };
 
   Future<Map<String, dynamic>> _decode(http.Response response) async {
     Map<String, dynamic> body = {};
@@ -51,7 +56,10 @@ class ApiClient {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return body;
     }
-    final detail = body['detail'] ?? body['message'] ?? 'Request failed (${response.statusCode})';
+    final detail =
+        body['detail'] ??
+        body['message'] ??
+        'Request failed (${response.statusCode})';
     throw ApiException(detail.toString(), statusCode: response.statusCode);
   }
 
@@ -62,7 +70,10 @@ class ApiClient {
     return _decode(response);
   }
 
-  Future<Map<String, dynamic>> post(String path, [Map<String, dynamic>? body]) async {
+  Future<Map<String, dynamic>> post(
+    String path, [
+    Map<String, dynamic>? body,
+  ]) async {
     final response = await _client
         .post(
           Uri.parse('$baseUrl$path'),
@@ -87,11 +98,15 @@ class ApiClient {
   Future<Map<String, dynamic>> overview() => get('/overview');
   Future<Map<String, dynamic>> me() => get('/organizations/me');
   Future<Map<String, dynamic>> policy() => get('/risk/policy');
-  Future<Map<String, dynamic>> seedDemo() => post('/dev/seed', {'reset': false});
-  Future<Map<String, dynamic>> renameDemo() => post('/dev/seed', {'reset': true});
+  Future<Map<String, dynamic>> seedDemo() =>
+      post('/dev/seed', {'reset': false});
+  Future<Map<String, dynamic>> renameDemo() =>
+      post('/dev/seed', {'reset': true});
 
   Future<List<dynamic>> assets({bool includeBaseline = false}) async {
-    final body = await get('/assets${includeBaseline ? '?include_baseline=1' : ''}');
+    final body = await get(
+      '/assets${includeBaseline ? '?include_baseline=1' : ''}',
+    );
     return body['results'] as List<dynamic>? ?? <dynamic>[];
   }
 
@@ -114,9 +129,14 @@ class ApiClient {
       post('/simulator/run', {'scenario': 'ghost_copy'});
 
   Future<Map<String, dynamic>> investigate(PickedFile file) async {
-    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/investigations'));
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/investigations'),
+    );
     request.headers.addAll(_headers);
-    request.files.add(http.MultipartFile.fromBytes('file', file.bytes, filename: file.name));
+    request.files.add(
+      http.MultipartFile.fromBytes('file', file.bytes, filename: file.name),
+    );
     final streamed = await request.send().timeout(const Duration(seconds: 60));
     final response = await http.Response.fromStream(streamed);
     return _decode(response);

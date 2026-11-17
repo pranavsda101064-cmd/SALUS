@@ -33,7 +33,7 @@ from incidents.models import Incident, Investigation
 from incidents.services import create_investigation
 from lineage.services import build_lineage
 from organizations.audit import log_audit
-from organizations.models import AuditLog, Organization, User
+from organizations.models import AuditLog, User
 from risk_engine.policy import (
     BANDS,
     DESTINATION_TABLE,
@@ -94,6 +94,7 @@ class HealthView(APIView):
 
 
 class DemoLoginView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny, IsDemoMode]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "login"
@@ -637,6 +638,7 @@ class SimulatorRunView(APIView):
 
 
 class DevSeedView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny, IsDemoMode]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "seed"

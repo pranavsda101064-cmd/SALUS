@@ -1,4 +1,7 @@
+from unittest.mock import patch
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.utils import DatabaseError
 from django.test import TestCase, override_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -42,6 +45,12 @@ class ProductionApiTests(TestCase):
         self.assertEqual(body["database"], "ok")
         self.assertTrue(body["demo_mode"])
 
+    def test_health_reports_database_failure(self):
+        with patch("api.views.connection.cursor", side_effect=DatabaseError("down")):
+            response = APIClient().get("/api/v1/health")
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json()["database"], "unavailable")
+
     def test_request_id_is_echoed(self):
         response = APIClient().get(
             "/api/v1/health", HTTP_X_REQUEST_ID="support-case-42"
@@ -56,12 +65,12 @@ class ProductionApiTests(TestCase):
                 name=f"asset_{index}",
                 row_count=1,
             )
-        response = self.client.get("/api/v1/assets?limit=2&offset=1")
+        response = self.client.get("/api/v1/assets?limit=2&offset=2")
         self.assertEqual(response.status_code, 200)
         body = response.json()
         self.assertEqual(body["count"], 3)
         self.assertEqual(body["limit"], 2)
-        self.assertEqual(body["offset"], 1)
+        self.assertEqual(body["offset"], 2)
         self.assertEqual(len(body["results"]), 1)
 
         bad = self.client.get("/api/v1/assets?limit=abc")
